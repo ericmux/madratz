@@ -1,14 +1,12 @@
 package com.ui;
 
+import com.gamelogic.TacklerRat;
 import com.simulation.GameWorld;
-import com.simulation.PrintCallable;
-import com.simulation.RotateCallable;
-import org.jbox2d.collision.shapes.PolygonShape;
+import com.simulation.MHSRatCallable;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.TestbedTest;
 
 public class SimulationTestbedTest extends TestbedTest {
@@ -17,22 +15,22 @@ public class SimulationTestbedTest extends TestbedTest {
 
         setTitle("Simulation Test");
 
-        for (int i = 0; i < 2; i++) {
-            PolygonShape polygonShape = new PolygonShape();
-            polygonShape.setAsBox(1, 1);
 
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.type = BodyType.DYNAMIC;
-            bodyDef.position.set(5 * i, 0);
-            bodyDef.allowSleep = false;
-            Body body = getWorld().createBody(bodyDef);
-            body.createFixture(polygonShape, 5.0f);
+        TacklerRat gunnerRat = new TacklerRat();
 
-            if(i == 0) getWorld().registerCallback(body, new PrintCallable());
-            else getWorld().registerCallback(body, new RotateCallable());
+        Body body = getWorld().createBody(gunnerRat.getBodyDef());
+        body.createFixture(gunnerRat.getFixtureDef());
 
-            body.applyForce(new Vec2(-10000 * (i - 1), 0), new Vec2());
-        }
+        getWorld().registerCallback(body, gunnerRat.getGameBodyCallable());
+
+
+        TacklerRat mhsRat = new TacklerRat();
+
+        body = getWorld().createBody(mhsRat.getBodyDef());
+        body.createFixture(mhsRat.getFixtureDef());
+
+        getWorld().registerCallback(body, new MHSRatCallable());
+
     }
 
     @Override
@@ -50,7 +48,17 @@ public class SimulationTestbedTest extends TestbedTest {
     public void init(World argWorld, boolean argDeserialized) {
         //hacky solution to attach a GameWorld to the UI.
         this.m_world = new GameWorld(new Vec2());
-        argWorld = this.m_world;
-        super.init(argWorld, argDeserialized);
+        super.init(this.m_world, argDeserialized);
+    }
+
+
+    @Override
+    public void endContact(Contact contact) {
+        super.endContact(contact);
+    }
+
+    @Override
+    public void beginContact(Contact contact) {
+        super.beginContact(contact);
     }
 }

@@ -13,11 +13,11 @@ public class UIMain {
 
 
     public static void main(String[] args) {
-        TestbedModel model = new TestbedModel();         // create our model
+        TestbedModel model = new TestbedModel();
 
         // add tests
-        model.addCategory("Rat Tests");             // add a category
-        model.addTest(new SimulationTestbedTest());                // add our test
+        model.addCategory("Rat Tests");
+        model.addTest(new SimulationTestbedTest());
         model.addTest(new GraphicsTest());
 
         // add our custom setting "My Range Setting", with a default value of 10, between 0 and 20
