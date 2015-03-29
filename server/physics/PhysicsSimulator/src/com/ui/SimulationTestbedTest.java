@@ -1,5 +1,8 @@
 package com.ui;
 
+import com.simulation.GameWorld;
+import com.simulation.PrintCallable;
+import com.simulation.RotateCallable;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -7,8 +10,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.testbed.framework.TestbedTest;
-import com.simulation.GameWorld;
-import com.simulation.PrintCallable;
 
 public class SimulationTestbedTest extends TestbedTest {
     @Override
@@ -24,8 +25,11 @@ public class SimulationTestbedTest extends TestbedTest {
             bodyDef.type = BodyType.DYNAMIC;
             bodyDef.position.set(5 * i, 0);
             bodyDef.allowSleep = false;
-            Body body = getWorld().createBody(bodyDef, new PrintCallable());
+            Body body = getWorld().createBody(bodyDef);
             body.createFixture(polygonShape, 5.0f);
+
+            if(i == 0) getWorld().registerCallback(body, new PrintCallable());
+            else getWorld().registerCallback(body, new RotateCallable());
 
             body.applyForce(new Vec2(-10000 * (i - 1), 0), new Vec2());
         }

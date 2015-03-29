@@ -7,40 +7,57 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.pooling.IWorldPool;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameWorld extends World {
 
-    private ArrayList<GameBodyCallback> mBodyCallbacks;
+    private HashMap<Body,GameBodyCallable> mBodyCallbacks;
 
 
     public GameWorld(Vec2 gravity) {
         super(gravity);
-        mBodyCallbacks = new ArrayList<GameBodyCallback>();
+        mBodyCallbacks = new HashMap<>();
     }
 
     public GameWorld(Vec2 gravity, IWorldPool pool) {
         super(gravity, pool);
-        mBodyCallbacks = new ArrayList<GameBodyCallback>();
+        mBodyCallbacks = new HashMap<>();
     }
 
     public GameWorld(Vec2 gravity, IWorldPool argPool, BroadPhaseStrategy broadPhaseStrategy) {
         super(gravity, argPool, broadPhaseStrategy);
-        mBodyCallbacks = new ArrayList<GameBodyCallback>();
+        mBodyCallbacks = new HashMap<>();
     }
 
-    public Body createBody(BodyDef def, GameBodyCallable callback) {
+    public Body createBody(BodyDef def) {
         Body body = super.createBody(def);
-        GameBodyCallback gameBodyCallback = new GameBodyCallback(body,this, callback);
-        mBodyCallbacks.add(gameBodyCallback);
+
+        GameBodyCallable gameBodyCallback = new GameBodyCallable(body,this);
+        mBodyCallbacks.put(body,gameBodyCallback);
 
         return body;
+    }
+
+    public void registerCallback(Body body, GameBodyCallable callback){
+
+        if(body == null) return;
+        if(callback == null) return;
+
+        callback.setGameWorld(this);
+        callback.setBody(body);
+        mBodyCallbacks.put(body,callback);
     }
 
     @Override
     public void step(float dt, int velocityIterations, int positionIterations) {
 
-        for(GameBodyCallback callback: mBodyCallbacks) callback.update();
+        for(GameBodyCallable callback: mBodyCallbacks.values()) {
+            try {
+                callback.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         super.step(dt, velocityIterations, positionIterations);
     }

@@ -4,6 +4,10 @@ import org.jbox2d.dynamics.Body;
 
 import java.util.concurrent.Callable;
 
+
+/**
+ * The base callback for an agent/body. Defaults to NOP, immediately returning.
+ */
 public class GameBodyCallable implements Callable<DecisionResult> {
 
     protected Body mBody;
