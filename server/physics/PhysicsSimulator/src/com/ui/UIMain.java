@@ -17,7 +17,7 @@ public class UIMain {
 
         // add tests
         model.addCategory("Rat Tests");
-        model.addTest(new SimulationTestbedTest());
+        model.addTest(new SimulationTest());
         model.addTest(new GraphicsTest());
 
         // add our custom setting "My Range Setting", with a default value of 10, between 0 and 20

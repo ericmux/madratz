@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.FixtureDef;
 
 import java.util.Random;
 
-public abstract class Actor {
+public class Actor {
 
     protected BodyDef mBodyDef;
     protected FixtureDef mFixtureDef;
@@ -17,7 +17,7 @@ public abstract class Actor {
     protected Behavior mBehavior;
     protected Body mBody;
 
-    public Actor() {
+    public Actor(Behavior behavior) {
 
         Random random = new Random();
 
@@ -34,9 +34,12 @@ public abstract class Actor {
 
         mBodyDef = bodyDef;
         mFixtureDef = fixtureDef;
-        mBehavior = new Behavior();
+        mBehavior = behavior;
     }
 
+    public Actor() {
+        this(new Behavior());
+    }
 
     public Body getBody() {
         return mBody;

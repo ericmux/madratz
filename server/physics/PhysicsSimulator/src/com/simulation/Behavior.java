@@ -13,10 +13,6 @@ public class Behavior implements Callable<DecisionResult> {
     protected Actor mActor;
     protected MadratzWorld mMadratzWorld;
 
-    public Behavior(Actor actor, MadratzWorld madratzWorld) {
-        mActor = actor;
-        mMadratzWorld = madratzWorld;
-    }
 
     public Behavior(){}
 

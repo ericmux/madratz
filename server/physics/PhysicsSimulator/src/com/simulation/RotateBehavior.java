@@ -1,12 +1,6 @@
 package com.simulation;
 
-import com.gamelogic.Actor;
-
 public class RotateBehavior extends Behavior {
-
-    public RotateBehavior(Actor actor, MadratzWorld madratzWorld) {
-        super(actor, madratzWorld);
-    }
 
     public RotateBehavior() {
     }

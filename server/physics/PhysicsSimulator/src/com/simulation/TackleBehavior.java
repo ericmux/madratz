@@ -10,10 +10,6 @@ import org.jbox2d.dynamics.Fixture;
 public class TackleBehavior extends Behavior {
 
 
-    public TackleBehavior(Actor actor, MadratzWorld madratzWorld) {
-        super(actor, madratzWorld);
-    }
-
     public TackleBehavior() {
         super();
     }

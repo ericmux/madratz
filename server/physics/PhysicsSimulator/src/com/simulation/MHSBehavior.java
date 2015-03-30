@@ -1,16 +1,10 @@
 package com.simulation;
 
-import com.gamelogic.Actor;
 import org.jbox2d.common.Vec2;
 
 public class MHSBehavior extends Behavior {
 
     private float t;
-
-    public MHSBehavior(Actor actor, MadratzWorld madratzWorld) {
-        super(actor, madratzWorld);
-        this.t = 0.0f;
-    }
 
     public MHSBehavior() {
         this.t = 0.0f;

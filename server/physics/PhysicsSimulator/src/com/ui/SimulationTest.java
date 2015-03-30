@@ -1,24 +1,24 @@
 package com.ui;
 
-import com.gamelogic.MHSActor;
-import com.gamelogic.TacklerActor;
+import com.gamelogic.Actor;
+import com.simulation.MHSBehavior;
 import com.simulation.MadratzWorld;
+import com.simulation.ShootBehavior;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.TestbedTest;
 
-public class SimulationTestbedTest extends TestbedTest {
+public class SimulationTest extends TestbedTest {
     @Override
     public void initTest(boolean b) {
 
         setTitle("Simulation Test");
 
-
-        TacklerActor gunnerRat = new TacklerActor();
+        Actor gunnerRat = new Actor(new ShootBehavior());
         getWorld().registerActor(gunnerRat);
 
-        MHSActor mhsRat = new MHSActor();
+        Actor mhsRat = new Actor(new MHSBehavior());
         getWorld().registerActor(mhsRat);
 
     }
