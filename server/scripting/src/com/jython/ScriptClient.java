@@ -34,7 +34,7 @@ public class ScriptClient {
 
     public void connect(){
         try {
-            mClientSocket = new Socket(InetAddress.getLocalHost().getHostName(), GameSocketHandler.GAME_PORT);
+            mClientSocket = new Socket(InetAddress.getLoopbackAddress(), GameSocketHandler.GAME_PORT);
             mOut = new PrintStream(mClientSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();

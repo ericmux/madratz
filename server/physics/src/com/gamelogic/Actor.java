@@ -1,6 +1,6 @@
 package com.gamelogic;
 
-import com.simulation.Behavior;
+import com.behaviors.Behavior;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;

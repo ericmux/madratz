@@ -1,5 +1,6 @@
-package com.simulation;
+package com.behaviors;
 
+import com.simulation.DecisionResult;
 import org.jbox2d.common.Vec2;
 
 public class MHSBehavior extends Behavior {

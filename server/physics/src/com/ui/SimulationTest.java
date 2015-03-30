@@ -1,9 +1,9 @@
 package com.ui;
 
 import com.gamelogic.Actor;
-import com.simulation.MHSBehavior;
+import com.behaviors.MHSBehavior;
 import com.simulation.MadratzWorld;
-import com.simulation.ShootBehavior;
+import com.behaviors.ShootBehavior;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;

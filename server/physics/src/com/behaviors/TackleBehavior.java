@@ -1,11 +1,11 @@
-package com.simulation;
+package com.behaviors;
 
 import com.gamelogic.Actor;
-import org.jbox2d.callbacks.QueryCallback;
+import com.simulation.DecisionResult;
+import com.simulation.MadratzWorld;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.Fixture;
 
 public class TackleBehavior extends Behavior {
 
@@ -19,14 +19,11 @@ public class TackleBehavior extends Behavior {
 
         final Body[] foundBody = new Body[1];
 
-        mMadratzWorld.queryAABB(new QueryCallback() {
-            @Override
-            public boolean reportFixture(Fixture fixture) {
-                if(fixture.getBody() != mActor.getBody()) {
-                    foundBody[0] = fixture.getBody();
-                }
-                return true;
+        mMadratzWorld.queryAABB(fixture -> {
+            if(fixture.getBody() != mActor.getBody()) {
+                foundBody[0] = fixture.getBody();
             }
+            return true;
         }, new AABB(mActor.getBody().getPosition().sub(new Vec2(50.0f, 50.0f)), mActor.getBody().getPosition().add(new Vec2(50.0f,50.0f))));
 
 

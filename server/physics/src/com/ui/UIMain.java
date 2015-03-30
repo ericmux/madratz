@@ -26,6 +26,7 @@ public class UIMain {
         TestbedPanel panel = new TestPanelJ2D(model);    // create our testbed panel
 
         JFrame testbed = new TestbedFrame(model,panel, TestbedController.UpdateBehavior.UPDATE_CALLED);
+        testbed.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         // etc
         testbed.setVisible(true);

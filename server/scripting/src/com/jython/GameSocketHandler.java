@@ -1,11 +1,14 @@
 package com.jython;
 
+import com.sun.deploy.util.StringUtils;
 import org.python.core.PyException;
 import org.python.core.PyFunction;
 import org.python.util.PythonInterpreter;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class GameSocketHandler implements Closeable {
@@ -71,18 +74,7 @@ public class GameSocketHandler implements Closeable {
     }
 
     private String readScript() {
-        StringBuilder stringBuilder = new StringBuilder();
-        int c = 0;
-        do{
-            try {
-                c = mIn.read();
-                if(c != -1) stringBuilder.append((char) c);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } while(c != -1);
-
-        return stringBuilder.toString();
+        List<String> lines = mIn.lines().collect(Collectors.toList());
+        return StringUtils.join(lines,"\n");
     }
 }

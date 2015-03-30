@@ -1,6 +1,8 @@
-package com.simulation;
+package com.behaviors;
 
 import com.gamelogic.Actor;
+import com.simulation.DecisionResult;
+import com.simulation.MadratzWorld;
 
 import java.util.concurrent.Callable;
 

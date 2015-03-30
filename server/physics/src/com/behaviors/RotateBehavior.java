@@ -1,4 +1,6 @@
-package com.simulation;
+package com.behaviors;
+
+import com.simulation.DecisionResult;
 
 public class RotateBehavior extends Behavior {
 

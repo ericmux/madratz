@@ -1,5 +1,6 @@
-package com.simulation;
+package com.behaviors;
 
+import com.simulation.DecisionResult;
 import org.jbox2d.callbacks.QueryCallback;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.PolygonShape;

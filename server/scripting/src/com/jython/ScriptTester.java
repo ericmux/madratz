@@ -21,10 +21,6 @@ public class ScriptTester {
                 gameSocketHandler.close();
             }
 
-
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }

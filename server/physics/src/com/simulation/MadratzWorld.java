@@ -1,5 +1,6 @@
 package com.simulation;
 
+import com.behaviors.Behavior;
 import com.gamelogic.Actor;
 import org.jbox2d.collision.broadphase.BroadPhaseStrategy;
 import org.jbox2d.common.Vec2;
