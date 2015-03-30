@@ -1,13 +1,11 @@
 package com.jython;
 
-import com.sun.deploy.util.StringUtils;
 import org.python.core.PyException;
 import org.python.core.PyFunction;
 import org.python.util.PythonInterpreter;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -50,7 +48,7 @@ public class GameSocketHandler implements Closeable {
         if (mInterpreter != null) mInterpreter.cleanup();
     }
 
-    public void playTurn() throws IOException, PyException {
+    public void callScript() throws IOException, PyException {
         if (mFunction == null) {
             initPython();
         }
@@ -74,7 +72,6 @@ public class GameSocketHandler implements Closeable {
     }
 
     private String readScript() {
-        List<String> lines = mIn.lines().collect(Collectors.toList());
-        return StringUtils.join(lines,"\n");
+        return mIn.lines().collect(Collectors.joining("\n"));
     }
 }

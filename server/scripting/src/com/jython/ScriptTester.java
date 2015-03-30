@@ -17,7 +17,7 @@ public class ScriptTester {
 
             GameSocketHandler gameSocketHandler = GameSocketHandler.fromSocket(connection);
             if(gameSocketHandler != null) {
-                gameSocketHandler.playTurn();
+                gameSocketHandler.callScript();
                 gameSocketHandler.close();
             }
 
