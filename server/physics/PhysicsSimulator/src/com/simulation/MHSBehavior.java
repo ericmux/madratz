@@ -1,18 +1,18 @@
 package com.simulation;
 
+import com.gamelogic.Actor;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 
-public class MHSRatCallable extends GameBodyCallable {
+public class MHSBehavior extends Behavior {
 
     private float t;
 
-    public MHSRatCallable(Body body, GameWorld gameWorld) {
-        super(body, gameWorld);
+    public MHSBehavior(Actor actor, MadratzWorld madratzWorld) {
+        super(actor, madratzWorld);
         this.t = 0.0f;
     }
 
-    public MHSRatCallable() {
+    public MHSBehavior() {
         this.t = 0.0f;
     }
 
@@ -21,7 +21,7 @@ public class MHSRatCallable extends GameBodyCallable {
     public DecisionResult call() throws Exception {
 
         Vec2 vel = new Vec2(20.0f*(float)Math.sin(2.0f*(double)t),0.0f);
-        mBody.setLinearVelocity(vel);
+        mActor.getBody().setLinearVelocity(vel);
         t += 1.0f/60.0f;
 
         return super.call();

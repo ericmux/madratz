@@ -1,21 +1,23 @@
 package com.gamelogic;
 
-import com.simulation.GameBodyCallable;
+import com.simulation.Behavior;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 import java.util.Random;
 
-public abstract class Rat {
+public abstract class Actor {
 
     protected BodyDef mBodyDef;
     protected FixtureDef mFixtureDef;
-    protected GameBodyCallable mGameBodyCallable;
 
+    protected Behavior mBehavior;
+    protected Body mBody;
 
-    public Rat() {
+    public Actor() {
 
         Random random = new Random();
 
@@ -32,7 +34,16 @@ public abstract class Rat {
 
         mBodyDef = bodyDef;
         mFixtureDef = fixtureDef;
-        mGameBodyCallable = new GameBodyCallable();
+        mBehavior = new Behavior();
+    }
+
+
+    public Body getBody() {
+        return mBody;
+    }
+
+    public void setBody(Body body) {
+        mBody = body;
     }
 
 
@@ -52,11 +63,11 @@ public abstract class Rat {
         mFixtureDef = fixtureDef;
     }
 
-    public GameBodyCallable getGameBodyCallable() {
-        return mGameBodyCallable;
+    public Behavior getBehavior() {
+        return mBehavior;
     }
 
-    public void setGameBodyCallable(GameBodyCallable gameBodyCallable) {
-        mGameBodyCallable = gameBodyCallable;
+    public void setBehavior(Behavior behavior) {
+        mBehavior = behavior;
     }
 }

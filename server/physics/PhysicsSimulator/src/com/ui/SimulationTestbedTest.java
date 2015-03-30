@@ -1,10 +1,9 @@
 package com.ui;
 
-import com.gamelogic.TacklerRat;
-import com.simulation.GameWorld;
-import com.simulation.MHSRatCallable;
+import com.gamelogic.MHSActor;
+import com.gamelogic.TacklerActor;
+import com.simulation.MadratzWorld;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.TestbedTest;
@@ -16,20 +15,11 @@ public class SimulationTestbedTest extends TestbedTest {
         setTitle("Simulation Test");
 
 
-        TacklerRat gunnerRat = new TacklerRat();
+        TacklerActor gunnerRat = new TacklerActor();
+        getWorld().registerActor(gunnerRat);
 
-        Body body = getWorld().createBody(gunnerRat.getBodyDef());
-        body.createFixture(gunnerRat.getFixtureDef());
-
-        getWorld().registerCallback(body, gunnerRat.getGameBodyCallable());
-
-
-        TacklerRat mhsRat = new TacklerRat();
-
-        body = getWorld().createBody(mhsRat.getBodyDef());
-        body.createFixture(mhsRat.getFixtureDef());
-
-        getWorld().registerCallback(body, new MHSRatCallable());
+        MHSActor mhsRat = new MHSActor();
+        getWorld().registerActor(mhsRat);
 
     }
 
@@ -40,14 +30,14 @@ public class SimulationTestbedTest extends TestbedTest {
 
 
     @Override
-    public GameWorld getWorld() {
-        return (GameWorld)super.getWorld();
+    public MadratzWorld getWorld() {
+        return (MadratzWorld)super.getWorld();
     }
 
     @Override
     public void init(World argWorld, boolean argDeserialized) {
         //hacky solution to attach a GameWorld to the UI.
-        this.m_world = new GameWorld(new Vec2());
+        this.m_world = new MadratzWorld(new Vec2());
         super.init(this.m_world, argDeserialized);
     }
 
