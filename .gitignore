@@ -1,5 +1,14 @@
+##########
+# Server #
+##########
 *.pyc
 *.class
 
 .idea/
 *.iml
+
+
+#######
+# API #
+#######
+api/node_modules
