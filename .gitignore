@@ -12,3 +12,4 @@
 # API #
 #######
 api/node_modules
+.sublime*
