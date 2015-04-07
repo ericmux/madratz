@@ -26,4 +26,5 @@ Como rodar:
 2. Only one class;
 3. This class has basic common actions (not inertial): Speed, Rotate, Basic attack (shoot);
 4. Every actor has a common basic set of attributes: HP, SP, MAX_VEL;
-5. No animations;
+5. No skills;
+6. No animations;
