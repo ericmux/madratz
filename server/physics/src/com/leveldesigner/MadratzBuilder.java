@@ -1,6 +1,7 @@
-package com.simulation;
+package com.leveldesigner;
 
 import com.gamelogic.Actor;
+import com.simulation.MadratzWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
