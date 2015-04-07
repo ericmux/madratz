@@ -23,9 +23,13 @@ public class MadratzBuilder {
     private Vec2 mGravity;
 
 
-    public MadratzBuilder(float width, float height) {
+    public MadratzBuilder() {
         mActorList = new ArrayList<>();
         mObstaclesList = new ArrayList<>();
+    }
+
+    public MadratzBuilder(float width, float height) {
+        this();
         mWidth = width;
         mHeight = height;
     }
@@ -94,7 +98,7 @@ public class MadratzBuilder {
 
         if(vertical) {
             polygonShape.setAsBox(0.5f * WALL_THICKNESS, 0.5f * mHeight);
-        } else polygonShape.setAsBox(0.5f*mWidth, 0.5f*WALL_THICKNESS);
+        } else polygonShape.setAsBox(0.5f*mWidth + 0.5f*WALL_THICKNESS, 0.5f*WALL_THICKNESS);
 
         wallFixtureDef.shape = polygonShape;
 

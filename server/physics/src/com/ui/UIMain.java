@@ -24,7 +24,7 @@ public class UIMain {
 
         // add tests
         model.addCategory("Rat Tests");
-        model.addTest(new SimulationTest(numPlayers));
+        model.addTest(new SimulationTest(numPlayers,0));
 
         // add our custom setting "My Range Setting", with a default value of 10, between 0 and 20
         model.getSettings().addSetting(new TestbedSetting("My Range Setting", TestbedSetting.SettingType.ENGINE, 10, 0, 20));

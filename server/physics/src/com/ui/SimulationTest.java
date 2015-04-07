@@ -1,30 +1,21 @@
 package com.ui;
 
-import com.behaviors.MHSBehavior;
-import com.behaviors.ShootBehavior;
-import com.gamelogic.Actor;
-import com.simulation.MadratzBuilder;
+import com.leveldesigner.Arena;
 import com.simulation.MadratzWorld;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.TestbedTest;
 
 public class SimulationTest extends TestbedTest {
 
-    private MadratzBuilder mMadratzBuilder;
+    private Arena mArena;
 
-    private int mNumberOfPlayers;
-
-    public SimulationTest(int numberOfPlayers) {
+    // Ideally, we want to get just the level ID and the number of players here, so we load and build
+    // the appropriate level through the Arena, allowing the same levels to be used with less players
+    // than expected.
+    public SimulationTest(int numberOfPlayers, int levelID) {
         super();
-        mMadratzBuilder = new MadratzBuilder(50.f,50.0f);
-        mNumberOfPlayers = numberOfPlayers;
-
-        Actor gunnerRat = new Actor(new ShootBehavior(), new Vec2(-5.0f,0.0f), 0.0f);
-        Actor mhsRat = new Actor(new MHSBehavior(), new Vec2(5.0f,0.0f), 0.0f);
-
-        mMadratzBuilder.addActor(gunnerRat).addActor(mhsRat).addWalls().setGravity(new Vec2());
+        mArena = new Arena(numberOfPlayers);
     }
 
     @Override
@@ -48,7 +39,7 @@ public class SimulationTest extends TestbedTest {
     @Override
     public void init(World argWorld, boolean argDeserialized) {
         //hacky solution to attach a GameWorld to the UI.
-        this.m_world = mMadratzBuilder.build();
+        this.m_world = mArena.buildWorld();
         super.init(this.m_world, argDeserialized);
     }
 

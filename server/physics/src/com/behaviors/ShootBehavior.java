@@ -1,11 +1,14 @@
 package com.behaviors;
 
+import com.gamelogic.Actor;
 import com.simulation.DecisionResult;
-import org.jbox2d.callbacks.QueryCallback;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
 
 public class ShootBehavior extends Behavior {
 
@@ -22,14 +25,11 @@ public class ShootBehavior extends Behavior {
 
         final Body[] foundBody = new Body[1];
 
-        mMadratzWorld.queryAABB(new QueryCallback() {
-            @Override
-            public boolean reportFixture(Fixture fixture) {
-                if(fixture.getBody() != mActor.getBody()) {
-                    foundBody[0] = fixture.getBody();
-                }
-                return true;
+        mMadratzWorld.queryAABB(fixture -> {
+            if(fixture.getBody() != mActor.getBody() && (fixture.getBody().getUserData() instanceof Actor)) {
+                foundBody[0] = fixture.getBody();
             }
+            return true;
         }, new AABB(mActor.getBody().getPosition().sub(new Vec2(50.0f, 50.0f)), mActor.getBody().getPosition().add(new Vec2(50.0f,50.0f))));
 
 
