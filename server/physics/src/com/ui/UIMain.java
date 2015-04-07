@@ -13,12 +13,18 @@ public class UIMain {
 
 
     public static void main(String[] args) {
+
+        if(args.length < 1) throw new IllegalArgumentException("Number of player for this match not provided.");
+
+        int numPlayers = Integer.parseInt(args[0]);
+        if(numPlayers < 2) throw new IllegalArgumentException("At least two players are needed for a match.");
+
+
         TestbedModel model = new TestbedModel();
 
         // add tests
         model.addCategory("Rat Tests");
-        model.addTest(new SimulationTest());
-        model.addTest(new GraphicsTest());
+        model.addTest(new SimulationTest(numPlayers));
 
         // add our custom setting "My Range Setting", with a default value of 10, between 0 and 20
         model.getSettings().addSetting(new TestbedSetting("My Range Setting", TestbedSetting.SettingType.ENGINE, 10, 0, 20));

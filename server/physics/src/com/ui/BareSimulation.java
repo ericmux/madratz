@@ -7,7 +7,10 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.World;
 
-public class BareMain {
+/**
+ * This class should allow the game's simulation without any UI.
+ */
+public class BareSimulation {
 
     private static final World WORLD = new World(new Vec2());
 

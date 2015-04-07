@@ -2,12 +2,11 @@ package com.gamelogic;
 
 import com.behaviors.Behavior;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-
-import java.util.Random;
 
 public class Actor {
 
@@ -17,14 +16,13 @@ public class Actor {
     protected Behavior mBehavior;
     protected Body mBody;
 
-    public Actor(Behavior behavior) {
-
-        Random random = new Random();
+    public Actor(Behavior behavior, Vec2 position, float angle) {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
-        bodyDef.position.set(-25 + 50*random.nextFloat(), -25 + 50*random.nextFloat());
+        bodyDef.position.set(position);
         bodyDef.allowSleep = false;
+        bodyDef.angle = angle;
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 5.0f;
@@ -37,8 +35,8 @@ public class Actor {
         mBehavior = behavior;
     }
 
-    public Actor() {
-        this(new Behavior());
+    public Actor(Vec2 position, float angle) {
+        this(new Behavior(), position, angle);
     }
 
     public Body getBody() {
