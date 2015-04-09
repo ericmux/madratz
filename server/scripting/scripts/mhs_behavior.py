@@ -7,5 +7,5 @@ t = 0.0
 
 def execute():
     global actor, t, time_step
-    actor.speedUp(math.sin(2.0*t))
+    actor.speedUp(math.sin(t))
     t = t + time_step
