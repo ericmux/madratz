@@ -10,38 +10,33 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-public class ShootBehavior extends Behavior {
+public class ShootBehavior implements Behavior {
 
 
-    private int mbullets;
+    private int mBullets;
 
     public ShootBehavior() {
-        mbullets = 0;
+        mBullets = 0;
     }
 
-
     @Override
-    public DecisionResult call() throws Exception {
-
+    public DecisionResult execute(Actor actor) {
         final Body[] foundBody = new Body[1];
 
-        mMadratzWorld.queryAABB(fixture -> {
-            if(fixture.getBody() != mActor.getBody() && (fixture.getBody().getUserData() instanceof Actor)) {
+        actor.getWorld().queryAABB(fixture -> {
+            if(fixture.getBody() != actor.getBody() && (fixture.getBody().getUserData() instanceof Actor)) {
                 foundBody[0] = fixture.getBody();
             }
             return true;
-        }, new AABB(mActor.getBody().getPosition().sub(new Vec2(50.0f, 50.0f)), mActor.getBody().getPosition().add(new Vec2(50.0f,50.0f))));
+        }, new AABB(actor.getBody().getPosition().sub(new Vec2(50.0f, 50.0f)), actor.getBody().getPosition().add(new Vec2(50.0f,50.0f))));
 
-
-        if(foundBody[0] != mActor.getBody() && foundBody[0] != null){
-
-            Vec2 p = mActor.getBody().getPosition();
-
+        if(foundBody[0] != actor.getBody() && foundBody[0] != null) {
+            Vec2 p = actor.getBody().getPosition();
             Vec2 vel = foundBody[0].getPosition().clone().sub(p);
 
-            if(vel.length() < 10.0f && mbullets < 5 && Vec2.dot(vel,mActor.getBody().getLinearVelocity()) > 0.0f){
+            if(vel.length() < 10.0f && mBullets < 5 && Vec2.dot(vel,actor.getBody().getLinearVelocity()) > 0.0f){
 
-                Vec2 bulletPos = new Vec2(p.x,p.y + mActor.getBody().getFixtureList().getShape().getRadius());
+                Vec2 bulletPos = new Vec2(p.x,p.y + actor.getBody().getFixtureList().getShape().getRadius());
                 Vec2 bulletVel = foundBody[0].getPosition().clone().sub(bulletPos);
 
                 BodyDef bodyDef = new BodyDef();
@@ -58,7 +53,7 @@ public class ShootBehavior extends Behavior {
                 fixtureDef.filter.categoryBits = 0x0;
                 fixtureDef.filter.maskBits = 0x0;
 
-                Body bullet = mMadratzWorld.createBody(bodyDef);
+                Body bullet = actor.getWorld().createBody(bodyDef);
                 bullet.createFixture(fixtureDef);
 
 
@@ -67,7 +62,7 @@ public class ShootBehavior extends Behavior {
 
                 bullet.setLinearVelocity(bulletVel);
 
-                mbullets++;
+                mBullets++;
 
             }
 
@@ -76,12 +71,12 @@ public class ShootBehavior extends Behavior {
             vel.mulLocal(5.0f);
 
 
-            mActor.getBody().setLinearVelocity(vel);
+            actor.getBody().setLinearVelocity(vel);
         }
 
 
 
 
-        return super.call();
+        return new DecisionResult(0);
     }
 }

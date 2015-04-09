@@ -19,7 +19,7 @@ public class Arena {
         mMadratzBuilder = new MadratzBuilder();
     }
 
-    public MadratzWorld buildWorld(){
+    public MadratzWorld buildWorld() {
 
         double theta = Math.PI/3;
         float L = 40.0f;
@@ -36,7 +36,5 @@ public class Arena {
         mMadratzBuilder.addWalls().setGravity(new Vec2());
 
         return mMadratzBuilder.build();
-
-
     }
 }

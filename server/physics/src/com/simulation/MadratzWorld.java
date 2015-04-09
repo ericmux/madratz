@@ -1,6 +1,5 @@
 package com.simulation;
 
-import com.behaviors.Behavior;
 import com.gamelogic.Actor;
 import org.jbox2d.collision.broadphase.BroadPhaseStrategy;
 import org.jbox2d.common.Vec2;
@@ -31,7 +30,6 @@ public class MadratzWorld extends World {
     }
 
     public void registerActor(Actor actor){
-
         if(actor == null) return;
 
         Body body = createBody(actor.getBodyDef());
@@ -40,24 +38,13 @@ public class MadratzWorld extends World {
 
         actor.setBody(body);
 
-        Behavior behavior = actor.getBehavior();
-        behavior.setMadratzWorld(this);
-        behavior.setActor(actor);
-
         mActiveActors.add(actor);
     }
 
 
     @Override
     public void step(float dt, int velocityIterations, int positionIterations) {
-
-        for(Actor actor: mActiveActors) {
-            try {
-                actor.getBehavior().call();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        mActiveActors.stream().forEach(Actor::executeBehavior);
 
         super.step(dt, velocityIterations, positionIterations);
     }

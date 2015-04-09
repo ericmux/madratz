@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MadratzBuilder {
 
-    private final float WALL_THICKNESS = 1.0f;
+    private static final float WALL_THICKNESS = 1.0f;
 
     private float mWidth;
     private float mHeight;
@@ -59,16 +59,16 @@ public class MadratzBuilder {
     public MadratzBuilder addWalls(){
 
         //left wall.
-        addWallAt(new Vec2(-0.5f*mWidth,0.0f), true);
+        addWallAt(new Vec2(-0.5f * mWidth, 0.0f), true);
 
         //right wall.
-        addWallAt(new Vec2(0.5f*mWidth,0.0f), true);
+        addWallAt(new Vec2(0.5f * mWidth, 0.0f), true);
 
         //top wall.
-        addWallAt(new Vec2(0.0f,0.5f*mHeight), false);
+        addWallAt(new Vec2(0.0f, 0.5f * mHeight), false);
 
         //bottom wall.
-        addWallAt(new Vec2(0.0f,-0.5f*mHeight), false);
+        addWallAt(new Vec2(0.0f, -0.5f * mHeight), false);
 
         return this;
     }
@@ -88,8 +88,7 @@ public class MadratzBuilder {
 
 
 
-    private void addWallAt(Vec2 position, boolean vertical){
-
+    private void addWallAt(Vec2 position, boolean vertical) {
         BodyDef wallBodyDef = new BodyDef();
         FixtureDef wallFixtureDef = new FixtureDef();
 
@@ -107,9 +106,9 @@ public class MadratzBuilder {
     }
 
 
-    private class ObstacleDef{
-        private BodyDef bodyDef;
-        private FixtureDef fixtureDef;
+    private class ObstacleDef {
+        public BodyDef bodyDef;
+        public FixtureDef fixtureDef;
 
         public ObstacleDef(BodyDef bodyDef, FixtureDef fixtureDef) {
             this.bodyDef = bodyDef;

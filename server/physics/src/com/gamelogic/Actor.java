@@ -1,12 +1,11 @@
 package com.gamelogic;
 
 import com.behaviors.Behavior;
+import com.behaviors.NopBehavior;
+import com.simulation.DecisionResult;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.*;
 
 public class Actor {
 
@@ -36,17 +35,20 @@ public class Actor {
     }
 
     public Actor(Vec2 position, float angle) {
-        this(new Behavior(), position, angle);
+        this(new NopBehavior(), position, angle);
     }
 
     public Body getBody() {
         return mBody;
     }
 
+    public World getWorld() {
+        return mBody.getWorld();
+    }
+
     public void setBody(Body body) {
         mBody = body;
     }
-
 
     public BodyDef getBodyDef() {
         return mBodyDef;
@@ -70,5 +72,9 @@ public class Actor {
 
     public void setBehavior(Behavior behavior) {
         mBehavior = behavior;
+    }
+
+    public DecisionResult executeBehavior() {
+        return mBehavior.execute(this);
     }
 }
