@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.leveldesigner.Arena;
+import com.leveldesigner.WorldLoader;
 import com.simulation.MadratzWorld;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -9,16 +9,14 @@ import org.jbox2d.testbed.framework.TestbedTest;
 public class SimulationTest extends TestbedTest {
 
     public static final float TIMESTEP = 1.0f/60.0f;
-
-    private Arena mArena;
+    private int mNumPlayers;
 
     // Ideally, we want to get just the level ID and the number of players here, so we load and build
     // the appropriate level through the Arena, allowing the same levels to be used with less players
     // than expected.
     public SimulationTest(int numberOfPlayers, int levelID) {
         super();
-        mArena = new Arena(numberOfPlayers);
-
+        mNumPlayers = numberOfPlayers;
     }
 
     @Override
@@ -42,7 +40,7 @@ public class SimulationTest extends TestbedTest {
     @Override
     public void init(World argWorld, boolean argDeserialized) {
         //hacky solution to attach a MadratzWorld to the UI.
-        this.m_world = mArena.buildWorld();
+        this.m_world = WorldLoader.buildScriptedWorld(mNumPlayers);
         super.init(this.m_world, argDeserialized);
     }
 

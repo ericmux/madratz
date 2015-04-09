@@ -2,24 +2,31 @@ package com.behavior;
 
 import com.decision.Decision;
 import com.gamelogic.Actor;
+import com.jython.ScriptHandler;
 import org.python.core.Py;
+import org.python.core.PyFunction;
 import org.python.util.PythonInterpreter;
+import wrappers.ActorWrapper;
 
 public class ScriptedBehavior implements Behavior {
 
     private final PythonInterpreter mInterpreter = new PythonInterpreter();
+    private PyFunction mFunction;
     private final String mScript;
 
-    public ScriptedBehavior(String script) {
-        mScript = script;
+    public ScriptedBehavior(String scriptPath) {
+        mScript = ScriptHandler.readScript(scriptPath);
+        mInterpreter.exec(mScript);
     }
 
     @Override
     public Decision execute(Actor actor) {
-        mInterpreter.set("m_world", Py.java2py(actor.getWorld()));
-        mInterpreter.set("m_actor", Py.java2py(actor));
+        ActorWrapper actorWrapper = new ActorWrapper(actor,new Decision());
+        mInterpreter.set("actor", Py.java2py(actorWrapper));
 
-        mInterpreter.exec(mScript);
-        return new Decision();
+        mFunction = mInterpreter.get("execute", PyFunction.class);
+        mFunction.__call__();
+
+        return actorWrapper.getDecision();
     }
 }
