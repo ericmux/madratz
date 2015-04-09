@@ -1,7 +1,7 @@
 package com.behaviors;
 
+import com.decision.DecisionResult;
 import com.gamelogic.Actor;
-import com.simulation.DecisionResult;
 import org.python.core.Py;
 import org.python.util.PythonInterpreter;
 
@@ -20,6 +20,6 @@ public class ScriptedBehavior implements Behavior {
         mInterpreter.set("m_actor", Py.java2py(actor));
 
         mInterpreter.exec(mScript);
-        return new DecisionResult(0);
+        return new DecisionResult();
     }
 }

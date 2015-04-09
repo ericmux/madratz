@@ -34,8 +34,8 @@ public class MadratzWorld extends World {
 
         Body body = createBody(actor.getBodyDef());
         body.createFixture(actor.getFixtureDef());
-        body.setUserData(actor);
 
+        body.setUserData(actor);
         actor.setBody(body);
 
         mActiveActors.add(actor);

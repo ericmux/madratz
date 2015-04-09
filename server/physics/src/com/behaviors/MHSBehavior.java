@@ -1,7 +1,7 @@
 package com.behaviors;
 
+import com.decision.DecisionResult;
 import com.gamelogic.Actor;
-import com.simulation.DecisionResult;
 import org.jbox2d.common.Vec2;
 
 public class MHSBehavior implements Behavior {
@@ -18,6 +18,6 @@ public class MHSBehavior implements Behavior {
         actor.getBody().setLinearVelocity(vel);
         t += 1.0f/60.0f;
 
-        return new DecisionResult(0);
+        return new DecisionResult();
     }
 }

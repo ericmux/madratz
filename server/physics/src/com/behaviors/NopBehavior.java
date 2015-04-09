@@ -1,11 +1,11 @@
 package com.behaviors;
 
+import com.decision.DecisionResult;
 import com.gamelogic.Actor;
-import com.simulation.DecisionResult;
 
 public class NopBehavior implements Behavior {
     @Override
     public DecisionResult execute(Actor actor) {
-        return new DecisionResult(0);
+        return new DecisionResult();
     }
 }

@@ -1,7 +1,7 @@
 package com.behaviors;
 
+import com.decision.DecisionResult;
 import com.gamelogic.Actor;
-import com.simulation.DecisionResult;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -34,6 +34,6 @@ public class TackleBehavior implements Behavior {
         }
 
 
-        return new DecisionResult(0);
+        return new DecisionResult();
     }
 }

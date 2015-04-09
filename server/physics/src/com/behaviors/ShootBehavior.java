@@ -1,7 +1,7 @@
 package com.behaviors;
 
 import com.gamelogic.Actor;
-import com.simulation.DecisionResult;
+import com.decision.DecisionResult;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -77,6 +77,6 @@ public class ShootBehavior implements Behavior {
 
 
 
-        return new DecisionResult(0);
+        return new DecisionResult();
     }
 }

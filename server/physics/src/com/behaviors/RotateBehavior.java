@@ -1,7 +1,7 @@
 package com.behaviors;
 
+import com.decision.DecisionResult;
 import com.gamelogic.Actor;
-import com.simulation.DecisionResult;
 
 public class RotateBehavior implements Behavior {
 
@@ -13,6 +13,6 @@ public class RotateBehavior implements Behavior {
         float w = actor.getBody().getAngularVelocity() + 0.2f;
         actor.getBody().setAngularVelocity(w);
 
-        return new DecisionResult(0);
+        return new DecisionResult();
     }
 }
