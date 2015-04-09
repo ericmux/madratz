@@ -1,5 +1,14 @@
 package com.decision;
 
-public interface ActionRequest {
-    void handle();
+import com.gamelogic.Actor;
+
+public abstract class ActionRequest {
+
+    protected Actor mActor;
+
+    public ActionRequest(Actor actor) {
+        mActor = actor;
+    }
+
+    public abstract void handle();
 }

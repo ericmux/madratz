@@ -1,16 +1,17 @@
 package com.gamelogic;
 
-import com.behaviors.Behavior;
-import com.behaviors.NopBehavior;
-import com.decision.DecisionResult;
+import com.behavior.Behavior;
+import com.behavior.NopBehavior;
+import com.decision.Decision;
+import com.simulation.MadratzWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
 public class Actor {
 
-    public static final float MAX_LINEAR_SPEED = 20.0f;
-    public static final float MAX_ANGULAR_SPEED = 20.0f;
+    public static final float MAX_LINEAR_SPEED = 10.0f;
+    public static final float MAX_ANGULAR_SPEED = 15.0f;
 
     protected BodyDef mBodyDef;
     protected FixtureDef mFixtureDef;
@@ -49,6 +50,10 @@ public class Actor {
         this(new NopBehavior(), position, angle);
     }
 
+    public Decision executeBehavior() {
+        return mBehavior.execute(this);
+    }
+
     public float getWidth() {
         return mWidth;
     }
@@ -57,8 +62,8 @@ public class Actor {
         return mBody;
     }
 
-    public World getWorld() {
-        return mBody.getWorld();
+    public MadratzWorld getWorld() {
+        return (MadratzWorld)mBody.getWorld();
     }
 
     public void setBody(Body body) {
@@ -87,9 +92,5 @@ public class Actor {
 
     public void setBehavior(Behavior behavior) {
         mBehavior = behavior;
-    }
-
-    public DecisionResult executeBehavior() {
-        return mBehavior.execute(this);
     }
 }

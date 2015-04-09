@@ -8,6 +8,8 @@ import org.jbox2d.testbed.framework.TestbedTest;
 
 public class SimulationTest extends TestbedTest {
 
+    public static final float TIMESTEP = 1.0f/60.0f;
+
     private Arena mArena;
 
     // Ideally, we want to get just the level ID and the number of players here, so we load and build
@@ -16,6 +18,7 @@ public class SimulationTest extends TestbedTest {
     public SimulationTest(int numberOfPlayers, int levelID) {
         super();
         mArena = new Arena(numberOfPlayers);
+
     }
 
     @Override
@@ -38,7 +41,7 @@ public class SimulationTest extends TestbedTest {
 
     @Override
     public void init(World argWorld, boolean argDeserialized) {
-        //hacky solution to attach a GameWorld to the UI.
+        //hacky solution to attach a MadratzWorld to the UI.
         this.m_world = mArena.buildWorld();
         super.init(this.m_world, argDeserialized);
     }

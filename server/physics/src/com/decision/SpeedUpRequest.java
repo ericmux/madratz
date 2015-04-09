@@ -1,6 +1,7 @@
 package com.decision;
 
 import com.gamelogic.Actor;
+import org.jbox2d.common.Vec2;
 
 public class SpeedUpRequest extends MoveRequest {
 
@@ -11,7 +12,8 @@ public class SpeedUpRequest extends MoveRequest {
 
     @Override
     public void handle() {
-        mActor.getBody().getLinearVelocity().normalize();
-        mActor.getBody().getLinearVelocity().mulLocal(Actor.MAX_LINEAR_SPEED*mIntensity);
+        Vec2 vel = mActor.getBody().getLinearVelocity();
+        vel.set(mActor.getBody().getWorldVector(new Vec2(1.0f,0.0f)))
+                                .mulLocal(Actor.MAX_LINEAR_SPEED*mIntensity);
     }
 }

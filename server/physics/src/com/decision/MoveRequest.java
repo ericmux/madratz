@@ -3,12 +3,11 @@ package com.decision;
 import com.gamelogic.Actor;
 
 
-public abstract class MoveRequest implements ActionRequest{
-    protected Actor mActor;
+public abstract class MoveRequest extends ActionRequest {
     protected float mIntensity;
 
     public MoveRequest(Actor actor, float intensity) {
-        mActor = actor;
+        super(actor);
         mIntensity = intensity;
     }
 

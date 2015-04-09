@@ -1,13 +1,14 @@
 package com.simulation;
 
+import com.decision.Decision;
 import com.gamelogic.Actor;
-import org.jbox2d.collision.broadphase.BroadPhaseStrategy;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.pooling.IWorldPool;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MadratzWorld extends World {
 
@@ -16,16 +17,6 @@ public class MadratzWorld extends World {
 
     public MadratzWorld(Vec2 gravity) {
         super(gravity);
-        mActiveActors = new HashSet<>();
-    }
-
-    public MadratzWorld(Vec2 gravity, IWorldPool pool) {
-        super(gravity, pool);
-        mActiveActors = new HashSet<>();
-    }
-
-    public MadratzWorld(Vec2 gravity, IWorldPool argPool, BroadPhaseStrategy broadPhaseStrategy) {
-        super(gravity, argPool, broadPhaseStrategy);
         mActiveActors = new HashSet<>();
     }
 
@@ -44,7 +35,13 @@ public class MadratzWorld extends World {
 
     @Override
     public void step(float dt, int velocityIterations, int positionIterations) {
-        mActiveActors.stream().forEach(Actor::executeBehavior);
+
+        List<Decision> decisions = mActiveActors.stream()
+                                                    .parallel()
+                                                    .map(Actor::executeBehavior)
+                                                    .collect(Collectors.toList());
+        //need to split up since some action requests might modify the active actors stream.
+        decisions.forEach(Decision::apply);
 
         super.step(dt, velocityIterations, positionIterations);
     }
