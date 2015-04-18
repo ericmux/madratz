@@ -17,14 +17,14 @@ public class ScriptedBehavior implements Behavior {
     public ScriptedBehavior(String scriptPath) {
         mScript = ScriptHandler.readScript(scriptPath);
         mInterpreter.exec(mScript);
+        mFunction = mInterpreter.get("execute",PyFunction.class);
     }
 
     @Override
     public Decision execute(Actor actor) {
         ActorWrapper actorWrapper = new ActorWrapper(actor,new Decision());
         mInterpreter.set("actor", Py.java2py(actorWrapper));
-
-        mFunction = mInterpreter.get("execute", PyFunction.class);
+        
         mFunction.__call__();
 
         return actorWrapper.getDecision();

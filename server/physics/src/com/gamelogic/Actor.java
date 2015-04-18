@@ -21,6 +21,8 @@ public class Actor {
 
     protected float mWidth;
 
+    protected float mHP;
+
     protected Actor(Behavior behavior) {
         mBehavior = behavior;
     }
@@ -34,6 +36,7 @@ public class Actor {
         bodyDef.angle = angle;
 
         mWidth = 2*1.0f;
+        mHP = 100.0f;
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 5.0f;
@@ -54,8 +57,22 @@ public class Actor {
         return mBehavior.execute(this);
     }
 
+    public void handleCollision(Actor actor) {}
+
     public float getWidth() {
         return mWidth;
+    }
+
+    public float getHP() {
+        return mHP;
+    }
+
+    public void addDamage(float damage){
+        mHP -= damage;
+    }
+
+    public void healDamage(float damage){
+        mHP += damage;
     }
 
     public Body getBody() {

@@ -1,9 +1,9 @@
 package com.ui;
 
+import com.gamelogic.CollisionHandler;
 import com.leveldesigner.WorldLoader;
 import com.simulation.MadratzWorld;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.TestbedTest;
 
 public class SimulationTest extends TestbedTest {
@@ -21,7 +21,7 @@ public class SimulationTest extends TestbedTest {
 
     @Override
     public void initTest(boolean b) {
-
+        this.m_world.setContactListener(new CollisionHandler());
         setTitle("Simulation Test");
 
     }
@@ -42,16 +42,5 @@ public class SimulationTest extends TestbedTest {
         //hacky solution to attach a MadratzWorld to the UI.
         this.m_world = WorldLoader.buildScriptedWorld(mNumPlayers);
         super.init(this.m_world, argDeserialized);
-    }
-
-
-    @Override
-    public void endContact(Contact contact) {
-        super.endContact(contact);
-    }
-
-    @Override
-    public void beginContact(Contact contact) {
-        super.beginContact(contact);
     }
 }

@@ -8,16 +8,19 @@ import org.jbox2d.dynamics.World;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class MadratzWorld extends World {
 
     private HashSet<Actor> mActiveActors;
+    private Stack<Actor> mDestroyedActors;
 
 
     public MadratzWorld(Vec2 gravity) {
         super(gravity);
         mActiveActors = new HashSet<>();
+        mDestroyedActors = new Stack<>();
     }
 
     public void registerActor(Actor actor){
@@ -32,6 +35,12 @@ public class MadratzWorld extends World {
         mActiveActors.add(actor);
     }
 
+    public void destroyActor(Actor actor){
+        if(actor == null || mDestroyedActors.contains(actor)) return;
+
+        mDestroyedActors.add(actor);
+    }
+
 
     @Override
     public void step(float dt, int velocityIterations, int positionIterations) {
@@ -44,8 +53,15 @@ public class MadratzWorld extends World {
         decisions.forEach(Decision::apply);
 
         super.step(dt, velocityIterations, positionIterations);
-    }
 
+        //clean up dead bodies.
+        while(!mDestroyedActors.empty()){
+            Actor actor = mDestroyedActors.pop();
+
+            destroyBody(actor.getBody());
+            mActiveActors.remove(actor);
+        }
+    }
 
 
 

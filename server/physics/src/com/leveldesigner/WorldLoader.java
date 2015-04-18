@@ -43,7 +43,7 @@ public class WorldLoader {
             Vec2 p = new Vec2((float)-Math.cos(theta*i),(float)Math.sin(theta*i)).mulLocal(L);
             float angle = -(float)theta*i;
 
-            madratzBuilder.addActor(new Actor(new ScriptedBehavior("mhs_behavior.py"), p, angle));
+            madratzBuilder.addActor(new Actor(new ScriptedBehavior("circle_behavior.py"), p, angle));
         }
 
         madratzBuilder.addWalls().setGravity(new Vec2());
