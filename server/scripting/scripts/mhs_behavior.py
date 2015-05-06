@@ -6,6 +6,7 @@ actor = None
 t = 0.0
 
 def execute():
-    global actor, t, time_step
+    global t
     actor.speedUp(math.sin(t))
-    t = t + time_step
+    actor.rotate(0.01)
+    t += time_step
