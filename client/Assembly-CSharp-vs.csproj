@@ -46,9 +46,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BattleDirectorController.cs" />
+     <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\PlayerData.cs" />
      <Compile Include="Assets\Scripts\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\TimerController.cs" />
      <None Include="Assets\Files\player1.txt" />
+     <None Include="Assets\Fonts\JosefinSans\OFL.txt" />
      <None Include="Assets\Files\player2.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Application/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

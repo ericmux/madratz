@@ -29,6 +29,9 @@ class Main {
 				// Always wrap FileWriter in BufferredWriter
 				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
+				// Write number of lines in the first line
+				bufferedWriter.write(MAX + "\n");
+
 				double x, z;
 				for (int i = 0; i < MAX; i++) {
 					switch (behaviourType) {

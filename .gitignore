@@ -13,3 +13,13 @@
 #######
 api/node_modules
 .sublime*
+
+##########
+# Client #
+##########
+client/Temp
+client/Library
+client/obj
+
+*.*proj
+*.sln
