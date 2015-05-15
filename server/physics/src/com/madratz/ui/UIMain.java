@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.util.Random;
 
 public class UIMain {
 
@@ -22,9 +23,11 @@ public class UIMain {
 
         TestbedModel model = new TestbedModel();
 
+        Random rand = new Random();
+
         // add tests
         model.addCategory("Rat Tests");
-        model.addTest(new SimulationTest(numPlayers,0));
+        model.addTest(new SimulationTest(numPlayers,0,Math.abs(rand.nextLong())));
 
         // add our custom setting "My Range Setting", with a default value of 10, between 0 and 20
         model.getSettings().addSetting(new TestbedSetting("My Range Setting", TestbedSetting.SettingType.ENGINE, 10, 0, 20));

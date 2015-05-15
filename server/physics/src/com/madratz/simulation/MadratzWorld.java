@@ -13,14 +13,17 @@ import java.util.stream.Collectors;
 
 public class MadratzWorld extends World {
 
+    private long mMatchID;
+
     private HashSet<Actor> mActiveActors;
     private Stack<Actor> mDestroyedActors;
 
 
-    public MadratzWorld(Vec2 gravity) {
+    public MadratzWorld(Vec2 gravity, long matchID) {
         super(gravity);
         mActiveActors = new HashSet<>();
         mDestroyedActors = new Stack<>();
+        mMatchID = matchID;
     }
 
     public void registerActor(Actor actor){

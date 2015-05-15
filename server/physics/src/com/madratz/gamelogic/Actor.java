@@ -20,7 +20,6 @@ public class Actor {
     protected Body mBody;
 
     protected float mWidth;
-
     protected float mHP;
 
     protected Actor(Behavior behavior) {

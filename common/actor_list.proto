@@ -1,0 +1,20 @@
+package serialization;
+
+option java_package = "com.madratz.serialization";
+
+message Position {
+  optional float x = 1;
+  optional float y = 2;
+  optional float angle = 3;
+}
+
+message Actor {
+  optional int32 id = 1;
+  optional Position position = 2; //position of center of mass.
+  optional float hp = 3;
+  optional float width = 4;
+}
+
+message Actors {
+  repeated Actor actor = 1;
+}

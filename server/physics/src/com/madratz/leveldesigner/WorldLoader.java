@@ -12,12 +12,13 @@ import org.jbox2d.common.Vec2;
  */
 public class WorldLoader {
 
-    public static MadratzWorld buildWorld(int numberOfPlayers) {
+    public static MadratzWorld buildWorld(int numberOfPlayers, long matchID) {
 
         double theta = Math.PI/3;
         float L = 40.0f;
 
         MadratzBuilder madratzBuilder = new MadratzBuilder(110.f,90.0f);
+        madratzBuilder.setMatchID(matchID);
 
         for(int i = 0; i < numberOfPlayers; i++){
             Vec2 p = new Vec2((float)-Math.cos(theta*i),(float)Math.sin(theta*i)).mulLocal(L);
@@ -32,12 +33,13 @@ public class WorldLoader {
     }
 
 
-    public static MadratzWorld buildScriptedWorld(int numberOfPlayers){
+    public static MadratzWorld buildScriptedWorld(int numberOfPlayers, long matchID){
 
         double theta = Math.PI/3;
         float L = 40.0f;
 
         MadratzBuilder madratzBuilder = new MadratzBuilder(110.0f,90.0f);
+        madratzBuilder.setMatchID(matchID);
 
         for(int i = 0; i < numberOfPlayers; i++){
             Vec2 p = new Vec2((float)-Math.cos(theta*i),(float)Math.sin(theta*i)).mulLocal(L);
