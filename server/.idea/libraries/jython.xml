@@ -3,7 +3,9 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/external/jython.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="http://www.jython.org/javadoc/" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>

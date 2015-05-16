@@ -1,4 +1,4 @@
-package com.madratz.wrappers;
+package com.madratz.behavior.wrappers;
 
 import com.madratz.decision.Decision;
 import com.madratz.decision.RotateRequest;

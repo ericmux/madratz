@@ -13,8 +13,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="physics" />
-    <orderEntry type="library" name="jython" level="project" />
+    <orderEntry type="library" exported="" name="jython" level="project" />
     <orderEntry type="library" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="module" module-name="testing" scope="TEST" />
   </component>
