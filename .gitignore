@@ -36,3 +36,9 @@ client/obj
 
 *.*proj
 *.sln
+
+
+##########
+# Protos #
+##########
+server/physics/src/com/madratz/serialization/protos/*
