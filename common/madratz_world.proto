@@ -1,9 +1,0 @@
-package serialization;
-
-option java_package = "com.madratz.serialization";
-
-import "actor_list.proto";
-
-message World {
-  optional Actors actor = 1;
-}
