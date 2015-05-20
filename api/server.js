@@ -9,6 +9,7 @@ var dbConfig   = require('./app/dbconfig');
 
 // Models
 var Player = require('./app/models/player');
+var Script = require('./app/models/script');
 
 // Global Definitions
 var port = process.env.PORT || 8080;
@@ -80,6 +81,94 @@ router.route('/player/:player_id')
 				return res.send();
 
 			return res.json({ message: 'Succesfully deleted'});
+		});
+	});
+
+router.route('/player/:player_id/script')
+	.post(function(req, res) {
+
+		Player.findById(req.params.player_id, function(err, player) {
+			if(err)
+				return res.send(err);
+
+			var title = req.body.title;
+			var code = req.body.code;
+			
+			if(typeof title === "undefined")
+				return res.json({error: "Undefined title."});
+
+			if(typeof code === "undefined")
+				return res.json({error: "Undefined code."});
+
+			var script = new Script({_creator: player._id,
+				creatorName: player.name,
+				title: title, 
+				code: code, 
+				date: new Date()
+			});
+
+			return script.save(function(err) {
+				if(err)
+					return res.send(err);
+
+				return res.json({message: 'Script created: ' + title});
+			});
+		});
+	})
+	.get(function(req, res) {
+		Player.findById(req.params.player_id, function(err, player) {
+			if(err)
+				return res.send(err);
+			Script.find({'_creator': req.params.player_id}, function(err, script) {
+				if(err)
+					return res.send(err);
+				return res.json(script);
+			});
+		});
+	});
+
+router.route('/player/:player_id/script/:script_id')
+	.get(function(req, res) {
+		Player.findById(req.params.player_id, function(err, player) {
+			if(err)
+				return res.send(err);
+
+			Script.findOne({'_id': req.params.script_id}, function(err, script) {
+			//Player.find({'scripts._id': req.params.script_id}, function(err, script) {
+				if(err)
+					return res.send(err);
+				return res.json(script);
+			});
+		});
+	})
+	.put(function(req, res) {
+		Player.findById(req.params.player_id, function(err, player) {
+			if(err)
+				return res.send(err);
+
+			Script.findOne({'_id': req.params.script_id}, function(err, script) {
+				if(err)
+					return res.send(err);
+
+				script.title = req.body.title;
+				script.code = req.body.code;
+				script.date = new Date();
+
+				return script.save(function(err) {
+					if(err)
+						return res.send(err);
+
+					return res.json({message: "Script " + script.title + " updated."});
+				});
+			});
+		});
+	})
+	.delete(function(req, res) {
+		Script.remove({ '_id': req.params.script_id }, function(err, script) {
+			if(err)
+				return res.send();
+
+			return res.json({ message: 'Script succesfully deleted'});
 		});
 	});
 

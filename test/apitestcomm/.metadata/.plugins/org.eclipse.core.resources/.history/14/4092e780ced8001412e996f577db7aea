@@ -1,0 +1,9 @@
+package apitest;
+
+import dnode.Server;
+import dnode.netty.NettyServer;
+
+
+public class Test {
+	private final Server server = new NettyServer(6060);
+}

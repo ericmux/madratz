@@ -1,0 +1,5 @@
+INDEX VERSION 1.127+C:\dev\madratz\test\apitestcomm\.metadata\.plugins\org.eclipse.jdt.core
+3490689713.index
+935295579.index
+525475231.index
+743556956.index
