@@ -6,7 +6,7 @@ import com.madratz.jython.ScriptHandler;
 import org.python.core.Py;
 import org.python.core.PyFunction;
 import org.python.util.PythonInterpreter;
-import com.madratz.wrappers.ActorWrapper;
+import com.madratz.behavior.wrappers.ActorWrapper;
 
 public class ScriptedBehavior implements Behavior {
 
