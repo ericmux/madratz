@@ -22,8 +22,6 @@ public class MadratzBuilder {
     private List<ObstacleDef>  mObstaclesList;
 
     private Vec2 mGravity;
-    private long mMatchID;
-
 
     public MadratzBuilder() {
         mActorList = new ArrayList<>();
@@ -34,11 +32,6 @@ public class MadratzBuilder {
         this();
         mWidth = width;
         mHeight = height;
-    }
-
-    public MadratzBuilder setMatchID(long matchID){
-        mMatchID = matchID;
-        return this;
     }
 
     public MadratzBuilder addActor(Actor actor){
@@ -80,7 +73,7 @@ public class MadratzBuilder {
     }
 
     public MadratzWorld build(){
-        MadratzWorld madWorld = new MadratzWorld(mGravity, mMatchID);
+        MadratzWorld madWorld = new MadratzWorld(mGravity);
 
         mObstaclesList.stream().forEach(obstacleDef -> {
             Body body = madWorld.createBody(obstacleDef.bodyDef);

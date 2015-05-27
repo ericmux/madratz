@@ -2,17 +2,18 @@ include "world.thrift"
 
 namespace java com.madratz.service
 
-struct Player {
+struct PlayerInfo {
   1: i64 id;
   2: string script;
 }
 
 struct MatchParams {
-  1: list<Player> players;
+  1: list<PlayerInfo> players;
 }
 
 struct MatchResult {
   1: i64 winnerId;
+  2: double elapsedTimeSec;
 }
 
 service SimulationService {

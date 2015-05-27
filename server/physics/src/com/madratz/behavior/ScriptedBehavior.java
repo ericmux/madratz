@@ -3,7 +3,6 @@ package com.madratz.behavior;
 import com.madratz.behavior.wrappers.ActorWrapper;
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
-import com.madratz.jython.ScriptHandler;
 import com.madratz.security.MadratzSecurityManager;
 import com.madratz.security.Privileged;
 import org.python.core.PyFunction;
@@ -17,8 +16,8 @@ public class ScriptedBehavior implements Behavior {
     private PythonInterpreter mInterpreter;
     private PyFunction mFunction;
 
-    public ScriptedBehavior(String scriptPath) {
-        mScript = ScriptHandler.readScript(scriptPath);
+    public ScriptedBehavior(String script) {
+        mScript = script;
     }
 
     @Override

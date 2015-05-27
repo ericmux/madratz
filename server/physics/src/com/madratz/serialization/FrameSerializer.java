@@ -1,9 +1,10 @@
 package com.madratz.serialization;
 
 import com.madratz.simulation.MadratzWorld;
-import org.jbox2d.serialization.pb.PbSerializer;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -12,11 +13,22 @@ public class FrameSerializer {
     private static final String SNAPSHOTS_FOLDER = "snapshots/";
 
     private Path mScriptsPath;
-    private PbSerializer mSerializer;
 
-    public FrameSerializer() throws IOException {
-        mSerializer = new PbSerializer();
-        mScriptsPath = Paths.get(SNAPSHOTS_FOLDER);
+    private PrintStream mInputStream;
+    private FileInputStream mOutputStream;
+
+    public static void main(String[] args) {
+        FrameSerializer serializer;
+        try {
+            serializer = new FrameSerializer(12);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public FrameSerializer(long matchID) throws IOException {
+        mScriptsPath = Paths.get(SNAPSHOTS_FOLDER).resolve(Long.toString(matchID));
     }
 
     public void eraseLogs() throws IOException {

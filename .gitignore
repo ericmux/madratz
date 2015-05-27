@@ -49,3 +49,9 @@ server/thrift/gen/
 *.sublime-project
 *.sublime-workspace
 
+###########
+# Madratz #
+###########
+
+server/out/
+server/service/META-INF/

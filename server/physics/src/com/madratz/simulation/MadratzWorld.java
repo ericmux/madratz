@@ -2,6 +2,8 @@ package com.madratz.simulation;
 
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
+import com.madratz.gamelogic.Player;
+import com.madratz.ui.SimulationTest;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
@@ -13,18 +15,18 @@ import java.util.stream.Collectors;
 
 public class MadratzWorld extends World {
 
-    private long mMatchID;
-
     private HashSet<Actor> mActiveActors;
     private Stack<Actor> mDestroyedActors;
 
+    private int mFrameID;
 
-    public MadratzWorld(Vec2 gravity, long matchID) {
+    public MadratzWorld(Vec2 gravity) {
         super(gravity);
         mActiveActors = new HashSet<>();
         mDestroyedActors = new Stack<>();
-        mMatchID = matchID;
+        mFrameID = 0;
     }
+
 
     public void registerActor(Actor actor){
         if(actor == null) return;
@@ -43,7 +45,6 @@ public class MadratzWorld extends World {
 
         mDestroyedActors.add(actor);
     }
-
 
     @Override
     public void step(float dt, int velocityIterations, int positionIterations) {
@@ -64,9 +65,21 @@ public class MadratzWorld extends World {
             destroyBody(actor.getBody());
             mActiveActors.remove(actor);
         }
+
+        mFrameID++;
     }
 
+    public List<? extends Actor> getPlayers() {
+        return mActiveActors.stream().filter(p -> p instanceof Player).collect(Collectors.toList());
+    }
 
+    public int getFrameID() {
+        return mFrameID;
+    }
+
+    public float getElapsedTime(){
+        return mFrameID*SimulationTest.TIMESTEP;
+    }
 
 
 

@@ -9,6 +9,8 @@ import org.jbox2d.testbed.framework.TestbedTest;
 public class SimulationTest extends TestbedTest {
 
     public static final float TIMESTEP = 1.0f/60.0f;
+    public static final int VEL_ITERATIONS = 8;
+    public static final int POS_ITERATIONS = 3;
     private int mNumPlayers;
     private long mMatchID;
 
@@ -42,7 +44,7 @@ public class SimulationTest extends TestbedTest {
     @Override
     public void init(World argWorld, boolean argDeserialized) {
         //hacky solution to attach a MadratzWorld to the UI.
-        this.m_world = WorldLoader.buildScriptedWorld(mNumPlayers, mMatchID);
+        this.m_world = WorldLoader.buildScriptedWorld(mNumPlayers);
         super.init(this.m_world, argDeserialized);
     }
 }

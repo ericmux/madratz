@@ -2,7 +2,7 @@ package com.madratz.server;
 
 import com.madratz.service.MatchParams;
 import com.madratz.service.MatchResult;
-import com.madratz.service.Player;
+import com.madratz.service.PlayerInfo;
 import com.madratz.service.SimulationService;
 import com.madratz.simulation.MadratzMatch;
 import org.apache.thrift.TApplicationException;
@@ -49,8 +49,10 @@ public class SimulationServiceImpl implements SimulationService.Iface {
             throw new TApplicationException("Match not finished yet!");
         }
         LOG.debug("Match %d result queried.", matchId);
-        Player winner = getMatch(matchId).getWinner();
-        return new MatchResult(winner != null ? winner.getId() : -1);
+        MadratzMatch madratzMatch = getMatch(matchId);
+        PlayerInfo winner = madratzMatch.getWinner();
+        float elapsedTimeSec = madratzMatch.getElapsedTime();
+        return new MatchResult(winner != null ? winner.getId() : -1, elapsedTimeSec);
     }
 
     private MadratzMatch getMatch(long matchId) throws TApplicationException {
