@@ -1,17 +1,15 @@
 #!/bin/bash
 
-files=""
-for proto in  *.proto
+if [ -e ../server/protos/gen ]
+then
+  chmod -R u+w ../server/protos/gen
+  rm -rf ../server/protos/gen
+fi
+mkdir ../server/protos/gen
+
+for thrift in  *.thrift
 do
-	files+=" "$proto
+  thrift --gen java -out ../server/protos/gen $thrift
 done
 
-if [ -e ../server/protos/src ]
-then
-	chmod -R u+w ../server/protos/src
-	rm -rf ../server/protos/src
-fi
-mkdir ../server/protos/src
-
-protoc --java_out=../server/protos/src $files
-chmod -R -w ../server/protos/src/*
+chmod -R -w ../server/protos/gen/*

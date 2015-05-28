@@ -39,13 +39,13 @@ client/obj
 
 
 ##########
-# Protos #
+# Thrift #
 ##########
-server/physics/src/com/madratz/serialization/protos/*
-server/protos/src/
+server/thrift/gen/
 
 ###########
 # Sublime #
 ###########
 *.sublime-project
 *.sublime-workspace
+

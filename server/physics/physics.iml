@@ -12,7 +12,5 @@
     <orderEntry type="library" exported="" name="jbox2d" level="project" />
     <orderEntry type="library" name="slf4j" level="project" />
     <orderEntry type="library" name="jython" level="project" />
-    <orderEntry type="module" module-name="protos" />
   </component>
 </module>
-

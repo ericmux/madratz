@@ -1,0 +1,3 @@
+To generate the Thrift classes go to the ../common folder and execute thrift to generate the classes for all
+files under the gen/ folder of this module. Alternatively call the makep_java.sh bash script and it will generate all
+the classes for you in the correct location (must cd to ../common and run script from there).
