@@ -12,6 +12,7 @@
     "dependencies": {
         "express": "~4.12.3",
         "mongoose": "~4.0.1",
-        "body-parser": "~1.12.2"
+        "body-parser": "~1.12.2",
+        "validator": "~3.39.0"
     }
 }
