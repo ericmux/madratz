@@ -3,6 +3,8 @@ var express    = require('express');
 var app        = express();
 var mongoose   = require('mongoose');
 var bodyParser = require('body-parser');
+var thrift 	   = require('thrift');
+var tprotocol  = require('./node_modules/thrift/lib/thrift/protocol.js');
 
 // Config
 var dbConfig   = require('./app/dbconfig');
@@ -20,6 +22,21 @@ app.use(bodyParser.json());
 // Database
 mongoose.connect(dbConfig.getURL());
 
+// Thrift
+var SimulationServices = require('./thrift/SimulationService.js');
+var ttypes             = require('./thrift/simulation_service_types');
+
+var connection         = thrift.createConnection('54.207.1.36', 1199, {protocol: tprotocol.TCompactProtocol});
+var client             = thrift.createClient(SimulationServices, connection);
+
+var mp = new ttypes.MatchParams({'players': [new ttypes.Player({'id': 1, 'script': 'lala'}), new ttypes.Player({'id': 2, 'script': 'lolo'})]});
+
+var matchId;
+var check;
+
+connection.on('error', function(err) {
+  console.error(err);
+});
 // Routing Requests
 var router = express.Router();
 
@@ -31,6 +48,47 @@ router.use(function(req, res, next) {
 router.get('/', function(req, res) {
     return res.json({ message: 'hello world!' });
 });
+
+var check;
+router.route('/creategame')
+	.post(function(req, res) {
+		console.log('Creating new game...');
+
+		client.startMatch(mp, function(err, result) {
+		  	if (err) {
+		  		console.log(err);
+		    	return res.json({error: err});
+		  	} else {
+		    	matchId = result;
+		    	console.log("Match created #" + result);
+		    	check = setInterval(function() {
+				  client.isMatchFinished(matchId, function(err, finished) {
+				    if (err) {
+				      console.error(err);
+				    } else {
+				      console.log("Verifying match status: " + finished);
+				      if(finished == true)
+				      {
+				        clearInterval(check);
+				        setTimeout(function() {
+				        	client.result(matchId, function(err, result) {
+					          if(err) {
+					            console.error(err);
+					          }  else {
+					            console.log('Match #' + matchId + ' winnerId #' + result.winnerId);
+					          }
+				        	});
+				        }, 1000);
+				      }
+				    }
+				  });
+				}, 1000);
+		  	}
+		});
+		return res.json({message: 'Game created!'});
+	});
+
+
 
 router.route('/player/:player_id/script')
 	.post(function(req, res) {
@@ -135,4 +193,27 @@ app.use('/api', router);
 
 // Run application
 app.listen(port);
-console.log('Madratz API listening at port ' + port + '.');
+console.log('Madratz API listening on port ' + port + '.');
+
+var thrift = require('thrift');
+
+var UserStorage = require('./thrift/UserStorage.js'),
+    ttypes = require('./thrift/user_types');
+
+var users = {};
+
+var server = thrift.createServer(UserStorage, {
+	store: function(user, result) {
+		console.log("server stored:", user.uid);
+		users[user.uid] = user;
+		result(null);
+	},
+
+	retrieve: function(uid, result) {
+		console.log("server retrieved:", uid);
+		result(null, users[uid]);
+	},
+});
+
+server.listen(9090);
+console.log("Thrift Server listening on 9090");
