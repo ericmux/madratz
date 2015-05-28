@@ -1,15 +1,15 @@
 #!/bin/bash
 
-if [ -e ../server/protos/gen ]
+if [ -e ../server/thrift/gen ]
 then
-  chmod -R u+w ../server/protos/gen
-  rm -rf ../server/protos/gen
+  chmod -R u+w ../server/thrift/gen
+  rm -rf ../server/thrift/gen
 fi
-mkdir ../server/protos/gen
+mkdir ../server/thrift/gen
 
 for thrift in  *.thrift
 do
-  thrift --gen java -out ../server/protos/gen $thrift
+  thrift --gen java -out ../server/thrift/gen $thrift
 done
 
-chmod -R -w ../server/protos/gen/*
+chmod -R -w ../server/thrift/gen/*
