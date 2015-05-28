@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/physics/physics.iml" filepath="$PROJECT_DIR$/physics/physics.iml" />
       <module fileurl="file://$PROJECT_DIR$/scripting/scripting.iml" filepath="$PROJECT_DIR$/scripting/scripting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/service.iml" filepath="$PROJECT_DIR$/service/service.iml" />
       <module fileurl="file://$PROJECT_DIR$/testing/testing.iml" filepath="$PROJECT_DIR$/testing/testing.iml" />
       <module fileurl="file://$PROJECT_DIR$/thrift/thrift.iml" filepath="$PROJECT_DIR$/thrift/thrift.iml" />
     </modules>
