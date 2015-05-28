@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="C:/dev/madratz/test/dnode/target/dnode-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauro/.m2/repository/org/jboss/netty/netty/3.2.3.Final/netty-3.2.3.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauro/.m2/repository/com/google/code/gson/gson/1.6/gson-1.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

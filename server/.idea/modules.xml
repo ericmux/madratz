@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/physics/physics.iml" filepath="$PROJECT_DIR$/physics/physics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/protos/protos.iml" filepath="$PROJECT_DIR$/protos/protos.iml" />
       <module fileurl="file://$PROJECT_DIR$/scripting/scripting.iml" filepath="$PROJECT_DIR$/scripting/scripting.iml" />
       <module fileurl="file://$PROJECT_DIR$/testing/testing.iml" filepath="$PROJECT_DIR$/testing/testing.iml" />
     </modules>

@@ -42,5 +42,10 @@ client/obj
 # Protos #
 ##########
 server/physics/src/com/madratz/serialization/protos/*
+server/protos/src/
+
+###########
+# Sublime #
+###########
 *.sublime-project
 *.sublime-workspace
