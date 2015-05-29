@@ -9,9 +9,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
@@ -132,10 +131,13 @@ public class TimeLimitedExecutorServiceTest {
     public void testThreadKilledIfIgnoredInterrupt() throws Exception {
         mExecutorService.setInterruptThreshold(10, TimeUnit.MILLISECONDS);
 
+        Set<Long> threadIds = new HashSet<>();
         // Do it several times to make sure the killed threads are not reused (and re-killed).
         for (int i = 0; i < 5; i++) {
             AtomicBoolean interrupted = new AtomicBoolean(false);
+            AtomicLong threadId = new AtomicLong();
             Future<?> future = mExecutorService.submitLimited((Runnable)() -> {
+                threadId.set(Thread.currentThread().getId());
                 while(!Thread.interrupted());
                 interrupted.set(true);
                 // The get will always be true, this is just because a "while(true)" turned some Threads into zombies.
@@ -145,8 +147,11 @@ public class TimeLimitedExecutorServiceTest {
                 future.get();
             } catch (ExecutionException e) {
                 assertThat(e.getCause(), Matchers.instanceOf(ThreadDeath.class));
-                assertTrue(interrupted.get());
                 continue;
+            } finally {
+                assertTrue(interrupted.get());
+                assertFalse("Thread hasn't been used before", threadIds.contains(threadId.get()));
+                threadIds.add(threadId.get());
             }
             fail("Expected ExecutionException caused by thread death.");
         }
@@ -193,7 +198,24 @@ public class TimeLimitedExecutorServiceTest {
 
         for (int i = 0; i < 10; i++) {
             final int finalI = i;
-            assertEquals(i, (int) mExecutorService.submit(() -> finalI).get());
+            assertEquals(i, (int) mExecutorService.submitLimited(() -> finalI, 1, TimeUnit.SECONDS).get());
+        }
+    }
+
+    @Test
+    public void testIsThreadSafe() throws ExecutionException, InterruptedException {
+        ExecutorService concurrent = Executors.newCachedThreadPool();
+
+        Future[] futures = new Future<?>[10];
+        for (int i = 0; i < futures.length; i++) {
+            final int finalI = i;
+            futures[i] = concurrent.submit(() -> {
+                Future<Integer> fut = mExecutorService.submitLimited(() -> finalI, 1, TimeUnit.SECONDS);
+                return fut.get();
+            });
+        }
+        for (int i = 0; i < futures.length; i++) {
+            assertEquals(i, (int)futures[i].get());
         }
     }
 

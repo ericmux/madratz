@@ -1,14 +1,19 @@
 package com.madratz.cpulimit;
 
+import java.nio.channels.ClosedByInterruptException;
+import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class TimeLimitedExecutorService extends ThreadPoolExecutor {
 
     /*test*/ static final long PRONE_PRECISION_NANOS = 1_000_000; // 1ms
     private static final AtomicInteger sExecutorCount = new AtomicInteger(0);
 
-    private Thread mPronerThread = new Thread(new TasksProner(), "time-limited-proner-" + sExecutorCount.incrementAndGet());
+    private final AtomicBoolean mPronerRunning = new AtomicBoolean(false);
+    private final Thread mPronerThread = new Thread(new TasksProner(), "time-limited-proner-" + sExecutorCount.incrementAndGet());
 
     private DelayQueue<TimeLimitedTask> mRunningTasks = new DelayQueue<>();
     private long mInterruptThresholdNanos = -1;
@@ -42,7 +47,7 @@ public class TimeLimitedExecutorService extends ThreadPoolExecutor {
     }
 
     public <T> TimedFuture<T> submitLimited(Callable<T> method, long timeLimit, TimeUnit unit) {
-        if (!mPronerThread.isAlive()) mPronerThread.start();
+        if (!mPronerRunning.getAndSet(true)) mPronerThread.start();
 
         final TimedFutureImpl<T> timedFuture = new TimedFutureImpl<>();
         timedFuture.setInnerFuture(submit(() -> {
@@ -62,9 +67,22 @@ public class TimeLimitedExecutorService extends ThreadPoolExecutor {
                     timedFuture.setSystemExecutionTimeNanos(System.nanoTime() - systemStartTime);
                 }
             } catch (Throwable t) {
-                if ((t instanceof InterruptedException || t.getCause() instanceof InterruptedException)) {
+                Thread.interrupted();  // clear the interrupt flag
+                String ts = t.toString();
+                String cause = Optional.ofNullable(t.getCause()).map(Object::toString).orElse("");
+                boolean isTimeoutException = Stream.of(InterruptedException.class, ClosedByInterruptException.class)
+                        .map(Class::getSimpleName)
+                        .anyMatch(s -> ts.contains(s) || cause.contains(s));
+                if (isTimeoutException) {
                     if (!mRunningTasks.contains(task)) {
-                        throw new TimeoutException();
+                        throw new TimeoutException(ts);
+                    }
+                } else if (!(t instanceof ThreadDeath)) {
+                    String threadDeath = ThreadDeath.class.getSimpleName();
+                    if (t.getCause() instanceof ThreadDeath) {
+                        throw (ThreadDeath)t.getCause();
+                    } else if (ts.contains(threadDeath) || cause.contains(threadDeath)) {
+                        throw new ThreadDeath();
                     }
                 }
                 throw t;
@@ -163,10 +181,10 @@ public class TimeLimitedExecutorService extends ThreadPoolExecutor {
                         mRunningTasks.offer(candidate);
                     } else {
                         // Timeout expired!
-                        if (!candidate.interrupted) {
+                        if (!candidate.interrupted && mInterruptThresholdNanos != 0) {
                             candidate.thread.interrupt();
 
-                            if (mInterruptThresholdNanos >= 0) {
+                            if (mInterruptThresholdNanos > 0) {
                                 candidate.interrupted = true;
                                 candidate.threadTimeout = threadCpuTime + mInterruptThresholdNanos;
                                 candidate.systemTimeout = systemTimeout(mInterruptThresholdNanos);
