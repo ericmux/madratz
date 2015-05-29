@@ -1,5 +1,6 @@
-package com.madratz.behavior;
+package com.madratz.behavior.examples;
 
+import com.madratz.behavior.Behavior;
 import com.madratz.decision.Decision;
 import com.madratz.decision.SpeedUpRequest;
 import com.madratz.gamelogic.Actor;
