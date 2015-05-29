@@ -13,7 +13,7 @@ public class MHSBehavior implements Behavior {
     }
 
     @Override
-    public Decision execute(Actor actor) {
+    public Decision execute(Actor actor) throws Exception {
         Decision decision = new Decision();
 
         SpeedUpRequest speedUpRequest = new SpeedUpRequest(actor,(float)Math.sin(2.0f*(double)t));

@@ -21,22 +21,16 @@ public class ScriptedBehavior implements Behavior {
     }
 
     @Override
-    public Decision execute(Actor actor) {
-        try {
-            initPython();
+    public Decision execute(Actor actor) throws Exception {
+        initPython();
 
-            ActorWrapper actorWrapper = new ActorWrapper(actor, new Decision());
-            PyObject wrapped = Privileged.callPrivileged(() -> PyJavaType.wrapJavaObject(actorWrapper));
-            mInterpreter.set("actor", wrapped);
+        ActorWrapper actorWrapper = new ActorWrapper(actor, new Decision());
+        PyObject wrapped = Privileged.callPrivileged(() -> PyJavaType.wrapJavaObject(actorWrapper));
+        mInterpreter.set("actor", wrapped);
 
-            mFunction.__call__();
+        mFunction.__call__();
 
-            return actorWrapper.getDecision();
-        } catch (Exception e) {
-            // continue
-            e.printStackTrace();
-        }
-        return new Decision();
+        return actorWrapper.getDecision();
     }
 
     private void initPython() throws Exception {
@@ -47,8 +41,27 @@ public class ScriptedBehavior implements Behavior {
         }
     }
 
+    public static final String INITIALIZATION_SCRIPT = "" +
+                    "import math\n" +
+                    "def function():\n" +
+                    "  return 0\n" +
+                    "x = function()\n\n" +
+                    "from java.lang import System\n" +
+                    "System.getProperties()\n";
+
     static {
         // Just so we don't need to set -Djava.security.manager on runtime
         MadratzSecurityManager.setSystemSecurityManagerIfNeeded();
+
+        try {
+            // Create an interpreter and execute a dummy script to initialize all Jython structures and classes
+            Privileged.doPrivileged(() -> {
+                PythonInterpreter interp = new PythonInterpreter();
+                interp.exec(INITIALIZATION_SCRIPT);
+            });
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.exit(1);
+        }
     }
 }

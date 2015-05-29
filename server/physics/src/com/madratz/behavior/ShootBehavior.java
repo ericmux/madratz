@@ -20,7 +20,7 @@ public class ShootBehavior implements Behavior {
     }
 
     @Override
-    public Decision execute(Actor actor) {
+    public Decision execute(Actor actor) throws Exception {
 
         Decision decision = new Decision();
 

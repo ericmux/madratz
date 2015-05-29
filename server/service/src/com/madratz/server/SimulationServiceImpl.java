@@ -30,9 +30,9 @@ public class SimulationServiceImpl implements SimulationService.Iface {
         mMatches.put(matchId, match);
 
         mExecutor.submit(() -> {
-            LOG.debug("Starting match %d simulation.", matchId);
+            LOG.debug("Starting match " + matchId + " simulation.");
             match.runSimulation();
-            LOG.debug("Finished match %d simulation.", matchId);
+            LOG.debug("Finished match " + matchId + " simulation.");
         });
 
         return matchId;
@@ -48,7 +48,7 @@ public class SimulationServiceImpl implements SimulationService.Iface {
         if (!isMatchFinished(matchId)) {
             throw new TApplicationException("Match not finished yet!");
         }
-        LOG.debug("Match %d result queried.", matchId);
+        LOG.debug("Match " + matchId + " result queried.");
         MadratzMatch madratzMatch = getMatch(matchId);
 
         MatchResult result = new MatchResult(madratzMatch.getElapsedTime());

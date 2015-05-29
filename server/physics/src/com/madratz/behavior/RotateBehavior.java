@@ -10,7 +10,7 @@ public class RotateBehavior implements Behavior {
     }
 
     @Override
-    public Decision execute(Actor actor) {
+    public Decision execute(Actor actor) throws Exception {
         Decision decision = new Decision();
         decision.addActionRequest(new RotateRequest(actor,1.0f));
         return decision;

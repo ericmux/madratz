@@ -40,7 +40,9 @@ public class MadratzMatch {
 
     public void runSimulation() {
         while (mWorld.getPlayers().size() >= 2 && mWorld.getElapsedTime() < mTimeLimitSec) {
-            LOG.debug("Stepping simulation... Players alive: " + mWorld.getPlayers().size());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Stepping simulation... " + mWorld.getElapsedTime() + "s elapsed. Players alive: " + mWorld.getPlayers().size());
+            }
             mWorld.step(SimulationTest.TIMESTEP, SimulationTest.VEL_ITERATIONS, SimulationTest.POS_ITERATIONS);
         }
 

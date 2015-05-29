@@ -25,4 +25,9 @@ public class Player extends Actor {
     public long getId() {
         return mId;
     }
+
+    @Override
+    public String toString() {
+        return "Player " + mId;
+    }
 }
