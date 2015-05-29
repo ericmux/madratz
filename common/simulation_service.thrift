@@ -9,10 +9,11 @@ struct PlayerInfo {
 
 struct MatchParams {
   1: list<PlayerInfo> players;
+  2: i64 timeLimitSec = 300;  // 5 minutes by default
 }
 
 struct MatchResult {
-  1: i64 winnerId;
+  1: optional i64 winnerId;
   2: double elapsedTimeSec;
 }
 

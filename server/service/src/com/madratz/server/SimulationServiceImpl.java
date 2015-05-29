@@ -50,9 +50,11 @@ public class SimulationServiceImpl implements SimulationService.Iface {
         }
         LOG.debug("Match %d result queried.", matchId);
         MadratzMatch madratzMatch = getMatch(matchId);
+
+        MatchResult result = new MatchResult(madratzMatch.getElapsedTime());
         PlayerInfo winner = madratzMatch.getWinner();
-        float elapsedTimeSec = madratzMatch.getElapsedTime();
-        return new MatchResult(winner != null ? winner.getId() : -1, elapsedTimeSec);
+        if (winner != null) result.setWinnerId(winner.getId());
+        return result;
     }
 
     private MadratzMatch getMatch(long matchId) throws TApplicationException {

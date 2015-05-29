@@ -6,15 +6,19 @@ import com.madratz.leveldesigner.WorldLoader;
 import com.madratz.service.MatchParams;
 import com.madratz.service.PlayerInfo;
 import com.madratz.ui.SimulationTest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class MadratzMatch {
 
-    private static final float DEFAULT_MAX_TIME = 300.0f;
+    private static final Logger LOG = LoggerFactory.getLogger(MadratzMatch.class);
 
-    private final float mMaxTime;
     private final long mId;
+    private final float mTimeLimitSec;
     private final List<PlayerInfo> mPlayers;
 
     private boolean mFinished;
@@ -24,7 +28,7 @@ public class MadratzMatch {
 
     public MadratzMatch(long id, MatchParams params) {
         mId = id;
-        mMaxTime = DEFAULT_MAX_TIME;
+        mTimeLimitSec = params.getTimeLimitSec();
         mPlayers = params.getPlayers();
         mFinished = false;
 
@@ -35,26 +39,23 @@ public class MadratzMatch {
     }
 
     public void runSimulation() {
-
-        while(!mFinished){
-
-            mWorld.step(SimulationTest.TIMESTEP,SimulationTest.VEL_ITERATIONS,SimulationTest.POS_ITERATIONS);
-
-            System.out.println(mWorld.getPlayers().size());
-
-            if(mWorld.getPlayers().size() < 2) mFinished = true;
+        while (mWorld.getPlayers().size() >= 2 && mWorld.getElapsedTime() < mTimeLimitSec) {
+            LOG.debug("Stepping simulation... Players alive: " + mWorld.getPlayers().size());
+            mWorld.step(SimulationTest.TIMESTEP, SimulationTest.VEL_ITERATIONS, SimulationTest.POS_ITERATIONS);
         }
-        int winnerId = ((Player) mWorld.getPlayers().get(0)).getId();
-        mWinner = mPlayers.get(winnerId);
 
+        Player winner = findWinner(mWorld.getPlayers()).orElse(null);
+        if (winner != null) {
+            mWinner = mPlayers.stream()
+                    .filter(p -> p.id == winner.getId())
+                    .findFirst()
+                    .get();
+        }
+        mFinished = true;
     }
 
     public boolean isFinished() {
         return mFinished;
-    }
-
-    public double getProgress() {
-        return mFinished ? 1 : 0;
     }
 
     public PlayerInfo getWinner() {
@@ -65,4 +66,18 @@ public class MadratzMatch {
 
     // public List<Snapshot> getSnapshots(int start, int size);
 
+    // public double getProgress();
+
+    private static Optional<Player> findWinner(List<Player> standingPlayers) {
+        if (standingPlayers.size() == 1) {
+            return Optional.of(standingPlayers.get(0));
+        } else if (standingPlayers.size() > 1) {
+            standingPlayers.sort(Comparator.comparing(Player::getHP).reversed());
+            Player highest = standingPlayers.get(0), second = standingPlayers.get(1);
+            if (highest.getHP() == second.getHP()) return Optional.empty(); // Same HP, no one wins
+            return Optional.of(highest);
+        } else {
+            return Optional.empty();
+        }
+    }
 }

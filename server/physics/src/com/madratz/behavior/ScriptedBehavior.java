@@ -32,9 +32,9 @@ public class ScriptedBehavior implements Behavior {
             mFunction.__call__();
 
             return actorWrapper.getDecision();
-        } catch (Throwable t) {
+        } catch (Exception e) {
             // continue
-            t.printStackTrace();
+            e.printStackTrace();
         }
         return new Decision();
     }

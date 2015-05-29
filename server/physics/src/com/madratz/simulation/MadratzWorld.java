@@ -50,9 +50,9 @@ public class MadratzWorld extends World {
     public void step(float dt, int velocityIterations, int positionIterations) {
 
         List<Decision> decisions = mActiveActors.stream()
-                                                    .parallel()
-                                                    .map(Actor::executeBehavior)
-                                                    .collect(Collectors.toList());
+                .parallel()
+                .map(Actor::executeBehavior)
+                .collect(Collectors.toList());
         //need to split up since some action requests might modify the active actors stream.
         decisions.forEach(Decision::apply);
 
@@ -69,8 +69,11 @@ public class MadratzWorld extends World {
         mFrameID++;
     }
 
-    public List<? extends Actor> getPlayers() {
-        return mActiveActors.stream().filter(p -> p instanceof Player).collect(Collectors.toList());
+    public List<Player> getPlayers() {
+        return mActiveActors.stream()
+                .filter(p -> p instanceof Player)
+                .map(p -> (Player)p)
+                .collect(Collectors.toList());
     }
 
     public int getFrameID() {
