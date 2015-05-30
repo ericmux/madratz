@@ -4,13 +4,16 @@ import com.madratz.cpulimit.TimeLimitedExecutorService;
 import com.madratz.cpulimit.TimedFuture;
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
-import com.madratz.gamelogic.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class TimeLimitedBehavior implements Behavior {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TimeLimitedBehavior.class);
 
     private final Behavior mInnerBehavior;
 
@@ -43,7 +46,7 @@ public class TimeLimitedBehavior implements Behavior {
             return future.get();
         } catch (ExecutionException e) {
             if (e.getCause() instanceof TimeoutException || e.getCause() instanceof ThreadDeath) {
-                System.err.println(((Player) actor).getId() + " timed out after " + future.getThreadExecutionTime(TimeUnit.MILLISECONDS) + "ms! " +
+                LOG.warn(actor + " timed out after " + future.getThreadExecutionTime(TimeUnit.MILLISECONDS) + "ms! " +
                         "(" + future.getSystemExecutionTime(TimeUnit.MILLISECONDS) + "ms system time)");
             } else {
                 Throwable cause = e.getCause();
@@ -52,8 +55,7 @@ public class TimeLimitedBehavior implements Behavior {
                 } else if (cause instanceof Error) {
                     throw (Error)cause;
                 } else {
-                    System.err.println("Unknown Throwable implementation: " + cause);
-                    cause.printStackTrace();
+                    LOG.error("Unknown Throwable implementation: " + cause, cause);
                 }
             }
         } finally {
