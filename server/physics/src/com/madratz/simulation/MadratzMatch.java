@@ -85,8 +85,6 @@ public class MadratzMatch {
         return mSnapshots;
     }
 
-    // public double getProgress();
-
     private static Optional<Player> findWinner(List<Player> standingPlayers) {
         if (standingPlayers.size() == 1) {
             return Optional.of(standingPlayers.get(0));

@@ -33,7 +33,7 @@ public class Client {
         try (TTransport transport = new TSocket(serverAddress, port)) {
             transport.open();
             SimulationService.Client server = new SimulationService.Client(new TCompactProtocol(transport));
-            System.out.println("Connected to server at " + serverAddress + ":" + port);
+            System.out.println("Connected to server at " + serverAddress + ":"  + port);
 
             MatchParams params = new MatchParams();
             for (int i = 0; i < scripts.length; i++) {

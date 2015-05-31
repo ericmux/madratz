@@ -36,6 +36,7 @@ public class MadratzWorld extends World implements Thriftalizable {
         mActiveActors.add(actor);
     }
 
+
     public void destroyActor(Actor actor){
         if(actor == null || mDestroyedActors.contains(actor)) return;
 
@@ -68,7 +69,7 @@ public class MadratzWorld extends World implements Thriftalizable {
     public List<Player> getPlayers() {
         return mActiveActors.stream()
                 .filter(p -> p instanceof Player)
-                .map(p -> (Player)p)
+                .map(p -> (Player) p)
                 .collect(Collectors.toList());
     }
 
