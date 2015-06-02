@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="dnode.Server"/>
+<fullyQualifiedTypeName name="dnode.netty.NettyServer"/>
+<fullyQualifiedTypeName name="dnode.Callback"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="dnode.DNode"/>
+</qualifiedTypeNameHistroy>

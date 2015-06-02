@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="jbox2dlib-serialization">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/external/jbox2dlib-serialization.jar!/" />
+      <root url="jar://$PROJECT_DIR$/external/jbox2dlib-testbed.jar!/" />
+      <root url="jar://$PROJECT_DIR$/external/jbox2dlib.jar!/" />
+      <root url="jar://$PROJECT_DIR$/external/slf4j-api-1.7.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -2,6 +2,8 @@ package com.madratz.simulation;
 
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
+import com.madratz.gamelogic.Player;
+import com.madratz.ui.SimulationTest;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
@@ -16,12 +18,15 @@ public class MadratzWorld extends World {
     private HashSet<Actor> mActiveActors;
     private Stack<Actor> mDestroyedActors;
 
+    private int mFrameID;
 
     public MadratzWorld(Vec2 gravity) {
         super(gravity);
         mActiveActors = new HashSet<>();
         mDestroyedActors = new Stack<>();
+        mFrameID = 0;
     }
+
 
     public void registerActor(Actor actor){
         if(actor == null) return;
@@ -41,14 +46,13 @@ public class MadratzWorld extends World {
         mDestroyedActors.add(actor);
     }
 
-
     @Override
     public void step(float dt, int velocityIterations, int positionIterations) {
 
         List<Decision> decisions = mActiveActors.stream()
-                                                    .parallel()
-                                                    .map(Actor::executeBehavior)
-                                                    .collect(Collectors.toList());
+                .parallel()
+                .map(Actor::executeBehavior)
+                .collect(Collectors.toList());
         //need to split up since some action requests might modify the active actors stream.
         decisions.forEach(Decision::apply);
 
@@ -61,9 +65,24 @@ public class MadratzWorld extends World {
             destroyBody(actor.getBody());
             mActiveActors.remove(actor);
         }
+
+        mFrameID++;
     }
 
+    public List<Player> getPlayers() {
+        return mActiveActors.stream()
+                .filter(p -> p instanceof Player)
+                .map(p -> (Player)p)
+                .collect(Collectors.toList());
+    }
 
+    public int getFrameID() {
+        return mFrameID;
+    }
+
+    public float getElapsedTime(){
+        return mFrameID*SimulationTest.TIMESTEP;
+    }
 
 
 

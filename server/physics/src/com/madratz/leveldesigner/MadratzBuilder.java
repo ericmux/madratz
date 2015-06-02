@@ -23,7 +23,6 @@ public class MadratzBuilder {
 
     private Vec2 mGravity;
 
-
     public MadratzBuilder() {
         mActorList = new ArrayList<>();
         mObstaclesList = new ArrayList<>();

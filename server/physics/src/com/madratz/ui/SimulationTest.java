@@ -9,14 +9,18 @@ import org.jbox2d.testbed.framework.TestbedTest;
 public class SimulationTest extends TestbedTest {
 
     public static final float TIMESTEP = 1.0f/60.0f;
+    public static final int VEL_ITERATIONS = 8;
+    public static final int POS_ITERATIONS = 3;
     private int mNumPlayers;
+    private long mMatchID;
 
     // Ideally, we want to get just the level ID and the number of players here, so we load and build
     // the appropriate level through the Arena, allowing the same levels to be used with less players
     // than expected.
-    public SimulationTest(int numberOfPlayers, int levelID) {
+    public SimulationTest(int numberOfPlayers, int levelID, long matchID) {
         super();
         mNumPlayers = numberOfPlayers;
+        mMatchID = matchID;
     }
 
     @Override

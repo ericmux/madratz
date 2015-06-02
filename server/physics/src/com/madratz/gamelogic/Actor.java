@@ -6,9 +6,16 @@ import com.madratz.decision.Decision;
 import com.madratz.simulation.MadratzWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Actor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Actor.class);
 
     public static final float MAX_LINEAR_SPEED = 10.0f;
     public static final float MAX_ANGULAR_SPEED = 15.0f;
@@ -20,7 +27,6 @@ public class Actor {
     protected Body mBody;
 
     protected float mWidth;
-
     protected float mHP;
 
     protected Actor(Behavior behavior) {
@@ -54,7 +60,12 @@ public class Actor {
     }
 
     public Decision executeBehavior() {
-        return mBehavior.execute(this);
+        try {
+            return mBehavior.execute(this);
+        } catch (Exception e) {
+            LOG.warn("Python script for " + this + " threw exception: " + e, e);
+        }
+        return new Decision();
     }
 
     public void handleCollision(Actor actor) {}

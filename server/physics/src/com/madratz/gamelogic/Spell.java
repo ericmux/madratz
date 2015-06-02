@@ -45,7 +45,7 @@ public class Spell extends Actor {
 
     @Override
     public void handleCollision(Actor actor) {
-        if(actor != null && actor.getClass() == Actor.class){
+        if(actor != null && actor.getClass() == Player.class){
             actor.addDamage(mHitDamage);
             if(actor.getHP() < 0.0f){
                 getWorld().destroyActor(actor);

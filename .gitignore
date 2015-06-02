@@ -1,12 +1,25 @@
-##########
-# Server #
-##########
+#################
+# Compiled Code #
+#################
 *.pyc
 *.class
 
-.idea/
-*.iml
+############
+# IntelliJ #
+############
 
+**/.idea/*
+!**/.idea/libraries/
+!**/.idea/copyright/
+!**/.idea/misc.xml
+!**/.idea/modules.xml
+!**/.idea/compiler.xml
+
+########
+# OS X #
+########
+
+**/.DS_Store
 
 #######
 # API #
@@ -23,3 +36,22 @@ client/obj
 
 *.*proj
 *.sln
+
+
+##########
+# Thrift #
+##########
+server/thrift/gen/
+
+###########
+# Sublime #
+###########
+*.sublime-project
+*.sublime-workspace
+
+###########
+# Madratz #
+###########
+
+server/out/
+server/service/META-INF/
