@@ -37,11 +37,13 @@ public class CameraController : MonoBehaviour {
 		// Work with zooming
 
 		if (Input.GetButtonDown("Zoom Out") && transform.position.y < ZOOM_MAX) {
+			Debug.Log ("Zoom Out");
 			Vector3 newPosition = transform.position + new Vector3(0, 1, 0);
 			transform.position = Vector3.Lerp(transform.position, newPosition, 1);
 		} 
 
 		if (Input.GetKeyDown(KeyCode.Equals)  && transform.position.y > ZOOM_MIN) {
+			Debug.Log ("Zoom In");
 			Vector3 newPosition = transform.position - new Vector3(0, 1, 0);
 			transform.position = Vector3.Lerp(transform.position, newPosition, 1);
 		}
@@ -57,7 +59,7 @@ public class CameraController : MonoBehaviour {
 			
 			break;
 		case CameraMode.CAMERA_MODE_FLAT:
-			transform.position = FLAT_POSITION;
+			// transform.position = FLAT_POSITION;
 			transform.rotation = FLAT_ROTATION;
 			
 			break;

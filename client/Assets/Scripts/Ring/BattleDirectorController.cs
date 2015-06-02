@@ -68,7 +68,7 @@ public class BattleDirectorController : MonoBehaviour {
 	public List<RatSimulationDataUnit> createFromFile(string fileName) {
 		List<RatSimulationDataUnit> ratDataList = new List<RatSimulationDataUnit> ();
 
-		Debug.Log ("Reading coordinates from " + fileName);
+		// Debug.Log ("Reading coordinates from " + fileName);
 		try {
 			StreamReader reader = new StreamReader (fileName, Encoding.Default);
 			
@@ -96,7 +96,7 @@ public class BattleDirectorController : MonoBehaviour {
 
 							// Add it to data list
 							ratDataList.Add(data);
-							Debug.Log ("data.Position = " + data.Position.ToString());
+							// Debug.Log ("data.Position = " + data.Position.ToString());
 						}
 					}
 
