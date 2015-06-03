@@ -49,16 +49,30 @@
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\Lab\LabDirectorScript.cs" />
      <Compile Include="Assets\Scripts\PlayerData.cs" />
+     <Compile Include="Assets\Scripts\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\RatData.cs" />
      <Compile Include="Assets\Scripts\RatSimulationDataUnit.cs" />
      <Compile Include="Assets\Scripts\RatSimulationScript.cs" />
      <Compile Include="Assets\Scripts\Ring\BattleDirectorController.cs" />
+     <Compile Include="Assets\Scripts\Thrift\Actor.cs" />
+     <Compile Include="Assets\Scripts\Thrift\MatchParams.cs" />
+     <Compile Include="Assets\Scripts\Thrift\MatchResult.cs" />
+     <Compile Include="Assets\Scripts\Thrift\PlayerInfo.cs" />
+     <Compile Include="Assets\Scripts\Thrift\Position.cs" />
+     <Compile Include="Assets\Scripts\Thrift\SimulationService.cs" />
+     <Compile Include="Assets\Scripts\Thrift\Snapshot.cs" />
+     <Compile Include="Assets\Scripts\Thrift\State.cs" />
+     <Compile Include="Assets\Scripts\Thrift\StateChange.cs" />
+     <Compile Include="Assets\Scripts\ThriftClient.cs" />
      <Compile Include="Assets\Scripts\TimerController.cs" />
      <None Include="Assets\Files\player1.txt" />
      <None Include="Assets\Fonts\JosefinSans\OFL.txt" />
      <None Include="Assets\Files\player2.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Application/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="Thrift">
+ <HintPath>C:/Users/Samuel/Desktop/projects/madratz/client/Assets/Libraries/Thrift.dll</HintPath>
  </Reference>
  <Reference Include="LitJson">
  <HintPath>C:/Users/Samuel/Desktop/projects/madratz/client/Assets/LitJson.dll</HintPath>

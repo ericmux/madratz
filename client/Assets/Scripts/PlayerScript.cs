@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 
 public class PlayerScript : MonoBehaviour {
-	private List<PlayerData> mDataList = null;
+	private List<RatSimulationDataUnit> mDataList = null;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +22,7 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
-	public void loadData(List<PlayerData> dataList) {
+	public void loadData(List<RatSimulationDataUnit> dataList) {
 		mDataList = dataList;
 	}
 

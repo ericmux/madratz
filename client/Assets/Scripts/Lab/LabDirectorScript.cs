@@ -6,7 +6,7 @@ public class LabDirectorScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// TODO PlayerData should be initialized in Login Scene
-		PlayerData.loadDataFromServer ();
+		// PlayerData.loadDataFromServer ();
 
 	}
 	
