@@ -7,6 +7,7 @@ import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
@@ -41,16 +42,26 @@ public class SimulationServiceImpl implements SimulationService.Iface {
 
     @Override
     public MatchResult result(long matchId) throws TException {
-        if (!isMatchFinished(matchId)) {
-            throw new InvalidArgumentException("Match not finished yet!");
-        }
         LOG.debug("Match " + matchId + " result queried.");
-        MadratzMatch madratzMatch = getMatch(matchId);
+        MadratzMatch madratzMatch = getFinishedMatch(matchId);
 
         MatchResult result = new MatchResult(madratzMatch.getElapsedTime());
         PlayerInfo winner = madratzMatch.getWinner();
         if (winner != null) result.setWinnerId(winner.getId());
         return result;
+    }
+
+    @Override
+    public List<Snapshot> snapshots(long matchId) throws TException {
+        return getFinishedMatch(matchId).getSnapshots();
+    }
+
+    private MadratzMatch getFinishedMatch(long matchId) throws TException {
+        MadratzMatch match = getMatch(matchId);
+        if (!match.isFinished()) {
+            throw new InvalidArgumentException("Match " + matchId + " not finished yet!");
+        }
+        return match;
     }
 
     private MadratzMatch getMatch(long matchId) throws TException {

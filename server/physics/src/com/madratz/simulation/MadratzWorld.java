@@ -3,6 +3,8 @@ package com.madratz.simulation;
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
 import com.madratz.gamelogic.Player;
+import com.madratz.serialization.Snapshot;
+import com.madratz.serialization.Thriftalizable;
 import com.madratz.ui.SimulationTest;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -11,20 +13,16 @@ import org.jbox2d.dynamics.World;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MadratzWorld extends World {
+public class MadratzWorld extends World implements Thriftalizable {
 
-    private HashSet<Actor> mActiveActors;
-    private Stack<Actor> mDestroyedActors;
+    private Set<Actor> mActiveActors = new HashSet<>();
+    private Stack<Actor> mDestroyedActors = new Stack<>();
 
-    private int mFrameID;
+    private int mFrameNumber = 0;
 
     public MadratzWorld(Vec2 gravity) {
         super(gravity);
-        mActiveActors = new HashSet<>();
-        mDestroyedActors = new Stack<>();
-        mFrameID = 0;
     }
-
 
     public void registerActor(Actor actor){
         if(actor == null) return;
@@ -64,7 +62,7 @@ public class MadratzWorld extends World {
             mActiveActors.remove(actor);
         }
 
-        mFrameID++;
+        mFrameNumber++;
     }
 
     public List<Player> getPlayers() {
@@ -78,14 +76,21 @@ public class MadratzWorld extends World {
         return Collections.unmodifiableSet(mActiveActors);
     }
 
-    public int getFrameID() {
-        return mFrameID;
+    public int getFrameNumber() {
+        return mFrameNumber;
     }
 
     public float getElapsedTime(){
-        return mFrameID*SimulationTest.TIMESTEP;
+        return mFrameNumber * SimulationTest.TIMESTEP;
     }
 
 
-
+    @Override
+    public Snapshot toThrift() {
+        List<com.madratz.serialization.Actor> serializedActors = getActiveActors()
+                .stream()
+                .map(com.madratz.gamelogic.Actor::toThrift)
+                .collect(Collectors.toList());
+        return new Snapshot(getElapsedTime(), serializedActors);
+    }
 }

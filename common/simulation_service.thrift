@@ -33,4 +33,5 @@ service SimulationService {
 
   MatchResult result(1: i64 matchId) throws (1: InvalidArgumentException exc);
 
+  list<world.Snapshot> snapshots(1: i64 matchId) throws (1: InvalidArgumentException exc);
 }
