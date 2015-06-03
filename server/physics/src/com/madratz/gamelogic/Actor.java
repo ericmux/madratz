@@ -3,6 +3,8 @@ package com.madratz.gamelogic;
 import com.madratz.behavior.Behavior;
 import com.madratz.behavior.NopBehavior;
 import com.madratz.decision.Decision;
+import com.madratz.serialization.Thriftalizable;
+import com.madratz.serialization.Vector2;
 import com.madratz.simulation.MadratzWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -13,7 +15,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Actor {
+public class Actor implements Thriftalizable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Actor.class);
 
@@ -120,5 +122,17 @@ public class Actor {
 
     public void setBehavior(Behavior behavior) {
         mBehavior = behavior;
+    }
+
+    @Override
+    public com.madratz.serialization.Actor toThrift() {
+        com.madratz.serialization.Actor serializedActor = new com.madratz.serialization.Actor();
+        Vec2 position = mBody.getPosition();
+        serializedActor.setPosition(new Vector2(position.x, position.y));
+        serializedActor.setAngle(mBody.getAngle());
+        serializedActor.setHp(mHP);
+        serializedActor.setWidth(mWidth);
+
+        return serializedActor;
     }
 }

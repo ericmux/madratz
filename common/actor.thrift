@@ -1,6 +1,6 @@
 namespace java com.madratz.serialization
 
-struct Position {
+struct Vector2 {
   1: double x;
   2: double y;
 }
@@ -20,7 +20,7 @@ struct StateChange {
 
 struct Actor {
   1: i32 id;
-  2: Position position; //position of center of mass.
+  2: Vector2 position; //position of center of mass.
   3: double angle;
   4: double hp;
   5: double width;

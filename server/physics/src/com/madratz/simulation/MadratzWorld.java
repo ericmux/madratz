@@ -8,9 +8,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MadratzWorld extends World {
@@ -74,6 +72,10 @@ public class MadratzWorld extends World {
                 .filter(p -> p instanceof Player)
                 .map(p -> (Player)p)
                 .collect(Collectors.toList());
+    }
+
+    public Set<Actor> getActiveActors() {
+        return Collections.unmodifiableSet(mActiveActors);
     }
 
     public int getFrameID() {

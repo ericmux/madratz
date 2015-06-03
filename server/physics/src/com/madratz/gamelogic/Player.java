@@ -30,4 +30,11 @@ public class Player extends Actor {
     public String toString() {
         return "Player " + mId;
     }
+
+    @Override
+    public com.madratz.serialization.Actor toThrift() {
+        com.madratz.serialization.Actor actor = (com.madratz.serialization.Actor) super.toThrift();
+        actor.setId(mId);
+        return actor;
+    }
 }
