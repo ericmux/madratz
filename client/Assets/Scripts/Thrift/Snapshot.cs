@@ -21,20 +21,20 @@ using Thrift.Transport;
 #endif
 public partial class Snapshot : TBase
 {
-  private int _frameId;
+  private double _elapsedTime;
   private List<Actor> _actors;
   private bool _finished;
 
-  public int FrameId
+  public double ElapsedTime
   {
     get
     {
-      return _frameId;
+      return _elapsedTime;
     }
     set
     {
-      __isset.frameId = true;
-      this._frameId = value;
+      __isset.elapsedTime = true;
+      this._elapsedTime = value;
     }
   }
 
@@ -70,7 +70,7 @@ public partial class Snapshot : TBase
   [Serializable]
   #endif
   public struct Isset {
-    public bool frameId;
+    public bool elapsedTime;
     public bool actors;
     public bool finished;
   }
@@ -91,8 +91,8 @@ public partial class Snapshot : TBase
       switch (field.ID)
       {
         case 1:
-          if (field.Type == TType.I32) {
-            FrameId = iprot.ReadI32();
+          if (field.Type == TType.Double) {
+            ElapsedTime = iprot.ReadDouble();
           } else { 
             TProtocolUtil.Skip(iprot, field.Type);
           }
@@ -135,12 +135,12 @@ public partial class Snapshot : TBase
     TStruct struc = new TStruct("Snapshot");
     oprot.WriteStructBegin(struc);
     TField field = new TField();
-    if (__isset.frameId) {
-      field.Name = "frameId";
-      field.Type = TType.I32;
+    if (__isset.elapsedTime) {
+      field.Name = "elapsedTime";
+      field.Type = TType.Double;
       field.ID = 1;
       oprot.WriteFieldBegin(field);
-      oprot.WriteI32(FrameId);
+      oprot.WriteDouble(ElapsedTime);
       oprot.WriteFieldEnd();
     }
     if (Actors != null && __isset.actors) {
@@ -173,11 +173,11 @@ public partial class Snapshot : TBase
   public override string ToString() {
     StringBuilder __sb = new StringBuilder("Snapshot(");
     bool __first = true;
-    if (__isset.frameId) {
+    if (__isset.elapsedTime) {
       if(!__first) { __sb.Append(", "); }
       __first = false;
-      __sb.Append("FrameId: ");
-      __sb.Append(FrameId);
+      __sb.Append("ElapsedTime: ");
+      __sb.Append(ElapsedTime);
     }
     if (Actors != null && __isset.actors) {
       if(!__first) { __sb.Append(", "); }

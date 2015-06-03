@@ -21,14 +21,14 @@ using Thrift.Transport;
 #endif
 public partial class Actor : TBase
 {
-  private int _id;
-  private Position _position;
+  private long _id;
+  private Vector2 _position;
   private double _angle;
   private double _hp;
   private double _width;
   private StateChange _stateChange;
 
-  public int Id
+  public long Id
   {
     get
     {
@@ -41,7 +41,7 @@ public partial class Actor : TBase
     }
   }
 
-  public Position Position
+  public Vector2 Position
   {
     get
     {
@@ -136,15 +136,15 @@ public partial class Actor : TBase
       switch (field.ID)
       {
         case 1:
-          if (field.Type == TType.I32) {
-            Id = iprot.ReadI32();
+          if (field.Type == TType.I64) {
+            Id = iprot.ReadI64();
           } else { 
             TProtocolUtil.Skip(iprot, field.Type);
           }
           break;
         case 2:
           if (field.Type == TType.Struct) {
-            Position = new Position();
+            Position = new Vector2();
             Position.Read(iprot);
           } else { 
             TProtocolUtil.Skip(iprot, field.Type);
@@ -194,10 +194,10 @@ public partial class Actor : TBase
     TField field = new TField();
     if (__isset.id) {
       field.Name = "id";
-      field.Type = TType.I32;
+      field.Type = TType.I64;
       field.ID = 1;
       oprot.WriteFieldBegin(field);
-      oprot.WriteI32(Id);
+      oprot.WriteI64(Id);
       oprot.WriteFieldEnd();
     }
     if (Position != null && __isset.position) {

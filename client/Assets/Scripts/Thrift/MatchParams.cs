@@ -21,8 +21,22 @@ using Thrift.Transport;
 #endif
 public partial class MatchParams : TBase
 {
+  private long _matchId;
   private List<PlayerInfo> _players;
   private long _timeLimitSec;
+
+  public long MatchId
+  {
+    get
+    {
+      return _matchId;
+    }
+    set
+    {
+      __isset.matchId = true;
+      this._matchId = value;
+    }
+  }
 
   public List<PlayerInfo> Players
   {
@@ -56,6 +70,7 @@ public partial class MatchParams : TBase
   [Serializable]
   #endif
   public struct Isset {
+    public bool matchId;
     public bool players;
     public bool timeLimitSec;
   }
@@ -78,6 +93,13 @@ public partial class MatchParams : TBase
       switch (field.ID)
       {
         case 1:
+          if (field.Type == TType.I64) {
+            MatchId = iprot.ReadI64();
+          } else { 
+            TProtocolUtil.Skip(iprot, field.Type);
+          }
+          break;
+        case 2:
           if (field.Type == TType.List) {
             {
               Players = new List<PlayerInfo>();
@@ -95,7 +117,7 @@ public partial class MatchParams : TBase
             TProtocolUtil.Skip(iprot, field.Type);
           }
           break;
-        case 2:
+        case 3:
           if (field.Type == TType.I64) {
             TimeLimitSec = iprot.ReadI64();
           } else { 
@@ -115,10 +137,18 @@ public partial class MatchParams : TBase
     TStruct struc = new TStruct("MatchParams");
     oprot.WriteStructBegin(struc);
     TField field = new TField();
+    if (__isset.matchId) {
+      field.Name = "matchId";
+      field.Type = TType.I64;
+      field.ID = 1;
+      oprot.WriteFieldBegin(field);
+      oprot.WriteI64(MatchId);
+      oprot.WriteFieldEnd();
+    }
     if (Players != null && __isset.players) {
       field.Name = "players";
       field.Type = TType.List;
-      field.ID = 1;
+      field.ID = 2;
       oprot.WriteFieldBegin(field);
       {
         oprot.WriteListBegin(new TList(TType.Struct, Players.Count));
@@ -133,7 +163,7 @@ public partial class MatchParams : TBase
     if (__isset.timeLimitSec) {
       field.Name = "timeLimitSec";
       field.Type = TType.I64;
-      field.ID = 2;
+      field.ID = 3;
       oprot.WriteFieldBegin(field);
       oprot.WriteI64(TimeLimitSec);
       oprot.WriteFieldEnd();
@@ -145,6 +175,12 @@ public partial class MatchParams : TBase
   public override string ToString() {
     StringBuilder __sb = new StringBuilder("MatchParams(");
     bool __first = true;
+    if (__isset.matchId) {
+      if(!__first) { __sb.Append(", "); }
+      __first = false;
+      __sb.Append("MatchId: ");
+      __sb.Append(MatchId);
+    }
     if (Players != null && __isset.players) {
       if(!__first) { __sb.Append(", "); }
       __first = false;

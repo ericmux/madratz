@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour {
 		CAMERA_MODE_PLAYER
 	}
 
-	private static Vector3 FLAT_POSITION = new Vector3 (0, 8, 0);
+	private static Vector3 FLAT_POSITION = new Vector3 (0, 20, 0);
 	private static Quaternion FLAT_ROTATION = Quaternion.Euler(90, 0, 0);
 
 	private static int ZOOM_MAX = 10;
@@ -23,6 +23,7 @@ public class CameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		currentMode = CameraMode.CAMERA_MODE_FLAT;
+		transform.position = FLAT_POSITION;
 	}
 	
 	// Update is called once per frame

@@ -10,6 +10,7 @@ public class RatSimulationDataUnit {
 	// Rotation
 	
 	public Quaternion rotation;
+	public double angle;
 	
 	// Stats
 	
@@ -31,6 +32,15 @@ public class RatSimulationDataUnit {
 		}
 		set {
 			rotation = value;
+		}
+	}
+
+	public double Angle {
+		get {
+			return angle;
+		}
+		set {
+			angle = value;
 		}
 	}
 }

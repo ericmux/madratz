@@ -15,7 +15,9 @@ public class RatSimulationScript : MonoBehaviour {
 		
 		if (mDataList != null) {
 			Vector3 position = mDataList[tick % mDataList.Count].Position;
+			double angle = mDataList[tick % mDataList.Count].Angle;
 			transform.position = position;
+			transform.eulerAngles = new Vector3(0, (float) angle, 0);
 			// Debug.Log("Position = " + position.ToString());
 		}
 	}

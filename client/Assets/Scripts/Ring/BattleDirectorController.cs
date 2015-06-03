@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.IO;
 using UnityEngine.UI;
 
@@ -24,11 +25,28 @@ public class BattleDirectorController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameObject loadingCanvas = GameObject.FindGameObjectWithTag ("LoadingCanvas");
+		loadingCanvas.SetActive (false);
+
+		List<Snapshot> snapshots = ThriftClient.getSnapshotsFromFile ("Assets/Files/match.out");
+
+		var ratSimData = getAllRatSimDataFromSnapshots (snapshots);
+
+		foreach (var rat in ratSimData) {
+			GameObject rat1 = (GameObject) Instantiate (ratPrefab);
+			RatSimulationScript rat1Script = rat1.GetComponent<RatSimulationScript> ();
+			rat1Script.loadData (rat.Value);
+		}
+		// rat1.SetActive (false);
+
+		// Playing starts when ticks are countin1g
+		TimerController.startTick ();
+
+		/*GameObject loadingCanvas = GameObject.FindGameObjectWithTag ("LoadingCanvas");
 
 		List<RatSimulationDataUnit> rat1Data = createFromFile ("Assets/Files/rat_circle");
 		List<RatSimulationDataUnit> rat2Data = createFromFile ("Assets/Files/rat_elastic");
 
-		loadingCanvas.SetActive (false);
+		// loadingCanvas.SetActive (false);
 
 		GameObject rat1 = (GameObject) Instantiate (ratPrefab);
 		RatSimulationScript rat1Script = rat1.GetComponent<RatSimulationScript> ();
@@ -52,17 +70,58 @@ public class BattleDirectorController : MonoBehaviour {
 			CameraController.player = rat2;
 
 			break;
-		}
+		}*/
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	
 	}
 
-	public void downloadFiles() {
+	public Dictionary<long, List<RatSimulationDataUnit>> getAllRatSimDataFromSnapshots(List<Snapshot> snapshots) {
+		Dictionary<long, List<RatSimulationDataUnit>> ratSimData = new Dictionary<long, List<RatSimulationDataUnit>>();
 
+		foreach (Snapshot s in snapshots) {
+
+			foreach (Actor a in s.Actors) {
+				if (!a.__isset.id) continue;
+				if (!ratSimData.ContainsKey(a.Id)) ratSimData[a.Id] = new List<RatSimulationDataUnit>();
+				
+				RatSimulationDataUnit dataUnit = new RatSimulationDataUnit();
+				dataUnit.position = new Vector3((float) a.Position.X / 6, 1, (float) a.Position.Y / 6);
+				dataUnit.angle = a.Angle;
+				// Debug.Log (dataUnit.position.ToString());
+				
+				ratSimData[a.Id].Add(dataUnit);
+			}
+		}
+
+		return ratSimData;
+	}
+
+	public List<RatSimulationDataUnit> getRatSimDataFromSnapshots(List<Snapshot> snapshots, long ratActorId) {
+		List<RatSimulationDataUnit> ratSimDataList = new List<RatSimulationDataUnit>();
+
+		List<Actor> actors;
+		foreach (Snapshot s in snapshots) {
+			actors = s.Actors;
+			foreach (Actor a in actors) {
+				if (a.Id == ratActorId)  {
+					RatSimulationDataUnit dataUnit = new RatSimulationDataUnit();
+					dataUnit.position = new Vector3((float) a.Position.X / 12 + 6, 1, (float) a.Position.Y / 12 + 6);
+					dataUnit.angle = a.Angle;
+					// Debug.Log (dataUnit.position.ToString());
+
+					ratSimDataList.Add(dataUnit);
+
+					break;
+				}
+			}
+		}
+		Debug.Log ("Found " + ratSimDataList.Count + " sim data units for " + ratActorId);
+
+		return ratSimDataList;
 	}
 
 	public List<RatSimulationDataUnit> createFromFile(string fileName) {
@@ -78,11 +137,14 @@ public class BattleDirectorController : MonoBehaviour {
 			int lineCounter = 0;
 			using (reader) {
 				do {
-					line = reader.ReadLine();
+					line = reader.ReadLine(); 	
+					// Thread.Sleep(100);
 					// Debug.Log ("Line read: " + line);
 
 					RatSimulationDataUnit data;
 					if (line != null) {
+
+
 						string[] entries = line.Split(',');
 						if (entries.Length > 0) {
 							// Get data from line
@@ -102,10 +164,12 @@ public class BattleDirectorController : MonoBehaviour {
 
 					lineCounter ++;
 	
-					loadingTime = lineCounter / nLines;
+					loadingTime = ((float) lineCounter) / nLines;
 					loadingSlider.value = loadingTime;
-					loadingPercentText.text = ((int) loadingTime) + " %%";
-					
+					string loadingPercentString = ((int) (loadingTime * 100)) + " %";
+					Debug.Log (loadingPercentString);
+					loadingPercentText.text = loadingPercentString;
+			
 				} while (line != null);
 				
 				reader.Close();

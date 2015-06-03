@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\RatSimulationScript.cs" />
      <Compile Include="Assets\Scripts\Ring\BattleDirectorController.cs" />
      <Compile Include="Assets\Scripts\Thrift\Actor.cs" />
+     <Compile Include="Assets\Scripts\Thrift\InvalidArgumentException.cs" />
      <Compile Include="Assets\Scripts\Thrift\MatchParams.cs" />
      <Compile Include="Assets\Scripts\Thrift\MatchResult.cs" />
      <Compile Include="Assets\Scripts\Thrift\PlayerInfo.cs" />
@@ -63,6 +64,7 @@
      <Compile Include="Assets\Scripts\Thrift\Snapshot.cs" />
      <Compile Include="Assets\Scripts\Thrift\State.cs" />
      <Compile Include="Assets\Scripts\Thrift\StateChange.cs" />
+     <Compile Include="Assets\Scripts\Thrift\Vector2.cs" />
      <Compile Include="Assets\Scripts\ThriftClient.cs" />
      <Compile Include="Assets\Scripts\TimerController.cs" />
      <None Include="Assets\Files\player1.txt" />
@@ -71,11 +73,11 @@
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Application/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
- <Reference Include="Thrift">
- <HintPath>C:/Users/Samuel/Desktop/projects/madratz/client/Assets/Libraries/Thrift.dll</HintPath>
- </Reference>
  <Reference Include="LitJson">
  <HintPath>C:/Users/Samuel/Desktop/projects/madratz/client/Assets/LitJson.dll</HintPath>
+ </Reference>
+ <Reference Include="Thrift">
+ <HintPath>C:/Users/Samuel/Desktop/projects/madratz/client/Assets/Libraries/Thrift.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

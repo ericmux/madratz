@@ -32,6 +32,11 @@ public partial class SimulationService {
     IAsyncResult Begin_result(AsyncCallback callback, object state, long matchId);
     MatchResult End_result(IAsyncResult asyncResult);
     #endif
+    List<Snapshot> snapshots(long matchId);
+    #if SILVERLIGHT
+    IAsyncResult Begin_snapshots(AsyncCallback callback, object state, long matchId);
+    List<Snapshot> End_snapshots(IAsyncResult asyncResult);
+    #endif
   }
 
   public class Client : IDisposable, Iface {
@@ -149,6 +154,9 @@ public partial class SimulationService {
       if (result.__isset.success) {
         return result.Success;
       }
+      if (result.__isset.exc) {
+        throw result.Exc;
+      }
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "startMatch failed: unknown result");
     }
 
@@ -210,6 +218,9 @@ public partial class SimulationService {
       iprot_.ReadMessageEnd();
       if (result.__isset.success) {
         return result.Success;
+      }
+      if (result.__isset.exc) {
+        throw result.Exc;
       }
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "isMatchFinished failed: unknown result");
     }
@@ -273,7 +284,75 @@ public partial class SimulationService {
       if (result.__isset.success) {
         return result.Success;
       }
+      if (result.__isset.exc) {
+        throw result.Exc;
+      }
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "result failed: unknown result");
+    }
+
+    
+    #if SILVERLIGHT
+    public IAsyncResult Begin_snapshots(AsyncCallback callback, object state, long matchId)
+    {
+      return send_snapshots(callback, state, matchId);
+    }
+
+    public List<Snapshot> End_snapshots(IAsyncResult asyncResult)
+    {
+      oprot_.Transport.EndFlush(asyncResult);
+      return recv_snapshots();
+    }
+
+    #endif
+
+    public List<Snapshot> snapshots(long matchId)
+    {
+      #if !SILVERLIGHT
+      send_snapshots(matchId);
+      return recv_snapshots();
+
+      #else
+      var asyncResult = Begin_snapshots(null, null, matchId);
+      return End_snapshots(asyncResult);
+
+      #endif
+    }
+    #if SILVERLIGHT
+    public IAsyncResult send_snapshots(AsyncCallback callback, object state, long matchId)
+    #else
+    public void send_snapshots(long matchId)
+    #endif
+    {
+      oprot_.WriteMessageBegin(new TMessage("snapshots", TMessageType.Call, seqid_));
+      snapshots_args args = new snapshots_args();
+      args.MatchId = matchId;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      #if SILVERLIGHT
+      return oprot_.Transport.BeginFlush(callback, state);
+      #else
+      oprot_.Transport.Flush();
+      #endif
+    }
+
+    public List<Snapshot> recv_snapshots()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      snapshots_result result = new snapshots_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.exc) {
+        throw result.Exc;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "snapshots failed: unknown result");
     }
 
   }
@@ -284,6 +363,7 @@ public partial class SimulationService {
       processMap_["startMatch"] = startMatch_Process;
       processMap_["isMatchFinished"] = isMatchFinished_Process;
       processMap_["result"] = result_Process;
+      processMap_["snapshots"] = snapshots_Process;
     }
 
     protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);
@@ -322,7 +402,11 @@ public partial class SimulationService {
       args.Read(iprot);
       iprot.ReadMessageEnd();
       startMatch_result result = new startMatch_result();
-      result.Success = iface_.startMatch(args.Match);
+      try {
+        result.Success = iface_.startMatch(args.Match);
+      } catch (InvalidArgumentException exc) {
+        result.Exc = exc;
+      }
       oprot.WriteMessageBegin(new TMessage("startMatch", TMessageType.Reply, seqid)); 
       result.Write(oprot);
       oprot.WriteMessageEnd();
@@ -335,7 +419,11 @@ public partial class SimulationService {
       args.Read(iprot);
       iprot.ReadMessageEnd();
       isMatchFinished_result result = new isMatchFinished_result();
-      result.Success = iface_.isMatchFinished(args.MatchId);
+      try {
+        result.Success = iface_.isMatchFinished(args.MatchId);
+      } catch (InvalidArgumentException exc) {
+        result.Exc = exc;
+      }
       oprot.WriteMessageBegin(new TMessage("isMatchFinished", TMessageType.Reply, seqid)); 
       result.Write(oprot);
       oprot.WriteMessageEnd();
@@ -348,8 +436,29 @@ public partial class SimulationService {
       args.Read(iprot);
       iprot.ReadMessageEnd();
       result_result result = new result_result();
-      result.Success = iface_.result(args.MatchId);
+      try {
+        result.Success = iface_.result(args.MatchId);
+      } catch (InvalidArgumentException exc) {
+        result.Exc = exc;
+      }
       oprot.WriteMessageBegin(new TMessage("result", TMessageType.Reply, seqid)); 
+      result.Write(oprot);
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void snapshots_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      snapshots_args args = new snapshots_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      snapshots_result result = new snapshots_result();
+      try {
+        result.Success = iface_.snapshots(args.MatchId);
+      } catch (InvalidArgumentException exc) {
+        result.Exc = exc;
+      }
+      oprot.WriteMessageBegin(new TMessage("snapshots", TMessageType.Reply, seqid)); 
       result.Write(oprot);
       oprot.WriteMessageEnd();
       oprot.Transport.Flush();
@@ -457,6 +566,7 @@ public partial class SimulationService {
   public partial class startMatch_result : TBase
   {
     private long _success;
+    private InvalidArgumentException _exc;
 
     public long Success
     {
@@ -471,6 +581,19 @@ public partial class SimulationService {
       }
     }
 
+    public InvalidArgumentException Exc
+    {
+      get
+      {
+        return _exc;
+      }
+      set
+      {
+        __isset.exc = true;
+        this._exc = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -478,6 +601,7 @@ public partial class SimulationService {
     #endif
     public struct Isset {
       public bool success;
+      public bool exc;
     }
 
     public startMatch_result() {
@@ -498,6 +622,14 @@ public partial class SimulationService {
           case 0:
             if (field.Type == TType.I64) {
               Success = iprot.ReadI64();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 1:
+            if (field.Type == TType.Struct) {
+              Exc = new InvalidArgumentException();
+              Exc.Read(iprot);
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -523,6 +655,15 @@ public partial class SimulationService {
         oprot.WriteFieldBegin(field);
         oprot.WriteI64(Success);
         oprot.WriteFieldEnd();
+      } else if (this.__isset.exc) {
+        if (Exc != null) {
+          field.Name = "Exc";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Exc.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
       }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
@@ -536,6 +677,12 @@ public partial class SimulationService {
         __first = false;
         __sb.Append("Success: ");
         __sb.Append(Success);
+      }
+      if (Exc != null && __isset.exc) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Exc: ");
+        __sb.Append(Exc== null ? "<null>" : Exc.ToString());
       }
       __sb.Append(")");
       return __sb.ToString();
@@ -642,6 +789,7 @@ public partial class SimulationService {
   public partial class isMatchFinished_result : TBase
   {
     private bool _success;
+    private InvalidArgumentException _exc;
 
     public bool Success
     {
@@ -656,6 +804,19 @@ public partial class SimulationService {
       }
     }
 
+    public InvalidArgumentException Exc
+    {
+      get
+      {
+        return _exc;
+      }
+      set
+      {
+        __isset.exc = true;
+        this._exc = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -663,6 +824,7 @@ public partial class SimulationService {
     #endif
     public struct Isset {
       public bool success;
+      public bool exc;
     }
 
     public isMatchFinished_result() {
@@ -683,6 +845,14 @@ public partial class SimulationService {
           case 0:
             if (field.Type == TType.Bool) {
               Success = iprot.ReadBool();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 1:
+            if (field.Type == TType.Struct) {
+              Exc = new InvalidArgumentException();
+              Exc.Read(iprot);
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -708,6 +878,15 @@ public partial class SimulationService {
         oprot.WriteFieldBegin(field);
         oprot.WriteBool(Success);
         oprot.WriteFieldEnd();
+      } else if (this.__isset.exc) {
+        if (Exc != null) {
+          field.Name = "Exc";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Exc.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
       }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
@@ -721,6 +900,12 @@ public partial class SimulationService {
         __first = false;
         __sb.Append("Success: ");
         __sb.Append(Success);
+      }
+      if (Exc != null && __isset.exc) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Exc: ");
+        __sb.Append(Exc== null ? "<null>" : Exc.ToString());
       }
       __sb.Append(")");
       return __sb.ToString();
@@ -827,6 +1012,7 @@ public partial class SimulationService {
   public partial class result_result : TBase
   {
     private MatchResult _success;
+    private InvalidArgumentException _exc;
 
     public MatchResult Success
     {
@@ -841,6 +1027,19 @@ public partial class SimulationService {
       }
     }
 
+    public InvalidArgumentException Exc
+    {
+      get
+      {
+        return _exc;
+      }
+      set
+      {
+        __isset.exc = true;
+        this._exc = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -848,6 +1047,7 @@ public partial class SimulationService {
     #endif
     public struct Isset {
       public bool success;
+      public bool exc;
     }
 
     public result_result() {
@@ -869,6 +1069,14 @@ public partial class SimulationService {
             if (field.Type == TType.Struct) {
               Success = new MatchResult();
               Success.Read(iprot);
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 1:
+            if (field.Type == TType.Struct) {
+              Exc = new InvalidArgumentException();
+              Exc.Read(iprot);
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -896,6 +1104,15 @@ public partial class SimulationService {
           Success.Write(oprot);
           oprot.WriteFieldEnd();
         }
+      } else if (this.__isset.exc) {
+        if (Exc != null) {
+          field.Name = "Exc";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Exc.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
       }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
@@ -909,6 +1126,255 @@ public partial class SimulationService {
         __first = false;
         __sb.Append("Success: ");
         __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Exc != null && __isset.exc) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Exc: ");
+        __sb.Append(Exc== null ? "<null>" : Exc.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class snapshots_args : TBase
+  {
+    private long _matchId;
+
+    public long MatchId
+    {
+      get
+      {
+        return _matchId;
+      }
+      set
+      {
+        __isset.matchId = true;
+        this._matchId = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool matchId;
+    }
+
+    public snapshots_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      TField field;
+      iprot.ReadStructBegin();
+      while (true)
+      {
+        field = iprot.ReadFieldBegin();
+        if (field.Type == TType.Stop) { 
+          break;
+        }
+        switch (field.ID)
+        {
+          case 1:
+            if (field.Type == TType.I64) {
+              MatchId = iprot.ReadI64();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          default: 
+            TProtocolUtil.Skip(iprot, field.Type);
+            break;
+        }
+        iprot.ReadFieldEnd();
+      }
+      iprot.ReadStructEnd();
+    }
+
+    public void Write(TProtocol oprot) {
+      TStruct struc = new TStruct("snapshots_args");
+      oprot.WriteStructBegin(struc);
+      TField field = new TField();
+      if (__isset.matchId) {
+        field.Name = "matchId";
+        field.Type = TType.I64;
+        field.ID = 1;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteI64(MatchId);
+        oprot.WriteFieldEnd();
+      }
+      oprot.WriteFieldStop();
+      oprot.WriteStructEnd();
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("snapshots_args(");
+      bool __first = true;
+      if (__isset.matchId) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("MatchId: ");
+        __sb.Append(MatchId);
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class snapshots_result : TBase
+  {
+    private List<Snapshot> _success;
+    private InvalidArgumentException _exc;
+
+    public List<Snapshot> Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public InvalidArgumentException Exc
+    {
+      get
+      {
+        return _exc;
+      }
+      set
+      {
+        __isset.exc = true;
+        this._exc = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool exc;
+    }
+
+    public snapshots_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      TField field;
+      iprot.ReadStructBegin();
+      while (true)
+      {
+        field = iprot.ReadFieldBegin();
+        if (field.Type == TType.Stop) { 
+          break;
+        }
+        switch (field.ID)
+        {
+          case 0:
+            if (field.Type == TType.List) {
+              {
+                Success = new List<Snapshot>();
+                TList _list4 = iprot.ReadListBegin();
+                for( int _i5 = 0; _i5 < _list4.Count; ++_i5)
+                {
+                  Snapshot _elem6;
+                  _elem6 = new Snapshot();
+                  _elem6.Read(iprot);
+                  Success.Add(_elem6);
+                }
+                iprot.ReadListEnd();
+              }
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 1:
+            if (field.Type == TType.Struct) {
+              Exc = new InvalidArgumentException();
+              Exc.Read(iprot);
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          default: 
+            TProtocolUtil.Skip(iprot, field.Type);
+            break;
+        }
+        iprot.ReadFieldEnd();
+      }
+      iprot.ReadStructEnd();
+    }
+
+    public void Write(TProtocol oprot) {
+      TStruct struc = new TStruct("snapshots_result");
+      oprot.WriteStructBegin(struc);
+      TField field = new TField();
+
+      if (this.__isset.success) {
+        if (Success != null) {
+          field.Name = "Success";
+          field.Type = TType.List;
+          field.ID = 0;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
+            foreach (Snapshot _iter7 in Success)
+            {
+              _iter7.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+      } else if (this.__isset.exc) {
+        if (Exc != null) {
+          field.Name = "Exc";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Exc.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+      }
+      oprot.WriteFieldStop();
+      oprot.WriteStructEnd();
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("snapshots_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success);
+      }
+      if (Exc != null && __isset.exc) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Exc: ");
+        __sb.Append(Exc== null ? "<null>" : Exc.ToString());
       }
       __sb.Append(")");
       return __sb.ToString();
