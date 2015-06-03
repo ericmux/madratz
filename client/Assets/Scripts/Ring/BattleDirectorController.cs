@@ -35,32 +35,13 @@ public class BattleDirectorController : MonoBehaviour {
 			GameObject rat1 = (GameObject) Instantiate (ratPrefab);
 			RatSimulationScript rat1Script = rat1.GetComponent<RatSimulationScript> ();
 			rat1Script.loadData (rat.Value);
+			// rat1.SetActive (false);
 		}
-		// rat1.SetActive (false);
 
 		// Playing starts when ticks are countin1g
 		TimerController.startTick ();
 
-		/*GameObject loadingCanvas = GameObject.FindGameObjectWithTag ("LoadingCanvas");
-
-		List<RatSimulationDataUnit> rat1Data = createFromFile ("Assets/Files/rat_circle");
-		List<RatSimulationDataUnit> rat2Data = createFromFile ("Assets/Files/rat_elastic");
-
-		// loadingCanvas.SetActive (false);
-
-		GameObject rat1 = (GameObject) Instantiate (ratPrefab);
-		RatSimulationScript rat1Script = rat1.GetComponent<RatSimulationScript> ();
-		rat1Script.loadData (rat1Data);
-		// rat1.SetActive (false);
-
-		GameObject rat2 = (GameObject) Instantiate (ratPrefab);
-		RatSimulationScript rat2Script = rat2.GetComponent<RatSimulationScript> ();
-		rat2Script.loadData (rat2Data);
-		// rat2.SetActive (false);
-
-		// Playing starts when ticks are counting
-		TimerController.startTick ();
-
+		/*
 		switch (playerNumber) {
 		case PlayerNumber.PLAYER_NUMBER_1:
 			CameraController.player = rat1;
@@ -71,7 +52,6 @@ public class BattleDirectorController : MonoBehaviour {
 
 			break;
 		}*/
-
 	}
 
 	// Update is called once per frame

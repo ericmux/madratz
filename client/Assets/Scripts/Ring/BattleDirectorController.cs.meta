@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 5cab760acff9c474ea206cecf541afdc
-timeCreated: 1430873840
+timeCreated: 1433374267
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - ratPrefab: {fileID: 153080, guid: c6bbf7e6d9e604d32858b43a13f1a949, type: 2}
+  - loadingSlider: {instanceID: 0}
+  - loadingPercentText: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
