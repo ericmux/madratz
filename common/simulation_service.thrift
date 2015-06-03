@@ -8,8 +8,11 @@ struct PlayerInfo {
 }
 
 struct MatchParams {
-  1: list<PlayerInfo> players;
-  2: i64 timeLimitSec = 300;  // 5 minutes by default
+  // The Match ID should be either provided externally or a unique one will be
+  // created internally, in case the caller doesn't track several IDs.
+  1: optional i64 matchId;
+  2: list<PlayerInfo> players;
+  3: i64 timeLimitSec = 300;  // 5 minutes by default
 }
 
 struct MatchResult {
@@ -17,12 +20,17 @@ struct MatchResult {
   2: double elapsedTimeSec;
 }
 
+exception InvalidArgumentException {
+  1: string msg;
+}
+
 service SimulationService {
   // Starts a match with the given parameters and returns an id
   // for querying.
-  i64 startMatch(1: MatchParams match);
+  i64 startMatch(1: MatchParams match) throws (1: InvalidArgumentException exc);
 
-  bool isMatchFinished(1: i64 matchId);
+  bool isMatchFinished(1: i64 matchId) throws (1: InvalidArgumentException exc);
 
-  MatchResult result(1: i64 matchId);
+  MatchResult result(1: i64 matchId) throws (1: InvalidArgumentException exc);
+
 }

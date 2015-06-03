@@ -38,6 +38,10 @@ public class MadratzMatch {
         mWorld.setContactListener(new CollisionHandler());
     }
 
+    public long getId() {
+        return mId;
+    }
+
     public void runSimulation() {
         while (mWorld.getPlayers().size() >= 2 && mWorld.getElapsedTime() < mTimeLimitSec) {
             if (LOG.isDebugEnabled()) {
