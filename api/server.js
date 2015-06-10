@@ -184,6 +184,8 @@ var playerRoutes = require('./app/routes/player');
 router.route('/player').post(playerRoutes.create)
 					   .get(playerRoutes.list);
 
+router.route('/login/:player_name').get(playerRoutes.login);
+
 router.route('/player/:player_id').get(playerRoutes.read)
 								  .put(playerRoutes.update)
 								  .delete(playerRoutes.delete);

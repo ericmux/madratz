@@ -18,6 +18,15 @@ exports.list = function(req, res) {
     });
 };
 
+exports.login = function(req, res) {
+	Player.findOne({name: req.params.player_name}, function(err, player) {
+		if(err)
+			return res.send(err);
+
+		return res.json(player);
+	});
+};
+
 exports.create = function(req, res) {
 	var player = new Player();
 	var name = req.body.name;
@@ -89,6 +98,10 @@ function sanitizeName(name) {
 	if(name.length < 4)
 		return { err: "name_too_short" };
 
-	if(!validator.isAlphanumeric())
-		return { err: "name_not_alphanumeric" };
+	player = Player.findOne({name: "name"})
+	if(player !== undefined)
+		return { err: "player already exists"};
+
+	//if(!validator.isAlphanumeric())
+	//	return { err: "name_not_alphanumeric" };
 }
