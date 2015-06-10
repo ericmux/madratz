@@ -84,7 +84,6 @@ public class MadratzWorld extends World implements Thriftalizable {
         return mFrameNumber * SimulationTest.TIMESTEP;
     }
 
-
     @Override
     public Snapshot toThrift() {
         List<com.madratz.serialization.Actor> serializedActors = getActiveActors()

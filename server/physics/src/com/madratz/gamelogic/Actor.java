@@ -29,7 +29,6 @@ public class Actor implements Thriftalizable {
     protected Body mBody;
 
     protected float mWidth;
-    protected float mHP;
 
     protected Actor(Behavior behavior) {
         mBehavior = behavior;
@@ -44,7 +43,6 @@ public class Actor implements Thriftalizable {
         bodyDef.angle = angle;
 
         mWidth = 2*1.0f;
-        mHP = 100.0f;
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 5.0f;
@@ -76,18 +74,6 @@ public class Actor implements Thriftalizable {
         return mWidth;
     }
 
-    public float getHP() {
-        return mHP;
-    }
-
-    public void addDamage(float damage){
-        mHP -= damage;
-    }
-
-    public void healDamage(float damage){
-        mHP += damage;
-    }
-
     public Body getBody() {
         return mBody;
     }
@@ -104,16 +90,8 @@ public class Actor implements Thriftalizable {
         return mBodyDef;
     }
 
-    public void setBodyDef(BodyDef bodyDef) {
-        mBodyDef = bodyDef;
-    }
-
     public FixtureDef getFixtureDef() {
         return mFixtureDef;
-    }
-
-    public void setFixtureDef(FixtureDef fixtureDef) {
-        mFixtureDef = fixtureDef;
     }
 
     public Behavior getBehavior() {
@@ -130,7 +108,6 @@ public class Actor implements Thriftalizable {
         Vec2 position = mBody.getPosition();
         serializedActor.setPosition(new Vector2(position.x, position.y));
         serializedActor.setAngle(mBody.getAngle());
-        serializedActor.setHp(mHP);
         serializedActor.setWidth(mWidth);
 
         return serializedActor;

@@ -6,11 +6,10 @@ import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 
-public class CollisionHandler implements ContactListener{
+public class CollisionHandler implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-
         Body bodyA = contact.getFixtureA().getBody();
         Body bodyB = contact.getFixtureB().getBody();
 
@@ -19,7 +18,6 @@ public class CollisionHandler implements ContactListener{
 
         if(actorA != null) actorA.handleCollision(actorB);
         if(actorB != null) actorB.handleCollision(actorA);
-
     }
 
     @Override

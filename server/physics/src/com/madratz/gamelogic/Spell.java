@@ -45,20 +45,16 @@ public class Spell extends Actor {
 
     @Override
     public void handleCollision(Actor actor) {
-        if(actor != null && actor.getClass() == Player.class){
-            actor.addDamage(mHitDamage);
-            if(actor.getHP() < 0.0f){
-                getWorld().destroyActor(actor);
-            }
+        if (actor instanceof Player) {
+            Player player = ((Player) actor);
+            player.inflictDamage(mHitDamage);
         }
-
         getWorld().destroyActor(this);
     }
 
     public float getSpeed() {
         return mSpeed;
     }
-
 
     public void setSpeed(float speed) {
         mSpeed = speed;

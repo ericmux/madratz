@@ -5,21 +5,31 @@ import org.jbox2d.common.Vec2;
 
 public class Player extends Actor {
 
-    private long mId;
+    private final long mId;
 
-    protected Player(long id, Behavior behavior) {
-        super(behavior);
-        mId = id;
-    }
+    private float mHP = 100.0f;
 
     public Player(long id, Behavior behavior, Vec2 position, float angle) {
         super(behavior, position, angle);
         mId = id;
     }
 
-    public Player(long id, Vec2 position, float angle) {
-        super(position, angle);
-        mId = id;
+    public float getHP() {
+        return mHP;
+    }
+
+    public void inflictDamage(float damage) {
+        mHP -= damage;
+
+        if (mHP <= 0.0f) {
+            mHP = 0;
+            getWorld().destroyActor(this);
+        }
+    }
+
+    public void healAmount(float healthPoints) {
+        mHP += healthPoints;
+        if (mHP > 100) mHP = 100.0f;
     }
 
     public long getId() {
@@ -27,14 +37,15 @@ public class Player extends Actor {
     }
 
     @Override
-    public String toString() {
-        return "Player " + mId;
+    public com.madratz.serialization.Actor toThrift() {
+        com.madratz.serialization.Actor actor = super.toThrift();
+        actor.setId(mId);
+        actor.setHp(mHP);
+        return actor;
     }
 
     @Override
-    public com.madratz.serialization.Actor toThrift() {
-        com.madratz.serialization.Actor actor = (com.madratz.serialization.Actor) super.toThrift();
-        actor.setId(mId);
-        return actor;
+    public String toString() {
+        return "Player " + mId;
     }
 }
