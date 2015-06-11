@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.IO;
@@ -39,7 +40,7 @@ public class BattleDirectorController : MonoBehaviour {
 		}
 
 		// Playing starts when ticks are countin1g
-		TimerController.startTick ();
+		TimerController.startTick (snapshots.Select(s => s.ElapsedTime).ToList());
 
 		/*
 		switch (playerNumber) {
@@ -63,14 +64,15 @@ public class BattleDirectorController : MonoBehaviour {
 		Dictionary<long, List<RatSimulationDataUnit>> ratSimData = new Dictionary<long, List<RatSimulationDataUnit>>();
 
 		foreach (Snapshot s in snapshots) {
-
 			foreach (Actor a in s.Actors) {
 				if (!a.__isset.id) continue;
 				if (!ratSimData.ContainsKey(a.Id)) ratSimData[a.Id] = new List<RatSimulationDataUnit>();
 				
 				RatSimulationDataUnit dataUnit = new RatSimulationDataUnit();
-				dataUnit.position = new Vector3((float) a.Position.X / 6, 1, (float) a.Position.Y / 6);
-				dataUnit.angle = a.Angle;
+				dataUnit.Position = new Vector3((float) a.Position.X / 6, 1, (float) a.Position.Y / 6);
+				dataUnit.Angle = a.Angle;
+				dataUnit.HP = a.Hp;
+				dataUnit.width = (float) a.Width / 6;
 				// Debug.Log (dataUnit.position.ToString());
 				
 				ratSimData[a.Id].Add(dataUnit);
