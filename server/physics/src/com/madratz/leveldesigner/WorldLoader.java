@@ -33,7 +33,7 @@ public class WorldLoader {
 
     public static MadratzWorld buildScriptedWorld(int numberOfPlayers){
         TimeLimitedExecutorService executor = scriptExecutorService(numberOfPlayers);
-        List<Behavior> behaviors = Stream.generate(() -> ScriptLoader.readScript("circle_behavior.py"))
+        List<Behavior> behaviors = Stream.concat(Stream.of(ScriptLoader.readScript("follow_and_shoot.py")), Stream.generate(() -> ScriptLoader.readScript("circle_behavior.py")))
                 .limit(numberOfPlayers)
                 .map(s -> timeLimited(new ScriptedBehavior(s), executor))
                 .collect(toList());
