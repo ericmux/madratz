@@ -2,45 +2,16 @@
 using System.Collections;
 
 public class RatSimulationDataUnit {
-
-	// Position
-		
-		public Vector3 position;
-	
-	// Rotation
-	
-	public Quaternion rotation;
-	public double angle;
 	
 	// Stats
 	
-	public float HP;
+	public double HP;
 	public float SP;
+	public float width;
 	
-	public Vector3 Position {
-		get {
-			return position;
-		}
-		set {
-			position = value;
-		}
-	}
+	public Vector3 Position { get; set; }
 	
-	public Quaternion Rotation {
-		get {
-			return rotation;
-		}
-		set {
-			rotation = value;
-		}
-	}
+	public Quaternion Rotation { get; set; }
 
-	public double Angle {
-		get {
-			return angle;
-		}
-		set {
-			angle = value;
-		}
-	}
+	public double Angle { get; set; }
 }

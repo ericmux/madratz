@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class BattleDirectorController : MonoBehaviour {
 	public GameObject ratPrefab;
+	public GameObject shotPrefab;
 
 	public enum PlayerNumber
 	{
@@ -19,6 +20,9 @@ public class BattleDirectorController : MonoBehaviour {
 
 	private PlayerNumber playerNumber = PlayerNumber.PLAYER_NUMBER_1;
 
+	private List<Snapshot> snapshots;
+	private List<GameObject> spellObjects = new List<GameObject>();
+
 	private float loadingTime = 0;
 	public Slider loadingSlider;
 	public Text loadingPercentText;
@@ -28,9 +32,9 @@ public class BattleDirectorController : MonoBehaviour {
 		GameObject loadingCanvas = GameObject.FindGameObjectWithTag ("LoadingCanvas");
 		loadingCanvas.SetActive (false);
 
-		List<Snapshot> snapshots = ThriftClient.getSnapshotsFromFile ("Assets/Files/match.out");
+		snapshots = ThriftClient.getSnapshotsFromFile ("Assets/Files/match.out");
 
-		var ratSimData = getAllRatSimDataFromSnapshots (snapshots);
+		var ratSimData = GetAllRatSimDataFromSnapshots (snapshots);
 
 		foreach (var rat in ratSimData) {
 			GameObject rat1 = (GameObject) Instantiate (ratPrefab);
@@ -57,10 +61,34 @@ public class BattleDirectorController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+		int tick = TimerController.tick;
+		if (tick >= snapshots.Count) return;
+
+		Snapshot snapshot = snapshots[tick];
+
+		int i = 0;
+		foreach (Actor spell in snapshot.Actors.Where(a => !a.__isset.id)) {
+			GameObject spellObject;
+			if (i < spellObjects.Count) {
+				spellObject = spellObjects[i];
+			} else {
+				spellObject = Instantiate(shotPrefab);
+				spellObjects.Add(spellObject);
+			}
+			UpdateSpellObject(spellObject, spell);
+			i++;
+		}
+		while (i < spellObjects.Count) {
+			spellObjects[i++].transform.localScale = new Vector3();
+		}
 	}
 
-	public Dictionary<long, List<RatSimulationDataUnit>> getAllRatSimDataFromSnapshots(List<Snapshot> snapshots) {
+	private void UpdateSpellObject(GameObject spellObject, Actor spell) {
+		spellObject.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+		spellObject.transform.position = new Vector3((float) spell.Position.X / 6, 1, (float) spell.Position.Y / 6);
+	}
+	
+	public Dictionary<long, List<RatSimulationDataUnit>> GetAllRatSimDataFromSnapshots(List<Snapshot> snapshots) {
 		Dictionary<long, List<RatSimulationDataUnit>> ratSimData = new Dictionary<long, List<RatSimulationDataUnit>>();
 
 		foreach (Snapshot s in snapshots) {
@@ -80,30 +108,6 @@ public class BattleDirectorController : MonoBehaviour {
 		}
 
 		return ratSimData;
-	}
-
-	public List<RatSimulationDataUnit> getRatSimDataFromSnapshots(List<Snapshot> snapshots, long ratActorId) {
-		List<RatSimulationDataUnit> ratSimDataList = new List<RatSimulationDataUnit>();
-
-		List<Actor> actors;
-		foreach (Snapshot s in snapshots) {
-			actors = s.Actors;
-			foreach (Actor a in actors) {
-				if (a.Id == ratActorId)  {
-					RatSimulationDataUnit dataUnit = new RatSimulationDataUnit();
-					dataUnit.position = new Vector3((float) a.Position.X / 12 + 6, 1, (float) a.Position.Y / 12 + 6);
-					dataUnit.angle = a.Angle;
-					// Debug.Log (dataUnit.position.ToString());
-
-					ratSimDataList.Add(dataUnit);
-
-					break;
-				}
-			}
-		}
-		Debug.Log ("Found " + ratSimDataList.Count + " sim data units for " + ratActorId);
-
-		return ratSimDataList;
 	}
 
 	public List<RatSimulationDataUnit> createFromFile(string fileName) {
