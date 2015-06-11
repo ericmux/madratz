@@ -2,7 +2,7 @@ package com.madratz.leveldesigner;
 
 import com.madratz.behavior.Behavior;
 import com.madratz.behavior.ScriptedBehavior;
-import com.madratz.behavior.examples.ShootBehavior;
+import com.madratz.behavior.impl.ShootBehavior;
 import com.madratz.behavior.TimeLimitedBehavior;
 import com.madratz.cpulimit.TimeLimitedExecutorService;
 import com.madratz.gamelogic.Player;

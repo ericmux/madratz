@@ -1,5 +1,6 @@
-package com.madratz.behavior;
+package com.madratz.behavior.impl;
 
+import com.madratz.behavior.Behavior;
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
 

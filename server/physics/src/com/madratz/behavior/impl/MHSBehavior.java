@@ -1,8 +1,8 @@
-package com.madratz.behavior.examples;
+package com.madratz.behavior.impl;
 
 import com.madratz.behavior.Behavior;
 import com.madratz.decision.Decision;
-import com.madratz.decision.SpeedUpRequest;
+import com.madratz.decision.MoveRequest;
 import com.madratz.gamelogic.Actor;
 
 public class MHSBehavior implements Behavior {
@@ -17,8 +17,8 @@ public class MHSBehavior implements Behavior {
     public Decision execute(Actor actor) throws Exception {
         Decision decision = new Decision();
 
-        SpeedUpRequest speedUpRequest = new SpeedUpRequest(actor,(float)Math.sin(2.0f*(double)t));
-        decision.addActionRequest(speedUpRequest);
+        MoveRequest velocityChangeRequest = MoveRequest.forVelocity(actor,(float) Math.sin(2.0f * t));
+        decision.addActionRequest(velocityChangeRequest);
 
         t += 1.0f/60.0f;
 

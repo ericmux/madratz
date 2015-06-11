@@ -5,6 +5,9 @@ import org.jbox2d.common.Vec2;
 
 public class Player extends Actor {
 
+    public static final float MAX_LINEAR_SPEED = 10.0f;
+    public static final float MAX_ANGULAR_SPEED = 15.0f;
+
     private final long mId;
 
     private float mHP = 100.0f;

@@ -1,8 +1,8 @@
-package com.madratz.behavior.examples;
+package com.madratz.behavior.impl;
 
 import com.madratz.behavior.Behavior;
 import com.madratz.decision.Decision;
-import com.madratz.decision.RotateRequest;
+import com.madratz.decision.MoveRequest;
 import com.madratz.gamelogic.Actor;
 
 public class RotateBehavior implements Behavior {
@@ -13,7 +13,7 @@ public class RotateBehavior implements Behavior {
     @Override
     public Decision execute(Actor actor) throws Exception {
         Decision decision = new Decision();
-        decision.addActionRequest(new RotateRequest(actor,1.0f));
+        decision.addActionRequest(MoveRequest.forRotation(actor, 1.0f));
         return decision;
     }
 }

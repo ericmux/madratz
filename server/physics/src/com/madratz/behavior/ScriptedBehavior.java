@@ -1,19 +1,20 @@
 package com.madratz.behavior;
 
-import com.madratz.behavior.wrappers.ActorWrapper;
+import com.madratz.behavior.api.ActionsInterface;
+import com.madratz.behavior.api.JythonWrapper;
+import com.madratz.behavior.api.SensoringInterface;
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
+import com.madratz.gamelogic.Player;
 import com.madratz.security.MadratzSecurityManager;
 import com.madratz.security.Privileged;
 import org.python.core.PyFunction;
-import org.python.core.PyJavaType;
 import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 
 public class ScriptedBehavior implements Behavior {
     private final String mScript;
 
-    private PythonInterpreter mInterpreter;
     private PyFunction mFunction;
 
     public ScriptedBehavior(String script) {
@@ -22,27 +23,30 @@ public class ScriptedBehavior implements Behavior {
 
     @Override
     public Decision execute(Actor actor) throws Exception {
+        if (!(actor instanceof Player)) throw new IllegalArgumentException("ScriptedBehavior is for players only");
         initPython();
 
-        ActorWrapper actorWrapper = new ActorWrapper(actor, new Decision());
-        PyObject wrapped = Privileged.callPrivileged(() -> PyJavaType.wrapJavaObject(actorWrapper));
-        mInterpreter.set("actor", wrapped);
+        Player player = (Player) actor;
+        Decision decision = new Decision();
 
-        mFunction.__call__();
+        ActionsInterface actions = new ActionsInterface(player, decision);
+        PyObject sensoring = JythonWrapper.wrap(new SensoringInterface(player));
+        mFunction.__call__(sensoring, JythonWrapper.wrap(actions));
 
-        return actorWrapper.getDecision();
+        return decision;
     }
 
     private void initPython() throws Exception {
         if (mFunction == null) {
-            mInterpreter = Privileged.callPrivileged(PythonInterpreter::new);
-            mInterpreter.exec(mScript);
-            mFunction = mInterpreter.get("execute",PyFunction.class);
+            PythonInterpreter interpreter = Privileged.callPrivileged(PythonInterpreter::new);
+            interpreter.exec(mScript);
+            mFunction = interpreter.get("execute", PyFunction.class);
         }
     }
 
     public static final String INITIALIZATION_SCRIPT = "" +
                     "import math\n" +
+                    "import random\n" +
                     "def function():\n" +
                     "  return 0\n" +
                     "x = function()\n\n" +

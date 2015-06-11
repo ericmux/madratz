@@ -1,7 +1,7 @@
 package com.madratz.gamelogic;
 
 import com.madratz.behavior.Behavior;
-import com.madratz.behavior.NopBehavior;
+import com.madratz.behavior.impl.NopBehavior;
 import com.madratz.decision.Decision;
 import com.madratz.serialization.Thriftalizable;
 import com.madratz.serialization.Vector2;
@@ -18,9 +18,6 @@ import org.slf4j.LoggerFactory;
 public class Actor implements Thriftalizable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Actor.class);
-
-    public static final float MAX_LINEAR_SPEED = 10.0f;
-    public static final float MAX_ANGULAR_SPEED = 15.0f;
 
     protected BodyDef mBodyDef;
     protected FixtureDef mFixtureDef;

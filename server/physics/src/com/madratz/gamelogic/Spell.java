@@ -1,6 +1,7 @@
 package com.madratz.gamelogic;
 
-import com.madratz.behavior.NopBehavior;
+import com.madratz.decision.Decision;
+import com.madratz.decision.MoveRequest;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;
@@ -9,15 +10,13 @@ import org.jbox2d.dynamics.FixtureDef;
 
 public class Spell extends Actor {
 
-    public static final float MAX_SPELL_SPEED = 20.0f;
+    private static final float MAX_SPELL_SPEED = 3 * Player.MAX_LINEAR_SPEED;
 
-    private float mSpeed;
-
-    private float mHitDamage;
+    private final float mHitDamage;
 
     public Spell(Vec2 position, float angle, float speed, float radius, float hitDamage) {
-        super(new NopBehavior());
-
+        super(a -> new Decision(MoveRequest.forVelocity(a, MAX_SPELL_SPEED * speed)));
+        assert speed > 0 && speed <= 1;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
@@ -31,16 +30,12 @@ public class Spell extends Actor {
         shape.setRadius(radius);
         fixtureDef.shape = shape;
 
-
         mWidth = 2*fixtureDef.shape.getRadius();
-
 
         mBodyDef = bodyDef;
         mFixtureDef = fixtureDef;
-        mSpeed = speed;
         mBody = null;
         mHitDamage = hitDamage;
-
     }
 
     @Override
@@ -50,17 +45,5 @@ public class Spell extends Actor {
             player.inflictDamage(mHitDamage);
         }
         getWorld().destroyActor(this);
-    }
-
-    public float getSpeed() {
-        return mSpeed;
-    }
-
-    public void setSpeed(float speed) {
-        mSpeed = speed;
-    }
-
-    public float getHitDamage() {
-        return mHitDamage;
     }
 }

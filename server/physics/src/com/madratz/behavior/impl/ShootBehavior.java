@@ -1,11 +1,11 @@
-package com.madratz.behavior.examples;
+package com.madratz.behavior.impl;
 
 import com.madratz.behavior.Behavior;
 import com.madratz.decision.Decision;
-import com.madratz.decision.RotateRequest;
-import com.madratz.decision.SpeedUpRequest;
+import com.madratz.decision.MoveRequest;
 import com.madratz.decision.SpellRequest;
 import com.madratz.gamelogic.Actor;
+import com.madratz.gamelogic.Player;
 import com.madratz.ui.SimulationTest;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
@@ -22,9 +22,7 @@ public class ShootBehavior implements Behavior {
 
     @Override
     public Decision execute(Actor actor) throws Exception {
-
         Decision decision = new Decision();
-
         final Body[] foundBody = new Body[1];
 
         if(mTarget == null) {
@@ -61,19 +59,16 @@ public class ShootBehavior implements Behavior {
 
                 float theta = (float) Math.atan2(relPos.y, relPos.x) - (float) Math.atan2(vel.y, vel.x);
 
-                float intensity = theta / (SimulationTest.TIMESTEP * Actor.MAX_ANGULAR_SPEED);
+                float intensity = theta / (SimulationTest.TIMESTEP * Player.MAX_ANGULAR_SPEED);
 
                 if (Math.abs(intensity) > 1.0f) intensity = Math.signum(intensity);
 
-                RotateRequest rotateRequest = new RotateRequest(actor, intensity);
+                MoveRequest rotateRequest = MoveRequest.forRotation(actor, intensity);
                 decision.addActionRequest(rotateRequest);
             }
-
         }
-
-        SpeedUpRequest speedUpRequest = new SpeedUpRequest(actor,1.0f);
-        decision.addActionRequest(speedUpRequest);
-
+        MoveRequest velocityRequest = MoveRequest.forVelocity(actor, 1.0f);
+        decision.addActionRequest(velocityRequest);
 
         return decision;
     }
