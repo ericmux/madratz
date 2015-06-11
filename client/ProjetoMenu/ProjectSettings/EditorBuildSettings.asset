@@ -7,9 +7,9 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: Assets/Scenes/Widgets.unity
-  - enabled: 0
+  - enabled: 1
+    path: Assets/Scenes/Menu 3D.unity
+  - enabled: 1
     path: Assets/Menu.unity
   - enabled: 0
     path: Assets/_Scene/Cartas.unity
-  - enabled: 1
-    path: Assets/Scenes/Menu 3D.unity
