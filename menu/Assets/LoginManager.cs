@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using LitJson;
+// using LitJson;
 
 public class LoginManager : MonoBehaviour {
 
@@ -25,7 +25,7 @@ public class LoginManager : MonoBehaviour {
 
 		yield return loginInfo;
 
-		if (loginInfo.text != null) {
+		/*if (loginInfo.text != null) {
 			try{
 				JsonData data = JsonMapper.ToObject(loginInfo.text);
 				Debug.Log ("Login Ok!: " + data["name"]);
@@ -34,7 +34,7 @@ public class LoginManager : MonoBehaviour {
 			}
 		} else {
 			Debug.Log("Login Error: "  + loginInfo.error);
-		}
+		}*/
 	}
 
 	private IEnumerator logupWithName(string name){
@@ -47,12 +47,12 @@ public class LoginManager : MonoBehaviour {
 		
 		yield return logupInfo;
 		
-		if (logupInfo.error != null) {
+		/*if (logupInfo.error != null) {
 			Debug.Log ("Logup Error: " + logupInfo.error);
 		} else {
 			JsonData data = JsonMapper.ToObject(logupInfo.text);
 
 			Debug.Log(data["message"]);
-		}
+		}*/
 	}
 }

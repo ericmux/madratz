@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using LitJson;
-
+// using LitJson;
 
 public class PlayerRequest : MonoBehaviour {
 	
@@ -25,13 +24,13 @@ public class PlayerRequest : MonoBehaviour {
 		if (newGamePost.error != null) {
 			Debug.Log ("New Game Error: " + newGamePost.error);
 
-		} else {
+		} /*else {
 			JsonData data = JsonMapper.ToObject(newGamePost.text);
 			
 			Debug.Log(data["message"]);
 
 			Application.LoadLevel (scene);
-		}
+		}*/
 
 	}
 }
