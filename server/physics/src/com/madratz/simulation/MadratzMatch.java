@@ -19,6 +19,8 @@ public class MadratzMatch {
 
     private static final Logger LOG = LoggerFactory.getLogger(MadratzMatch.class);
 
+    private static float EXTRA_SIMULATED_TIME_SEC = 2;
+
     private final long mId;
     private final float mTimeLimitSec;
     private final List<PlayerInfo> mPlayers;
@@ -48,12 +50,20 @@ public class MadratzMatch {
     public void runSimulation() {
         mSnapshots.add(mWorld.toThrift());
 
-        while (mWorld.getPlayers().size() >= 2 && mWorld.getElapsedTime() < mTimeLimitSec) {
+        float timeLimit = mTimeLimitSec;
+        int lastPlayerCount = mWorld.getPlayers().size();
+        while (mWorld.getElapsedTime() < timeLimit) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Stepping simulation... " + mWorld.getElapsedTime() + "s elapsed. Players alive: " + mWorld.getPlayers().size());
             }
             mWorld.step(SimulationTest.TIMESTEP, SimulationTest.VEL_ITERATIONS, SimulationTest.POS_ITERATIONS);
             mSnapshots.add(mWorld.toThrift());
+
+            int playerCount = mWorld.getPlayers().size();
+            if (playerCount < lastPlayerCount && playerCount <= 1) {
+                timeLimit = mWorld.getElapsedTime() + EXTRA_SIMULATED_TIME_SEC;
+            }
+            lastPlayerCount = playerCount;
         }
 
         Player winner = findWinner(mWorld.getPlayers()).orElse(null);

@@ -11,8 +11,6 @@ def execute(sensor, actor):
     if target_id is not None:
         targets = filter(lambda p: p.id == target_id, ops)
         target = targets[0] if len(targets) > 0 else None
-        if target != None and target.hp == 0:
-            target = None
     if target is None:
         target = ops[random.randint(0, len(ops) - 1)]
         target_id = target.id
@@ -25,6 +23,6 @@ def execute(sensor, actor):
     actor.set_velocity(1.0)
 
     t += 1
-    if t % 10 == 0:
+    if t % 40 == 0:
         actor.shoot()
         t = 0
