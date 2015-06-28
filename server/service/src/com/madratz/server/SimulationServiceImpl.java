@@ -1,5 +1,6 @@
 package com.madratz.server;
 
+import com.madratz.behavior.ScriptedBehavior;
 import com.madratz.serialization.Snapshot;
 import com.madratz.service.*;
 import com.madratz.simulation.MadratzMatch;
@@ -54,6 +55,20 @@ public class SimulationServiceImpl implements SimulationService.Iface {
     @Override
     public List<Snapshot> snapshots(long matchId) throws TException {
         return getFinishedMatch(matchId).getSnapshots();
+    }
+
+    @Override
+    public CompilationResult compileScript(String script) throws TException {
+        CompilationResult result = new CompilationResult(true);
+        ScriptedBehavior behavior = new ScriptedBehavior(script);
+        try {
+            behavior.init();
+        } catch (Exception e) {
+            result.success = false;
+            result.errorType = e.getClass().getSimpleName();
+            result.errorMsg = e.getMessage();
+        }
+        return result;
     }
 
     private MadratzMatch getFinishedMatch(long matchId) throws TException {
