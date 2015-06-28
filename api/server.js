@@ -215,7 +215,7 @@ var server = thrift.createServer(UserStorage, {
 		result(null);
 	},
 
-	retrieve: function(uid, result) {
+	retrieve: function(uid, result) {	
 		console.log("server retrieved:", uid);
 		result(null, users[uid]);
 	},

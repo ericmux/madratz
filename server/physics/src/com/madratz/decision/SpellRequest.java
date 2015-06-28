@@ -12,11 +12,10 @@ public class SpellRequest extends ActionRequest {
 
     @Override
     public void handle() {
-        Vec2 spellPos = mActor.getBody().getWorldPoint(new Vec2(mActor.getWidth(),0.0f));
-
-        Spell spell = new Spell(spellPos,Spell.MAX_SPELL_SPEED,0.8f,0.1f,20.0f);
+        Vec2 actorFront = mActor.getBody().getWorldPoint(new Vec2(mActor.getWidth(), 0.0f));
+        float angle = mActor.getBody().getAngle();
+        Spell spell = new Spell(actorFront, angle, 1, 0.1f, 20);
 
         mActor.getWorld().registerActor(spell);
-        spell.getBody().setLinearVelocity(mActor.getBody().getLinearVelocity().clone().mulLocal(3.0f));
     }
 }

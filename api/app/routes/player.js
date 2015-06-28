@@ -19,12 +19,12 @@ exports.list = function(req, res) {
 };
 
 exports.login = function(req, res) {
-	Player.findOne({name: req.params.player_name}, function(err, player) {
-		if(err)
-			return res.send(err);
+    Player.findOne({name: req.params.player_name}, function(err, player) {
+        if(err)
+            return res.send(err);
 
-		return res.json(player);
-	});
+        return res.json(player);
+    });
 };
 
 exports.create = function(req, res) {
@@ -98,10 +98,11 @@ function sanitizeName(name) {
 	if(name.length < 4)
 		return { err: "name_too_short" };
 
-	player = Player.findOne({name: "name"})
-	if(player !== undefined)
-		return { err: "player already exists"};
+	//player = Player.findOne({name: "name"})
+    //if(player !== undefined)
+    //    return { err: "player already exists"};
 
-	//if(!validator.isAlphanumeric())
-	//	return { err: "name_not_alphanumeric" };
+    //if(!validator.isAlphanumeric())
+    //    return { err: "name_not_alphanumeric" };
+
 }

@@ -2,10 +2,9 @@ import math
 
 time_step = 1.0/60.0
 
-actor = None
 t = 0.0
 
-def execute():
+def execute(sensor, actor):
     global t
     actor.speedUp(math.sin(t))
     actor.rotate(0.01)
