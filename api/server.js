@@ -1,10 +1,14 @@
+/*
+ * server.js
+ */
+
+
 // Requires
 var express    = require('express');
 var app        = express();
 var mongoose   = require('mongoose');
 var bodyParser = require('body-parser');
 var thrift 	   = require('thrift');
-var tprotocol  = require('./node_modules/thrift/lib/thrift/protocol.js');
 
 // Config
 var dbConfig   = require('./app/dbconfig');
@@ -26,7 +30,7 @@ mongoose.connect(dbConfig.getURL());
 var SimulationServices = require('./thrift/SimulationService.js');
 var ttypes             = require('./thrift/simulation_service_types');
 
-var connection         = thrift.createConnection('54.207.1.36', 1199, {protocol: tprotocol.TCompactProtocol});
+var connection         = thrift.createConnection('54.207.1.36', 1199, {protocol: thrift.TCompactProtocol});
 var client             = thrift.createClient(SimulationServices, connection);
 
 var mp = new ttypes.MatchParams({'players': [new ttypes.Player({'id': 1, 'script': 'lala'}), new ttypes.Player({'id': 2, 'script': 'lolo'})]});
