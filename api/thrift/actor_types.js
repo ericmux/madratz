@@ -16,7 +16,7 @@ ttypes.State = {
   'TACKLING' : 4,
   'DEAD' : 5
 };
-Position = module.exports.Position = function(args) {
+Vector2 = module.exports.Vector2 = function(args) {
   this.x = null;
   this.y = null;
   if (args) {
@@ -28,8 +28,8 @@ Position = module.exports.Position = function(args) {
     }
   }
 };
-Position.prototype = {};
-Position.prototype.read = function(input) {
+Vector2.prototype = {};
+Vector2.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -65,8 +65,8 @@ Position.prototype.read = function(input) {
   return;
 };
 
-Position.prototype.write = function(output) {
-  output.writeStructBegin('Position');
+Vector2.prototype.write = function(output) {
+  output.writeStructBegin('Vector2');
   if (this.x !== null && this.x !== undefined) {
     output.writeFieldBegin('x', Thrift.Type.DOUBLE, 1);
     output.writeDouble(this.x);
@@ -191,15 +191,15 @@ Actor.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I32) {
-        this.id = input.readI32();
+      if (ftype == Thrift.Type.I64) {
+        this.id = input.readI64();
       } else {
         input.skip(ftype);
       }
       break;
       case 2:
       if (ftype == Thrift.Type.STRUCT) {
-        this.position = new ttypes.Position();
+        this.position = new ttypes.Vector2();
         this.position.read(input);
       } else {
         input.skip(ftype);
@@ -246,8 +246,8 @@ Actor.prototype.read = function(input) {
 Actor.prototype.write = function(output) {
   output.writeStructBegin('Actor');
   if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.I32, 1);
-    output.writeI32(this.id);
+    output.writeFieldBegin('id', Thrift.Type.I64, 1);
+    output.writeI64(this.id);
     output.writeFieldEnd();
   }
   if (this.position !== null && this.position !== undefined) {

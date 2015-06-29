@@ -1,108 +1,131 @@
 /////////////
 // IMPORTS //
 /////////////
-var Player = require('../models/player');
+var playerRoutes = {},
+	Player = require('../models/player'),
+	validator = require('validator'),
+	mongoose = require('mongoose');
 
-var validator = require('validator');
+(function(playerRoutes) {
+	/////////////
+	// ROUTING //
+	/////////////
+	playerRoutes.list = function(req, res) {
+		return Player.find({}, '_id name', function(err, players) {
+	        if (err)
+	            return res.send(err);
 
-/////////////
-// ROUTING //
-/////////////
+	        return res.json(players);
+	    });
+	};
 
-exports.list = function(req, res) {
-	Player.find(function(err, players) {
-        if (err)
-            return res.send(err);
+	playerRoutes.login = function(req, res) {
+	    return Player.findOne({name: req.params.player_name}, function(err, player) {
+	        if(err)
+	            return res.send(err);
 
-        return res.json(players);
-    });
-};
+	        return res.json(player);
+	    });
+	};
 
-exports.login = function(req, res) {
-    Player.findOne({name: req.params.player_name}, function(err, player) {
-        if(err)
-            return res.send(err);
-
-        return res.json(player);
-    });
-};
-
-exports.create = function(req, res) {
-	var player = new Player();
-	var name = req.body.name;
-
-	var nameErr = sanitizeName(name);
-
-	if(nameErr)
-		return res.json(nameErr);
-
-	player.name = name;
-
-	return player.save(function(err) {
-		if(err)
-			return res.send(err);
-
-		return res.json({message: 'Player created: ' + player.name});
-	});
-};
-
-exports.read = function(req, res) {
-	Player.findById(req.params.player_id, function(err, player) {
-		if(err)
-			return res.send(err);
-
-		return res.json(player);
-	});
-};
-
-exports.update = function(req, res) {
-	Player.findById(req.params.player_id, function(err, player) {
-		if(err)
-			return res.send(err);
-
+	playerRoutes.create = function(req, res) {
 		var name = req.body.name;
 
-		var nameErr = sanitizeName(name);
+		return Player.findOne({"name": name}, function(err, player) {
+	        if(err)
+	            return res.send(err);
+	        if(player)
+	        	return res.json({err: "player_already_exists"});
 
-		if(nameErr)
-			return res.json(nameErr);
+	        var nameErr = sanitizeName(name);
 
-		player.name = name;
+			if(nameErr)
+				return res.json(nameErr);
 
-		return player.save(function(err) {
+			player = new Player({"name": name});
+
+			return player.save(function(err) {
+				if(err)
+					return res.send(err);
+
+				return res.json({message: 'Player created: ' + player.name});
+			});
+	    });
+	};
+
+	playerRoutes.read = function(req, res) {
+		var id = req.params.player_id;
+
+		if(!mongoose.Types.ObjectId.isValid(id))
+			return res.json({err: "invalid_player_id"});
+
+		return Player.findById(id, function(err, player) {
 			if(err)
 				return res.send(err);
 
-			return res.json({message: "Player " + player.name + " updated."});
+			return res.json(player);
 		});
-	});
-};
+	};
 
-exports.delete = function(req, res) {
-	Player.remove({ '_id': req.params.player_id }, function(err, player) {
-		if(err)
-			return res.send();
+	playerRoutes.update = function(req, res) {
+		var id = req.params.player_id;
 
-		return res.json({ message: 'Succesfully deleted'});
-	});
-};
+		if(!mongoose.Types.ObjectId.isValid(id))
+			return res.json({err: "invalid_player_id"});
 
-/////////////////////
-// DATA VALIDATION //
-/////////////////////
+		return Player.findById(id, function(err, player) {
+			if(err)
+				return res.send(err);
 
-function sanitizeName(name) {
-	if(typeof name === "undefined")
-		return { err: "name_undefined" };
+			if(!player)
+				return res.json({err: "player_not_found"});
 
-	if(name.length < 4)
-		return { err: "name_too_short" };
+			var name = req.body.name;
 
-	//player = Player.findOne({name: "name"})
-    //if(player !== undefined)
-    //    return { err: "player already exists"};
+			var nameErr = sanitizeName(name);
 
-    //if(!validator.isAlphanumeric())
-    //    return { err: "name_not_alphanumeric" };
+			if(nameErr)
+				return res.json(nameErr);
 
-}
+			player.name = name;
+
+			return player.save(function(err) {
+				if(err)
+					return res.send(err);
+
+				return res.json({message: "Player " + player.name + " updated."});
+			});
+		});
+	};
+
+	playerRoutes.delete = function(req, res) {
+		var id = req.params.player_id;
+
+		if(!mongoose.Types.ObjectId.isValid(id))
+			return res.json({err: "invalid_player_id"});
+
+		return Player.remove({'_id': id}, function(err, player) {
+			if(err)
+				return res.send();
+
+			return res.json({ message: 'Succesfully deleted'});
+		});
+	};
+
+	/////////////////////
+	// DATA VALIDATION //
+	/////////////////////
+	function sanitizeName(name) {
+		if(typeof name === "undefined")
+			return { err: "name_undefined" };
+
+		if(name.length < 4)
+			return { err: "name_too_short" };
+
+	    if(!validator.isAlphanumeric(name))
+	        return { err: "name_not_alphanumeric" };
+
+	};
+}(playerRoutes));
+
+module.exports = playerRoutes;

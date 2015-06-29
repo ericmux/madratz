@@ -11,7 +11,7 @@ var world_ttypes = require('./world_types')
 
 
 var ttypes = module.exports = {};
-Player = module.exports.Player = function(args) {
+PlayerInfo = module.exports.PlayerInfo = function(args) {
   this.id = null;
   this.script = null;
   if (args) {
@@ -23,8 +23,8 @@ Player = module.exports.Player = function(args) {
     }
   }
 };
-Player.prototype = {};
-Player.prototype.read = function(input) {
+PlayerInfo.prototype = {};
+PlayerInfo.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -60,8 +60,8 @@ Player.prototype.read = function(input) {
   return;
 };
 
-Player.prototype.write = function(output) {
-  output.writeStructBegin('Player');
+PlayerInfo.prototype.write = function(output) {
+  output.writeStructBegin('PlayerInfo');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I64, 1);
     output.writeI64(this.id);
@@ -78,10 +78,18 @@ Player.prototype.write = function(output) {
 };
 
 MatchParams = module.exports.MatchParams = function(args) {
+  this.matchId = null;
   this.players = null;
+  this.timeLimitSec = 300;
   if (args) {
+    if (args.matchId !== undefined) {
+      this.matchId = args.matchId;
+    }
     if (args.players !== undefined) {
       this.players = args.players;
+    }
+    if (args.timeLimitSec !== undefined) {
+      this.timeLimitSec = args.timeLimitSec;
     }
   }
 };
@@ -100,6 +108,13 @@ MatchParams.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
+      if (ftype == Thrift.Type.I64) {
+        this.matchId = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
       if (ftype == Thrift.Type.LIST) {
         var _size0 = 0;
         var _rtmp34;
@@ -111,7 +126,7 @@ MatchParams.prototype.read = function(input) {
         for (var _i5 = 0; _i5 < _size0; ++_i5)
         {
           var elem6 = null;
-          elem6 = new ttypes.Player();
+          elem6 = new ttypes.PlayerInfo();
           elem6.read(input);
           this.players.push(elem6);
         }
@@ -120,9 +135,13 @@ MatchParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.timeLimitSec = input.readI64();
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -134,8 +153,13 @@ MatchParams.prototype.read = function(input) {
 
 MatchParams.prototype.write = function(output) {
   output.writeStructBegin('MatchParams');
+  if (this.matchId !== null && this.matchId !== undefined) {
+    output.writeFieldBegin('matchId', Thrift.Type.I64, 1);
+    output.writeI64(this.matchId);
+    output.writeFieldEnd();
+  }
   if (this.players !== null && this.players !== undefined) {
-    output.writeFieldBegin('players', Thrift.Type.LIST, 1);
+    output.writeFieldBegin('players', Thrift.Type.LIST, 2);
     output.writeListBegin(Thrift.Type.STRUCT, this.players.length);
     for (var iter7 in this.players)
     {
@@ -148,6 +172,11 @@ MatchParams.prototype.write = function(output) {
     output.writeListEnd();
     output.writeFieldEnd();
   }
+  if (this.timeLimitSec !== null && this.timeLimitSec !== undefined) {
+    output.writeFieldBegin('timeLimitSec', Thrift.Type.I64, 3);
+    output.writeI64(this.timeLimitSec);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -155,9 +184,13 @@ MatchParams.prototype.write = function(output) {
 
 MatchResult = module.exports.MatchResult = function(args) {
   this.winnerId = null;
+  this.elapsedTimeSec = null;
   if (args) {
     if (args.winnerId !== undefined) {
       this.winnerId = args.winnerId;
+    }
+    if (args.elapsedTimeSec !== undefined) {
+      this.elapsedTimeSec = args.elapsedTimeSec;
     }
   }
 };
@@ -182,9 +215,13 @@ MatchResult.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 2:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.elapsedTimeSec = input.readDouble();
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -199,6 +236,67 @@ MatchResult.prototype.write = function(output) {
   if (this.winnerId !== null && this.winnerId !== undefined) {
     output.writeFieldBegin('winnerId', Thrift.Type.I64, 1);
     output.writeI64(this.winnerId);
+    output.writeFieldEnd();
+  }
+  if (this.elapsedTimeSec !== null && this.elapsedTimeSec !== undefined) {
+    output.writeFieldBegin('elapsedTimeSec', Thrift.Type.DOUBLE, 2);
+    output.writeDouble(this.elapsedTimeSec);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+InvalidArgumentException = module.exports.InvalidArgumentException = function(args) {
+  Thrift.TException.call(this, "InvalidArgumentException")
+  this.name = "InvalidArgumentException"
+  this.msg = null;
+  if (args) {
+    if (args.msg !== undefined) {
+      this.msg = args.msg;
+    }
+  }
+};
+Thrift.inherits(InvalidArgumentException, Thrift.TException);
+InvalidArgumentException.prototype.name = 'InvalidArgumentException';
+InvalidArgumentException.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.msg = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+InvalidArgumentException.prototype.write = function(output) {
+  output.writeStructBegin('InvalidArgumentException');
+  if (this.msg !== null && this.msg !== undefined) {
+    output.writeFieldBegin('msg', Thrift.Type.STRING, 1);
+    output.writeString(this.msg);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

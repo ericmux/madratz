@@ -12,12 +12,12 @@ var actor_ttypes = require('./actor_types')
 
 var ttypes = module.exports = {};
 Snapshot = module.exports.Snapshot = function(args) {
-  this.frameId = null;
+  this.elapsedTime = null;
   this.actors = null;
   this.finished = null;
   if (args) {
-    if (args.frameId !== undefined) {
-      this.frameId = args.frameId;
+    if (args.elapsedTime !== undefined) {
+      this.elapsedTime = args.elapsedTime;
     }
     if (args.actors !== undefined) {
       this.actors = args.actors;
@@ -42,8 +42,8 @@ Snapshot.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I32) {
-        this.frameId = input.readI32();
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.elapsedTime = input.readDouble();
       } else {
         input.skip(ftype);
       }
@@ -87,9 +87,9 @@ Snapshot.prototype.read = function(input) {
 
 Snapshot.prototype.write = function(output) {
   output.writeStructBegin('Snapshot');
-  if (this.frameId !== null && this.frameId !== undefined) {
-    output.writeFieldBegin('frameId', Thrift.Type.I32, 1);
-    output.writeI32(this.frameId);
+  if (this.elapsedTime !== null && this.elapsedTime !== undefined) {
+    output.writeFieldBegin('elapsedTime', Thrift.Type.DOUBLE, 1);
+    output.writeDouble(this.elapsedTime);
     output.writeFieldEnd();
   }
   if (this.actors !== null && this.actors !== undefined) {
