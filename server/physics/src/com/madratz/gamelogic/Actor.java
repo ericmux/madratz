@@ -39,12 +39,12 @@ public class Actor implements Thriftalizable {
         bodyDef.allowSleep = false;
         bodyDef.angle = angle;
 
-        mWidth = 2*1.0f;
+        mWidth = 4 * 1.0f;
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 5.0f;
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(1.0f,1.0f);
+        polygonShape.setAsBox(mWidth / 2, mWidth / 2);
         fixtureDef.shape = polygonShape;
 
         mBodyDef = bodyDef;

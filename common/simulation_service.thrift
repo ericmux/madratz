@@ -20,6 +20,12 @@ struct MatchResult {
   2: double elapsedTimeSec;
 }
 
+struct CompilationResult {
+  1: bool success;
+  2: optional string errorType;
+  3: optional string errorMsg;
+}
+
 exception InvalidArgumentException {
   1: string msg;
 }
@@ -34,4 +40,6 @@ service SimulationService {
   MatchResult result(1: i64 matchId) throws (1: InvalidArgumentException exc);
 
   list<world.Snapshot> snapshots(1: i64 matchId) throws (1: InvalidArgumentException exc);
+
+  CompilationResult compileScript(1: string script);
 }
