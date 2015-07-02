@@ -2,8 +2,8 @@ package com.madratz.behavior.api;
 
 import com.madratz.decision.Decision;
 import com.madratz.decision.MoveRequest;
-import com.madratz.decision.ShootRequest;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
+import com.madratz.gamelogic.player.Weapon;
 
 public class ActionsInterface {
 
@@ -23,8 +23,8 @@ public class ActionsInterface {
         mDecision.addActionRequest(MoveRequest.forRotation(mPlayer, modulate(speed, Player.MAX_ANGULAR_SPEED)));
     }
 
-    public void shoot(){
-        mDecision.addActionRequest(new ShootRequest(mPlayer));
+    public Weapon.Interface weapon() {
+        return mPlayer.getWeapon().getInterface(mDecision);
     }
 
     private static float modulate(float fraction, float max) {

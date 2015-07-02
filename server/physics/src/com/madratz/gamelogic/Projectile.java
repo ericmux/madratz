@@ -2,6 +2,7 @@ package com.madratz.gamelogic;
 
 import com.madratz.decision.Decision;
 import com.madratz.decision.MoveRequest;
+import com.madratz.gamelogic.player.Player;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;

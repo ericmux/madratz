@@ -5,7 +5,7 @@ import com.madratz.decision.Decision;
 import com.madratz.decision.MoveRequest;
 import com.madratz.decision.ShootRequest;
 import com.madratz.gamelogic.Actor;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
 import com.madratz.ui.SimulationTest;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;

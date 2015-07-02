@@ -1,6 +1,6 @@
 package com.madratz.behavior.api;
 
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
 import org.python.core.PyList;
 import org.python.core.PyObject;
 
@@ -15,8 +15,8 @@ public class SensoringInterface {
         mPlayer = player;
     }
 
-    public PyObject self() {
-        return JythonWrapper.wrap(ActorInfo.fromPlayer(mPlayer));
+    public ActorInfo self() {
+        return ActorInfo.fromPlayer(mPlayer);
     }
 
     public PyList opponents() {

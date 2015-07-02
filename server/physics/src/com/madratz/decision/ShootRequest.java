@@ -2,7 +2,7 @@ package com.madratz.decision;
 
 import com.madratz.gamelogic.Actor;
 import com.madratz.gamelogic.Projectile;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
 import org.jbox2d.common.Vec2;
 
 public class ShootRequest implements ActionRequest {
