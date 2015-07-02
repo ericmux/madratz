@@ -1,6 +1,7 @@
 package com.madratz.gamelogic;
 
 import com.madratz.behavior.Behavior;
+import com.madratz.gamelogic.Actor;
 import org.jbox2d.common.Vec2;
 
 public class Player extends Actor {

@@ -7,7 +7,7 @@ import org.jbox2d.dynamics.Body;
 import java.util.function.Consumer;
 
 
-public class MoveRequest extends ActionRequest {
+public class MoveRequest implements ActionRequest {
 
     public static MoveRequest forVelocity(Actor actor, float intensity) {
         Vec2 vel = actor.getBody().getWorldVector(new Vec2(intensity, 0));
@@ -18,10 +18,11 @@ public class MoveRequest extends ActionRequest {
         return new MoveRequest(actor, b -> b.setAngularVelocity(intensity));
     }
 
+    private final Actor mActor;
     private final Consumer<Body> mApplier;
 
     public MoveRequest(Actor actor, Consumer<Body> applier) {
-        super(actor);
+        mActor = actor;
         mApplier = applier;
     }
 

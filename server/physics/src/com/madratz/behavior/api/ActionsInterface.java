@@ -2,7 +2,7 @@ package com.madratz.behavior.api;
 
 import com.madratz.decision.Decision;
 import com.madratz.decision.MoveRequest;
-import com.madratz.decision.SpellRequest;
+import com.madratz.decision.ShootRequest;
 import com.madratz.gamelogic.Player;
 
 public class ActionsInterface {
@@ -24,7 +24,7 @@ public class ActionsInterface {
     }
 
     public void shoot(){
-        mDecision.addActionRequest(new SpellRequest(mPlayer));
+        mDecision.addActionRequest(new ShootRequest(mPlayer));
     }
 
     private static float modulate(float fraction, float max) {
