@@ -35,8 +35,7 @@ var ttypes             = require('../../thrift/simulation_service_types');
 		  	if (err) {
 		  		return console.log('Error:\n' + err);
 		  	}
-		  	new 
-		  	console.log(new ttypes.CompilationResult(result));
+		  	console.log(result);
 		});
 	};
 

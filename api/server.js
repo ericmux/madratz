@@ -55,7 +55,7 @@ function onConnectedToSimulationServer() {
 	var scriptRoutes = require('./app/routes/script');
 
 	router.route('/player/:player_id/script/list').get(scriptRoutes.list);
-	router.route('/player/:player_id/script/create').post(scriptRoutes.create);
+	router.route('/player/:player_id/script/create').post(scriptRoutes.create(simulation));
 
 	router.route('/player/:player_id/script/:script_id/info').get(scriptRoutes.read);
 	router.route('/player/:player_id/script/:script_id/update').post(scriptRoutes.update(simulation));

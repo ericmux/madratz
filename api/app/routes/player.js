@@ -80,7 +80,7 @@ var playerRoutes = {},
 	        	return localData.getDefaultScript(function(script) {
 	        		var newScript = new Script({_owner: player.id,
 						title: localData.getDefaultScriptName(),
-						code: script,
+						code: new Buffer(script).toString('base64'),
 						createdOn: actualDate,
 						lastUpdate: actualDate,
 					});
