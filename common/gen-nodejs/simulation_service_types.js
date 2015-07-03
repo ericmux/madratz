@@ -248,6 +248,88 @@ MatchResult.prototype.write = function(output) {
   return;
 };
 
+CompilationResult = module.exports.CompilationResult = function(args) {
+  this.success = null;
+  this.errorType = null;
+  this.errorMsg = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+    if (args.errorType !== undefined) {
+      this.errorType = args.errorType;
+    }
+    if (args.errorMsg !== undefined) {
+      this.errorMsg = args.errorMsg;
+    }
+  }
+};
+CompilationResult.prototype = {};
+CompilationResult.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.errorType = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.errorMsg = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+CompilationResult.prototype.write = function(output) {
+  output.writeStructBegin('CompilationResult');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 1);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.errorType !== null && this.errorType !== undefined) {
+    output.writeFieldBegin('errorType', Thrift.Type.STRING, 2);
+    output.writeString(this.errorType);
+    output.writeFieldEnd();
+  }
+  if (this.errorMsg !== null && this.errorMsg !== undefined) {
+    output.writeFieldBegin('errorMsg', Thrift.Type.STRING, 3);
+    output.writeString(this.errorMsg);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 InvalidArgumentException = module.exports.InvalidArgumentException = function(args) {
   Thrift.TException.call(this, "InvalidArgumentException")
   this.name = "InvalidArgumentException"

@@ -29,6 +29,17 @@ var ttypes             = require('../../thrift/simulation_service_types');
 		return _client;
 	};
 
+	simulation.verifyScript = function(script) {
+		console.log('Verifying script...');
+		_client.compileScript(script, function(err, result) {
+		  	if (err) {
+		  		return console.log('Error:\n' + err);
+		  	}
+		  	new 
+		  	console.log(new ttypes.CompilationResult(result));
+		});
+	};
+
 	function onConnected(callback) {
 		return function() {
 			console.log("Connected to simulation server at: " + _info.ip + ":" + _info.port + ".");

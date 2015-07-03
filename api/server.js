@@ -38,29 +38,38 @@ function onConnectedToSimulationServer() {
 	router.route('/creategame')
 		.post(matchRoutes.create(simulation.getParams()));
 
-	// Script Calls routing
-	var scriptRoutes = require('./app/routes/script');
-
-	router.route('/player/:player_id/script')
-		.post(scriptRoutes.create)
-		.get(scriptRoutes.list);
-
-	router.route('/player/:player_id/script/:script_id')
-		.get(scriptRoutes.read)
-		.put(scriptRoutes.update)
-		.delete(scriptRoutes.delete);
-
 	// Player routing
 	var playerRoutes = require('./app/routes/player');
 
-	router.route('/player').post(playerRoutes.create)
-						   .get(playerRoutes.list);
+	router.route('/player').get(playerRoutes.list);
 
-	router.route('/login/:player_name').get(playerRoutes.login);
+	router.route('/login').post(playerRoutes.login);
+
+	router.route('/register').post(playerRoutes.register);
 
 	router.route('/player/:player_id').get(playerRoutes.read)
 									  .put(playerRoutes.update)
 									  .delete(playerRoutes.delete);
+
+	// Script Calls routing
+	var scriptRoutes = require('./app/routes/script');
+
+	router.route('/player/:player_id/script/list').get(scriptRoutes.list);
+	router.route('/player/:player_id/script/create').post(scriptRoutes.create);
+
+	router.route('/player/:player_id/script/:script_id/info').get(scriptRoutes.read);
+	router.route('/player/:player_id/script/:script_id/update').post(scriptRoutes.update(simulation));
+	router.route('/player/:player_id/script/:script_id/delete').get(scriptRoutes.delete);
+
+    // Character routing
+    var characterRoutes = require('./app/routes/character');
+
+    router.route('/player/:player_id/character/list').get(characterRoutes.list);
+    router.route('/player/:player_id/character/create').post(characterRoutes.create);
+
+    router.route('/player/:player_id/character/:char_id/info').get(characterRoutes.read);
+    router.route('/player/:player_id/character/:char_id/delete').get(characterRoutes.delete);
+
 
 	// API pre-routing
 	app.use('/api', router);

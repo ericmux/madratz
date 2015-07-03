@@ -17,6 +17,12 @@ var thrift = require('thrift');
 
 		return {'ip': ip, 'port': port, 'config': thriftConfig};
 	};
+
+	config.getDefaultDir = function() {
+		var dir = './defaults/';
+		return dir;
+	};
+
 }(config));
 
 module.exports = config;

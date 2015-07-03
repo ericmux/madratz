@@ -3,15 +3,17 @@
 /////////////
 var playerRoutes = {},
 	Player = require('../models/player'),
+	Script = require('../models/script'),
 	validator = require('validator'),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	localData = require('../services/local_data');
 
 (function(playerRoutes) {
 	/////////////
 	// ROUTING //
 	/////////////
 	playerRoutes.list = function(req, res) {
-		return Player.find({}, '_id name', function(err, players) {
+		return Player.find({}, '_id name username', function(err, players) {
 	        if (err)
 	            return res.send(err);
 
@@ -20,36 +22,77 @@ var playerRoutes = {},
 	};
 
 	playerRoutes.login = function(req, res) {
-	    return Player.findOne({name: req.params.player_name}, function(err, player) {
+		var username = req.body.username;
+		var password = req.body.password;
+
+	    return Player.findOne({'username': username}, function(err, player) {
 	        if(err)
 	            return res.send(err);
 
-	        return res.json(player);
+	        if(!player || (password !== player.password))
+	        	return res.json({err: "invalid_username_or_password"});
+
+	        player.lastLogin = new Date();
+
+	        return player.save(function(err) {
+	        	if(err)
+	        		return res.send(err);
+
+	        	return res.json({'msg': 'login_ok', 'id': player._id});
+	        });
 	    });
 	};
 
-	playerRoutes.create = function(req, res) {
-		var name = req.body.name;
+	playerRoutes.register = function(req, res) {
+		var username = req.body.username;
+		var usernameErr = sanitizeUsername(username);
+		if(usernameErr)
+			return res.json(usernameErr);
 
-		return Player.findOne({"name": name}, function(err, player) {
+		var password = req.body.password;
+		var passwordErr = sanitizePassword(password);
+		if(passwordErr)
+			return res.json(passwordErr);
+
+		var name     = req.body.name;
+		var nameErr = sanitizeName(name);
+		if(nameErr)
+			return res.json(nameErr);
+
+	    return Player.findOne({'username': username}, function(err, player) {
 	        if(err)
 	            return res.send(err);
+
 	        if(player)
-	        	return res.json({err: "player_already_exists"});
+	        	return res.json({err: "username_already_in_use"});
 
-	        var nameErr = sanitizeName(name);
+	        var actualDate = new Date();
+	        var newPlayer = new Player({'username': username,
+	        							'password': password,
+	        							'name': name,
+	        							'createdOn': actualDate,
+	        							'lastLogin': actualDate });
 
-			if(nameErr)
-				return res.json(nameErr);
+	        return newPlayer.save(function(err, player) {
+	        	if(err)
+	        		return res.send(err);
 
-			player = new Player({"name": name});
+	        	return localData.getDefaultScript(function(script) {
+	        		var newScript = new Script({_owner: player.id,
+						title: localData.getDefaultScriptName(),
+						code: script,
+						createdOn: actualDate,
+						lastUpdate: actualDate,
+					});
 
-			return player.save(function(err) {
-				if(err)
-					return res.send(err);
+					return newScript.save(function(err) {
+						if(err)
+							return res.send(err);
 
-				return res.json({message: 'Player created: ' + player.name});
-			});
+						return res.json({'msg': 'user_created', 'id': player._id});
+					});
+	        	});
+	        });
 	    });
 	};
 
@@ -124,7 +167,25 @@ var playerRoutes = {},
 
 	    if(!validator.isAlphanumeric(name))
 	        return { err: "name_not_alphanumeric" };
+	};
 
+	function sanitizeUsername(name) {
+		if(typeof name === "undefined")
+			return { err: "username_undefined" };
+
+		if(name.length < 4)
+			return { err: "username_too_short" };
+
+	    if(!validator.isAlphanumeric(name))
+	        return { err: "username_not_alphanumeric" };
+	};
+
+	function sanitizePassword(name) {
+		if(typeof name === "undefined")
+			return { err: "password_undefined" };
+
+		if(name.length < 6)
+			return { err: "password_too_short" };
 	};
 }(playerRoutes));
 
