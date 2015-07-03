@@ -14,7 +14,7 @@ var scriptRoutes = {},
 
 	scriptRoutes.list = function(req, res) {
 		var id = req.params.player_id;
-		var idErr = sanitizeId(id)
+		var idErr = sanitizeId(id);
 		if(idErr)
 			return res.json(idErr);
 
@@ -41,7 +41,7 @@ var scriptRoutes = {},
 	{
 		return function(req, res) {
 			var id = req.params.player_id;
-			var idErr = sanitizeId(id)
+			var idErr = sanitizeId(id);
 			if(idErr)
 				return res.json(idErr);
 
@@ -84,7 +84,7 @@ var scriptRoutes = {},
 	{
 		return function(req, res) {
 			var id = req.params.player_id;
-			var idErr = sanitizeId(id)
+			var idErr = sanitizeId(id);
 			if(idErr)
 				return res.json(idErr);
 
@@ -110,12 +110,12 @@ var scriptRoutes = {},
 
 	scriptRoutes.read = function(req, res) {
 		var playerId = req.params.player_id;
-		var idErr = sanitizeId(playerId, 'player')
+		var idErr = sanitizeId(playerId, 'player');
 		if(idErr)
 			return res.json(idErr);
 
 		var scriptId = req.params.script_id;
-		var idErr = sanitizeId(scriptId, 'script')
+		var idErr = sanitizeId(scriptId, 'script');
 		if(idErr)
 			return res.json(idErr);
 
@@ -141,12 +141,12 @@ var scriptRoutes = {},
 	scriptRoutes.update = function(simulationService) {
 		return function(req, res) {
 			var playerId = req.params.player_id;
-			var idErr = sanitizeId(playerId, 'player')
+			var idErr = sanitizeId(playerId, 'player');
 			if(idErr)
 				return res.json(idErr);
 
 			var scriptId = req.params.script_id;
-			var idErr = sanitizeId(scriptId, 'script')
+			var idErr = sanitizeId(scriptId, 'script');
 			if(idErr)
 				return res.json(idErr);
 
@@ -192,12 +192,12 @@ var scriptRoutes = {},
 
 	scriptRoutes.delete = function(req, res) {
 		var playerId = req.params.player_id;
-		var idErr = sanitizeId(playerId, 'player')
+		var idErr = sanitizeId(playerId, 'player');
 		if(idErr)
 			return res.json(idErr);
 
 		var scriptId = req.params.script_id;
-		var idErr = sanitizeId(scriptId, 'script')
+		var idErr = sanitizeId(scriptId, 'script');
 		if(idErr)
 			return res.json(idErr);
 

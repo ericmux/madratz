@@ -31,7 +31,7 @@ var ttypes             = require('../../thrift/simulation_service_types');
 
 	simulation.verifyScript = function(script, callback) {
 		console.log('Verifying script...');
-		_client.compileScript(script, function(err, result) {
+		return _client.compileScript(script, function(err, result) {
 		  	if (err) {
 		  		return callback(err);
 		  	}

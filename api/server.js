@@ -35,9 +35,10 @@ function onConnectedToSimulationServer() {
 	var matchRoutes = require('./app/routes/match');
 	matchRoutes.init(simulation.getClient(), database.getGridFs());
 
-	router.route('/creategame')
-		.post(matchRoutes.create(simulation.getParams()));
-
+	router.route('/player/:player_id/match/create')
+		.post(matchRoutes.create);
+	router.route('/player/:player_id/match/createold')
+		.post(matchRoutes.createold(simulation.getParams()));
 	// Player routing
 	var playerRoutes = require('./app/routes/player');
 
