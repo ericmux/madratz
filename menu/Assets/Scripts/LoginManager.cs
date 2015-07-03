@@ -12,12 +12,6 @@ public class LoginManager : MonoBehaviour {
 		StartCoroutine (loginWithName (name));
 	}
 
-	public void logupInAPI(string name){
-		url = "http://localhost:8080/api/player";
-
-		StartCoroutine (logupWithName (name));
-	}
-
 	private IEnumerator loginWithName(string name){
 		Debug.Log ("Logging in with " + url + name);
 
@@ -34,25 +28,6 @@ public class LoginManager : MonoBehaviour {
 			}
 		} else {
 			Debug.Log("Login Error: "  + loginInfo.error);
-		}
-	}
-
-	private IEnumerator logupWithName(string name){
-		Debug.Log ("Sending logup info to " + url);
-		
-		WWWForm form = new WWWForm ();
-		form.AddField ("name", name);
-		
-		WWW logupInfo = new WWW (url, form);
-		
-		yield return logupInfo;
-		
-		if (logupInfo.error != null) {
-			Debug.Log ("Logup Error: " + logupInfo.error);
-		} else {
-			JsonData data = JsonMapper.ToObject(logupInfo.text);
-
-			Debug.Log(data["message"]);
 		}
 	}
 }
