@@ -1,7 +1,7 @@
 package com.madratz.simulation;
 
 import com.madratz.gamelogic.CollisionHandler;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
 import com.madratz.leveldesigner.WorldLoader;
 import com.madratz.serialization.Snapshot;
 import com.madratz.service.MatchParams;

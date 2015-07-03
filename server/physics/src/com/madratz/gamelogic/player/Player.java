@@ -1,6 +1,7 @@
-package com.madratz.gamelogic;
+package com.madratz.gamelogic.player;
 
 import com.madratz.behavior.Behavior;
+import com.madratz.gamelogic.Actor;
 import org.jbox2d.common.Vec2;
 
 public class Player extends Actor {
@@ -9,12 +10,19 @@ public class Player extends Actor {
     public static final float MAX_ANGULAR_SPEED = 7.5f;
 
     private final long mId;
+    private final Weapon mWeapon;
 
     private float mHP = 100.0f;
 
-    public Player(long id, Behavior behavior, Vec2 position, float angle) {
+    public Player(long id, Behavior behavior, Vec2 position, float angle, Weapon weapon) {
         super(behavior, position, angle);
         mId = id;
+        mWeapon = weapon;
+        mWeapon.setOwner(this);
+    }
+
+    public Weapon getWeapon() {
+        return mWeapon;
     }
 
     public float getHP() {

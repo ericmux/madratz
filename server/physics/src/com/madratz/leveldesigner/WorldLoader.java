@@ -2,10 +2,12 @@ package com.madratz.leveldesigner;
 
 import com.madratz.behavior.Behavior;
 import com.madratz.behavior.ScriptedBehavior;
-import com.madratz.behavior.impl.ShootBehavior;
 import com.madratz.behavior.TimeLimitedBehavior;
+import com.madratz.behavior.impl.ShootBehavior;
 import com.madratz.cpulimit.TimeLimitedExecutorService;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
+import com.madratz.gamelogic.player.RangedWeapon;
+import com.madratz.gamelogic.player.Weapon;
 import com.madratz.jython.ScriptLoader;
 import com.madratz.service.PlayerInfo;
 import com.madratz.simulation.MadratzWorld;
@@ -61,7 +63,9 @@ public class WorldLoader {
             Vec2 p = new Vec2((float)-Math.cos(theta * i), (float)Math.sin(theta * i)).mulLocal(L);
             float angle = - theta * i * i; // i^2 just so it's not completely symmetric
             long id = (ids == null ? i : ids.get(i));
-            madratzBuilder.addActor(new Player(id, behaviors.get(i), p, angle));
+
+            Weapon weapon = new RangedWeapon(1.5f, 20, 3 * Player.MAX_LINEAR_SPEED);
+            madratzBuilder.addActor(new Player(id, behaviors.get(i), p, angle, weapon));
         }
 
         madratzBuilder.addWalls().setGravity(new Vec2());

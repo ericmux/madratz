@@ -2,10 +2,9 @@ import math
 import random
 
 target_id = None
-t = 0
 
 def execute(sensor, actor):
-    global target_id, t
+    global target_id
     ops = sensor.opponents()
     target = None
     if target_id is not None:
@@ -22,7 +21,6 @@ def execute(sensor, actor):
     actor.rotate(5 * (op_angle - curr_angle))
     actor.set_velocity(1.0)
 
-    t += 1
-    if t % 40 == 0:
-        actor.shoot()
-        t = 0
+    weapon = actor.weapon()
+    if weapon.is_ready():
+        weapon.fire()

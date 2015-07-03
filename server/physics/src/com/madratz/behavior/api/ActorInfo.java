@@ -1,7 +1,7 @@
 package com.madratz.behavior.api;
 
 import com.madratz.gamelogic.Actor;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 

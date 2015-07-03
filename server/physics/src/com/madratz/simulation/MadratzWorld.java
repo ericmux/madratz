@@ -2,7 +2,7 @@ package com.madratz.simulation;
 
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
 import com.madratz.serialization.Snapshot;
 import com.madratz.serialization.Thriftalizable;
 import com.madratz.ui.SimulationTest;

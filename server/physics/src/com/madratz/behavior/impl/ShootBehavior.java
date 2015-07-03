@@ -3,9 +3,9 @@ package com.madratz.behavior.impl;
 import com.madratz.behavior.Behavior;
 import com.madratz.decision.Decision;
 import com.madratz.decision.MoveRequest;
-import com.madratz.decision.SpellRequest;
+import com.madratz.decision.ShootRequest;
 import com.madratz.gamelogic.Actor;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
 import com.madratz.ui.SimulationTest;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
@@ -45,8 +45,8 @@ public class ShootBehavior implements Behavior {
 
             if(relPos.length() < 10.0f && mBullets < 5 && Vec2.dot(relPos,vel) > 0.0f){
 
-                SpellRequest spellRequest = new SpellRequest(actor);
-                decision.addActionRequest(spellRequest);
+                ShootRequest shootRequest = new ShootRequest(actor);
+                decision.addActionRequest(shootRequest);
 
                 mBullets++;
 

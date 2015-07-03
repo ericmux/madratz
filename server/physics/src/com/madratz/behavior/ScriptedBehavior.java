@@ -5,7 +5,7 @@ import com.madratz.behavior.api.JythonWrapper;
 import com.madratz.behavior.api.SensoringInterface;
 import com.madratz.decision.Decision;
 import com.madratz.gamelogic.Actor;
-import com.madratz.gamelogic.Player;
+import com.madratz.gamelogic.player.Player;
 import com.madratz.security.MadratzSecurityManager;
 import com.madratz.security.Privileged;
 import org.python.core.PyFunction;
