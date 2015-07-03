@@ -5,6 +5,7 @@ var ScriptSchema = new Schema({
 	_owner: {type: Schema.Types.ObjectId, ref: 'Player'},
 	title: String,
 	code: String,
+	isDefault: Boolean,
 	createdOn: Date,
 	lastUpdated: Date,
 });

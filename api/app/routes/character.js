@@ -4,7 +4,13 @@
 var characterRoutes = {},
 	Player = require('../models/player'),
 	Character = require('../models/character'),
+	Script = require('../models/script'),
 	validator = require('validator');
+
+var levelup_table = [100];
+for (i=2; i <= 15; i++){
+	levelup_table.push(levelup_table[0] * i);
+}
 
 (function(characterRoutes) {
 	/////////////
@@ -63,14 +69,27 @@ var characterRoutes = {},
 
 				var newCharacter = new Character({'_owner': id,
 												  'name': name,
+												  'level': 1,
+												  'exp': 0,
+												  'hp': 100,
 												  'createdOn': new Date()});
 
-				return newCharacter.save(function(err) {
+				return Script.findOne({'_owner': player._id, 'isDefault': true}, function(err, script) {
 					if(err)
 						return res.send(err);
 
-					return res.json({msg: 'character_created'});
-				});
+					if(!script)
+						return res.json({err: 'script_does_not_exist'});
+
+					newCharacter.script = script._id;
+
+					return newCharacter.save(function(err) {
+						if(err)
+							return res.send(err);
+
+						return res.json({msg: 'character_created'});
+					});
+				})
 			});
 		});
 	};
@@ -100,7 +119,60 @@ var characterRoutes = {},
 				if(!character || (character._owner != playerId))
 					return res.json({err: 'character_does_not_exist'});
 
-				return res.json({msg: 'character_info', 'character': {'name': character.name}});
+				return res.json({msg: 'character_info', 'character': {'name': character.name,
+																	  'level': character.level,
+																	  'exp': character.exp,
+																	  'hp': character.hp,
+																	  'script': character.script}});
+			});
+		});
+	};
+
+	characterRoutes.levelup = function(req, res) {
+		var playerId = req.params.player_id;
+		var idErr = sanitizeId(playerId, 'player')
+		if(idErr)
+			return res.json(idErr);
+
+		var charId = req.params.char_id;
+		var idErr = sanitizeId(charId, 'character')
+		if(idErr)
+			return res.json(idErr);
+
+		return Player.findById(playerId, function(err, player) {
+			if(err)
+				return res.send(err);
+
+			if(!player)
+				return res.json({err: "user_does_not_exist"});
+
+			return Character.findById(charId, function(err, character) {
+				if(err)
+					return res.send(err);
+
+				if(!character || (character._owner != playerId))
+					return res.json({err: 'character_does_not_exist'});
+
+				character.exp += 100;
+				if (character.exp >= levelup_table[character.level - 1]) {
+					character.level++;
+					character.hp += 20;
+					character.exp = 0;
+
+					return character.save(function(err) {
+						if(err)
+							return res.send(err);
+
+						return res.json({msg: 'character_leveled_up'});
+					});
+				};
+
+				return character.save(function(err) {
+					if(err)
+						return res.send(err);
+
+					return res.json({msg: 'character_gained_exp'});
+				});
 			});
 		});
 	};
