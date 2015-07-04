@@ -6,6 +6,8 @@ var scriptRoutes = {},
 	Script = require('../models/script'),
 	validator = require('validator');
 
+var MAX_SCRIPTS = 4;
+
 (function(scriptRoutes) {
 
 	/////////////
@@ -62,20 +64,25 @@ var scriptRoutes = {},
 				if(!player)
 					return res.json({err: "user_does_not_exist"});
 
-				var actualDate = new Date();
-				var newScript = new Script({_owner: id,
-					title: title,
-					code: code,
-					isDefault: false,
-					createdOn: actualDate,
-					lastUpdate: actualDate,
-				});
+				return Script.find({'_owner': id}, function(err, scripts){
+					if(scripts.length === MAX_SCRIPTS)
+						return res.json({err: 'you_can_only_have_' + MAX_SCRIPTS + '_scripts'});
 
-				return newScript.save(function(err) {
-					if(err)
-						return res.send(err);
+					var actualDate = new Date();
+					var newScript = new Script({_owner: id,
+						title: title,
+						code: code,
+						isDefault: false,
+						createdOn: actualDate,
+						lastUpdate: actualDate,
+					});
 
-					return res.json({msg: 'script_created'});
+					return newScript.save(function(err) {
+						if(err)
+							return res.send(err);
+
+						return res.json({msg: 'script_created'});
+					});
 				});
 			});
 		};
@@ -222,6 +229,9 @@ var scriptRoutes = {},
 
 						if(!script_default)
 							return res.json({err: 'isDefault_does_not_exist'});
+
+						if(script_default._id.toString() === script._id.toString())
+							return res.json({err: 'script_already_is_default'});
 
 						script_default.isDefault = false;
 
