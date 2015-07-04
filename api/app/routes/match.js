@@ -5,6 +5,7 @@ var matchRoutes = {},
 	Player = require('../models/player'),
 	Character = require('../models/character'),
 	Script = require('../models/script'),
+	Match = require('../models/match'),
 	validator = require('validator'),
 	ttypes = require('../../thrift/simulation_service_types'),
 	fs = require('fs');
@@ -164,7 +165,9 @@ var matchRoutes = {},
 	function createMatch(character, characterScript, enemy, enemyScript)
 	{
 		var characterScriptCode = new Buffer(characterScript.code, 'base64').toString('utf8');
+		console.log(characterScriptCode);
 		var enemyScriptCode = new Buffer(enemyScript.code, 'base64').toString('utf8');
+		console.log(enemyScriptCode);
 		var params = new ttypes.MatchParams({'players': [
 												new ttypes.PlayerInfo({'id': 1, 'script': characterScriptCode}),
 												new ttypes.PlayerInfo({'id': 2, 'script': enemyScriptCode})
@@ -214,6 +217,20 @@ var matchRoutes = {},
 											writestream.on('close', function(file) {
 												console.log("Finished writing " + file.filename + " to database.");
 												console.log(JSON.stringify(file));
+
+												var match = new Match({	_creator: character._id,
+													creatorScriptName: characterScript.title,
+													_enemy: enemy._id,
+													enemyScriptName: enemyScript.title,
+													_file: file._id,
+													date: new Date()});
+
+												return match.save(function(err) {
+													if(err)
+														return console.log(err);
+
+													return console.log('Match entry created!');
+												})
 											});
 
 											fs.writeFile('match'+matchId+'.txt', snapshotList, function (err) {
