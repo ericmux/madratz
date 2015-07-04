@@ -16,7 +16,7 @@ var MAX_SCRIPTS = 4;
 
 	scriptRoutes.list = function(req, res) {
 		var id = req.params.player_id;
-		var idErr = sanitizeId(id)
+		var idErr = sanitizeId(id);
 		if(idErr)
 			return res.json(idErr);
 
@@ -43,7 +43,7 @@ var MAX_SCRIPTS = 4;
 	{
 		return function(req, res) {
 			var id = req.params.player_id;
-			var idErr = sanitizeId(id)
+			var idErr = sanitizeId(id);
 			if(idErr)
 				return res.json(idErr);
 
@@ -77,10 +77,6 @@ var MAX_SCRIPTS = 4;
 						lastUpdate: actualDate,
 					});
 
-					var temp = new Buffer(code, 'base64').toString('utf8')
-					console.log(temp);
-					simulationService.verifyScript(temp);
-
 					return newScript.save(function(err) {
 						if(err)
 							return res.send(err);
@@ -92,14 +88,42 @@ var MAX_SCRIPTS = 4;
 		};
 	};
 
+	scriptRoutes.verify = function(simulationService)
+	{
+		return function(req, res) {
+			var id = req.params.player_id;
+			var idErr = sanitizeId(id);
+			if(idErr)
+				return res.json(idErr);
+
+			var code = req.body.code;
+			var codeErr = sanitizeCode(code);
+			if(codeErr)
+				return res.json(codeErr);
+
+			return Player.findById(id, function(err, player) {
+				if(err)
+					return res.send(err);
+
+				if(!player)
+					return res.json({err: "user_does_not_exist"});
+
+				var temp = new Buffer(code, 'base64').toString('utf8')
+				return simulationService.verifyScript(temp, function(payload) {
+					return res.json(payload);
+				});
+			});
+		};
+	};
+
 	scriptRoutes.read = function(req, res) {
 		var playerId = req.params.player_id;
-		var idErr = sanitizeId(playerId, 'player')
+		var idErr = sanitizeId(playerId, 'player');
 		if(idErr)
 			return res.json(idErr);
 
 		var scriptId = req.params.script_id;
-		var idErr = sanitizeId(scriptId, 'script')
+		var idErr = sanitizeId(scriptId, 'script');
 		if(idErr)
 			return res.json(idErr);
 
@@ -125,12 +149,12 @@ var MAX_SCRIPTS = 4;
 	scriptRoutes.update = function(simulationService) {
 		return function(req, res) {
 			var playerId = req.params.player_id;
-			var idErr = sanitizeId(playerId, 'player')
+			var idErr = sanitizeId(playerId, 'player');
 			if(idErr)
 				return res.json(idErr);
 
 			var scriptId = req.params.script_id;
-			var idErr = sanitizeId(scriptId, 'script')
+			var idErr = sanitizeId(scriptId, 'script');
 			if(idErr)
 				return res.json(idErr);
 
@@ -160,9 +184,6 @@ var MAX_SCRIPTS = 4;
 
 					script.title = title;
 					script.code = code;
-					var temp = new Buffer(code, 'base64').toString('utf8')
-					console.log(temp);
-					simulationService.verifyScript(temp);
 					script.lastUpdate = new Date();
 
 					return script.save(function(err) {
@@ -236,12 +257,12 @@ var MAX_SCRIPTS = 4;
 
 	scriptRoutes.delete = function(req, res) {
 		var playerId = req.params.player_id;
-		var idErr = sanitizeId(playerId, 'player')
+		var idErr = sanitizeId(playerId, 'player');
 		if(idErr)
 			return res.json(idErr);
 
 		var scriptId = req.params.script_id;
-		var idErr = sanitizeId(scriptId, 'script')
+		var idErr = sanitizeId(scriptId, 'script');
 		if(idErr)
 			return res.json(idErr);
 
