@@ -12,6 +12,8 @@ for (i=2; i <= 15; i++){
 	levelup_table.push(levelup_table[0] * i);
 }
 
+var MAX_CHARACTERS = 3;
+
 (function(characterRoutes) {
 	/////////////
 	// ROUTING //
@@ -67,29 +69,34 @@ for (i=2; i <= 15; i++){
 				if(character)
 					return res.json({err: 'name_already_in_use'});
 
-				var newCharacter = new Character({'_owner': id,
-												  'name': name,
-												  'level': 1,
-												  'exp': 0,
-												  'hp': 100,
-												  'createdOn': new Date()});
+				return Character.find({'_owner': id}, function(err, characters) {
+					if(characters.length === MAX_CHARACTERS)
+						return res.json({err: 'you_can_only_have_' + MAX_CHARACTERS + '_characters'});										
 
-				return Script.findOne({'_owner': player._id, 'isDefault': true}, function(err, script) {
-					if(err)
-						return res.send(err);
+					var newCharacter = new Character({'_owner': id,
+													  'name': name,
+													  'level': 1,
+													  'exp': 0,
+													  'hp': 100,
+													  'createdOn': new Date()});
 
-					if(!script)
-						return res.json({err: 'script_does_not_exist'});
-
-					newCharacter.script = script._id;
-
-					return newCharacter.save(function(err) {
+					return Script.findOne({'_owner': player._id, 'isDefault': true}, function(err, script) {
 						if(err)
 							return res.send(err);
 
-						return res.json({msg: 'character_created'});
+						if(!script)
+							return res.json({err: 'script_does_not_exist'});
+
+						newCharacter.script = script._id;
+
+						return newCharacter.save(function(err) {
+							if(err)
+								return res.send(err);
+
+							return res.json({msg: 'character_created'});
+						});
 					});
-				})
+				});
 			});
 		});
 	};
