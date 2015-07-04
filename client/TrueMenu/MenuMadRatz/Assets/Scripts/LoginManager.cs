@@ -54,6 +54,7 @@ public class LoginManager : MonoBehaviour {
 
 					//GameObject.Find("AvatarSelectionPanel").transform.Translate(-1000, 0, 0);
 					onLogin.SetActive(true);
+					gameObject.SetActive(false);
 
 				} catch (KeyNotFoundException e1) {
 					try{
