@@ -3,16 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using LitJson;
 using UnityEngine.UI;
-//using UnityEngine.UI.Text;
 
 public class LoginManager : MonoBehaviour {
 
 	private string url;
 	private string username;
 	private string password;
-
-
+	
 	public Text statusText;
+
+	public GameObject onLogin;
+	public GameObject onCancel;
 
 	void Start(){
 		statusText = GameObject.Find ("StatusText").GetComponent<Text> ();
@@ -50,6 +51,10 @@ public class LoginManager : MonoBehaviour {
 
 					statusText.color = Color.black;
 					statusText.text = "Logging as " + username;
+
+					//GameObject.Find("AvatarSelectionPanel").transform.Translate(-1000, 0, 0);
+					onLogin.SetActive(true);
+
 				} catch (KeyNotFoundException e1) {
 					try{
 						Debug.Log(e1.Message + " API Error: " + data["err"]);
