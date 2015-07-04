@@ -71,6 +71,7 @@ function onConnectedToSimulationServer() {
     router.route('/player/:player_id/character/create').post(characterRoutes.create);
 
     router.route('/player/:player_id/character/:char_id/info').get(characterRoutes.read);
+    router.route('/player/:player_id/character/:char_id/script/:script_id/changeScript').get(characterRoutes.changeScript);
     router.route('/player/:player_id/character/:char_id/levelup').get(characterRoutes.levelup);
     router.route('/player/:player_id/character/:char_id/delete').get(characterRoutes.delete);
 

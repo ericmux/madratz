@@ -135,6 +135,56 @@ var MAX_CHARACTERS = 3;
 		});
 	};
 
+	characterRoutes.changeScript = function(req, res) {
+		var playerId = req.params.player_id;
+		var idErr = sanitizeId(playerId, 'player')
+		if(idErr)
+			return res.json(idErr);
+
+		var charId = req.params.char_id;
+		var idErr = sanitizeId(charId, 'character')
+		if(idErr)
+			return res.json(idErr);
+
+		var scriptId = req.params.script_id;
+		var idErr = sanitizeId(scriptId, 'script')
+		if(idErr)
+			return res.json(idErr);
+
+		return Player.findById(playerId, function(err, player) {
+			if(err)
+				return res.send(err);
+
+			if(!player)
+				return res.json({err: "user_does_not_exist"});
+
+			return Character.findById(charId, function(err, character) {
+				if(err)
+					return res.send(err);
+
+				if(!character || (character._owner != playerId))
+					return res.json({err: 'character_does_not_exist'});
+
+				return Script.findById(scriptId, function(err, script){
+					if(err)
+						return res.send(err);
+
+					if(!script || (script._owner != playerId))
+						return res.json({err: 'script_does_not_exist'});
+
+					character.script = script;
+
+					return character.save(function(err) {
+						if(err)
+							return res.send(err);
+
+						return res.json({msg: 'character\'s_script_changed'});
+					});
+				});
+			});
+		});
+	};
+
 	characterRoutes.levelup = function(req, res) {
 		var playerId = req.params.player_id;
 		var idErr = sanitizeId(playerId, 'player')
