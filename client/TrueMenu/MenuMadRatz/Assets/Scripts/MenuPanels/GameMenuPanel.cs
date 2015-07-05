@@ -17,4 +17,11 @@ public class GameMenuPanel : MonoBehaviour {
 		loadingPanel.gameObject.SetActive(true);
 		loadingPanel.StartLoadCharactersCoroutine();
 	}
+
+	public void OnManageScriptsClick()
+	{
+		this.gameObject.SetActive(false);
+		loadingPanel.gameObject.SetActive(true);
+		loadingPanel.StartLoadScriptsCoroutine();
+	}
 }

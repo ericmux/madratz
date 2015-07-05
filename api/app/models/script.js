@@ -6,6 +6,7 @@ var ScriptSchema = new Schema({
 	title: String,
 	code: String,
 	createdOn: Date,
+	isDefault: Boolean,
 	lastUpdated: Date,
 });
 

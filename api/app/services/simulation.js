@@ -29,13 +29,13 @@ var ttypes             = require('../../thrift/simulation_service_types');
 		return _client;
 	};
 
-	simulation.verifyScript = function(script) {
+	simulation.verifyScript = function(script, callback) {
 		console.log('Verifying script...');
-		_client.compileScript(script, function(err, result) {
+		return _client.compileScript(script, function(err, result) {
 		  	if (err) {
-		  		return console.log('Error:\n' + err);
+		  		return callback(err);
 		  	}
-		  	console.log(result);
+		  	return callback(null, result);
 		});
 	};
 

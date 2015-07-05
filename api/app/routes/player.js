@@ -83,6 +83,7 @@ var playerRoutes = {},
 						code: new Buffer(script).toString('base64'),
 						createdOn: actualDate,
 						lastUpdate: actualDate,
+						isDefault: true
 					});
 
 					return newScript.save(function(err) {
