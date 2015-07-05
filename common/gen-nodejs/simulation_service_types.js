@@ -38,8 +38,8 @@ PlayerInfo.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I64) {
-        this.id = input.readI64();
+      if (ftype == Thrift.Type.STRING) {
+        this.id = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -63,8 +63,8 @@ PlayerInfo.prototype.read = function(input) {
 PlayerInfo.prototype.write = function(output) {
   output.writeStructBegin('PlayerInfo');
   if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.I64, 1);
-    output.writeI64(this.id);
+    output.writeFieldBegin('id', Thrift.Type.STRING, 1);
+    output.writeString(this.id);
     output.writeFieldEnd();
   }
   if (this.script !== null && this.script !== undefined) {
@@ -108,8 +108,8 @@ MatchParams.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I64) {
-        this.matchId = input.readI64();
+      if (ftype == Thrift.Type.STRING) {
+        this.matchId = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -154,8 +154,8 @@ MatchParams.prototype.read = function(input) {
 MatchParams.prototype.write = function(output) {
   output.writeStructBegin('MatchParams');
   if (this.matchId !== null && this.matchId !== undefined) {
-    output.writeFieldBegin('matchId', Thrift.Type.I64, 1);
-    output.writeI64(this.matchId);
+    output.writeFieldBegin('matchId', Thrift.Type.STRING, 1);
+    output.writeString(this.matchId);
     output.writeFieldEnd();
   }
   if (this.players !== null && this.players !== undefined) {
@@ -209,8 +209,8 @@ MatchResult.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I64) {
-        this.winnerId = input.readI64();
+      if (ftype == Thrift.Type.STRING) {
+        this.winnerId = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -234,8 +234,8 @@ MatchResult.prototype.read = function(input) {
 MatchResult.prototype.write = function(output) {
   output.writeStructBegin('MatchResult');
   if (this.winnerId !== null && this.winnerId !== undefined) {
-    output.writeFieldBegin('winnerId', Thrift.Type.I64, 1);
-    output.writeI64(this.winnerId);
+    output.writeFieldBegin('winnerId', Thrift.Type.STRING, 1);
+    output.writeString(this.winnerId);
     output.writeFieldEnd();
   }
   if (this.elapsedTimeSec !== null && this.elapsedTimeSec !== undefined) {

@@ -68,16 +68,12 @@ SimulationService_startMatch_args.prototype.write = function(output) {
 };
 
 SimulationService_startMatch_result = function(args) {
-  this.success = null;
   this.exc = null;
   if (args instanceof ttypes.InvalidArgumentException) {
     this.exc = args;
     return;
   }
   if (args) {
-    if (args.success !== undefined) {
-      this.success = args.success;
-    }
     if (args.exc !== undefined) {
       this.exc = args.exc;
     }
@@ -97,13 +93,6 @@ SimulationService_startMatch_result.prototype.read = function(input) {
     }
     switch (fid)
     {
-      case 0:
-      if (ftype == Thrift.Type.I64) {
-        this.success = input.readI64();
-      } else {
-        input.skip(ftype);
-      }
-      break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
         this.exc = new ttypes.InvalidArgumentException();
@@ -112,6 +101,9 @@ SimulationService_startMatch_result.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 0:
+        input.skip(ftype);
+        break;
       default:
         input.skip(ftype);
     }
@@ -123,11 +115,117 @@ SimulationService_startMatch_result.prototype.read = function(input) {
 
 SimulationService_startMatch_result.prototype.write = function(output) {
   output.writeStructBegin('SimulationService_startMatch_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.I64, 0);
-    output.writeI64(this.success);
+  if (this.exc !== null && this.exc !== undefined) {
+    output.writeFieldBegin('exc', Thrift.Type.STRUCT, 1);
+    this.exc.write(output);
     output.writeFieldEnd();
   }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+SimulationService_finalizeMatch_args = function(args) {
+  this.matchId = null;
+  if (args) {
+    if (args.matchId !== undefined) {
+      this.matchId = args.matchId;
+    }
+  }
+};
+SimulationService_finalizeMatch_args.prototype = {};
+SimulationService_finalizeMatch_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.matchId = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+SimulationService_finalizeMatch_args.prototype.write = function(output) {
+  output.writeStructBegin('SimulationService_finalizeMatch_args');
+  if (this.matchId !== null && this.matchId !== undefined) {
+    output.writeFieldBegin('matchId', Thrift.Type.STRING, 1);
+    output.writeString(this.matchId);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+SimulationService_finalizeMatch_result = function(args) {
+  this.exc = null;
+  if (args instanceof ttypes.InvalidArgumentException) {
+    this.exc = args;
+    return;
+  }
+  if (args) {
+    if (args.exc !== undefined) {
+      this.exc = args.exc;
+    }
+  }
+};
+SimulationService_finalizeMatch_result.prototype = {};
+SimulationService_finalizeMatch_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.exc = new ttypes.InvalidArgumentException();
+        this.exc.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+SimulationService_finalizeMatch_result.prototype.write = function(output) {
+  output.writeStructBegin('SimulationService_finalizeMatch_result');
   if (this.exc !== null && this.exc !== undefined) {
     output.writeFieldBegin('exc', Thrift.Type.STRUCT, 1);
     this.exc.write(output);
@@ -161,8 +259,8 @@ SimulationService_isMatchFinished_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I64) {
-        this.matchId = input.readI64();
+      if (ftype == Thrift.Type.STRING) {
+        this.matchId = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -182,8 +280,8 @@ SimulationService_isMatchFinished_args.prototype.read = function(input) {
 SimulationService_isMatchFinished_args.prototype.write = function(output) {
   output.writeStructBegin('SimulationService_isMatchFinished_args');
   if (this.matchId !== null && this.matchId !== undefined) {
-    output.writeFieldBegin('matchId', Thrift.Type.I64, 1);
-    output.writeI64(this.matchId);
+    output.writeFieldBegin('matchId', Thrift.Type.STRING, 1);
+    output.writeString(this.matchId);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -285,8 +383,8 @@ SimulationService_result_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I64) {
-        this.matchId = input.readI64();
+      if (ftype == Thrift.Type.STRING) {
+        this.matchId = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -306,8 +404,8 @@ SimulationService_result_args.prototype.read = function(input) {
 SimulationService_result_args.prototype.write = function(output) {
   output.writeStructBegin('SimulationService_result_args');
   if (this.matchId !== null && this.matchId !== undefined) {
-    output.writeFieldBegin('matchId', Thrift.Type.I64, 1);
-    output.writeI64(this.matchId);
+    output.writeFieldBegin('matchId', Thrift.Type.STRING, 1);
+    output.writeString(this.matchId);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -410,8 +508,8 @@ SimulationService_snapshots_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I64) {
-        this.matchId = input.readI64();
+      if (ftype == Thrift.Type.STRING) {
+        this.matchId = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -431,8 +529,8 @@ SimulationService_snapshots_args.prototype.read = function(input) {
 SimulationService_snapshots_args.prototype.write = function(output) {
   output.writeStructBegin('SimulationService_snapshots_args');
   if (this.matchId !== null && this.matchId !== undefined) {
-    output.writeFieldBegin('matchId', Thrift.Type.I64, 1);
-    output.writeI64(this.matchId);
+    output.writeFieldBegin('matchId', Thrift.Type.STRING, 1);
+    output.writeString(this.matchId);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -695,10 +793,54 @@ SimulationServiceClient.prototype.recv_startMatch = function(input,mtype,rseqid)
   if (null !== result.exc) {
     return callback(result.exc);
   }
-  if (null !== result.success) {
-    return callback(null, result.success);
+  callback(null)
+};
+SimulationServiceClient.prototype.finalizeMatch = function(matchId, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_finalizeMatch(matchId);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_finalizeMatch(matchId);
   }
-  return callback('startMatch failed: unknown result');
+};
+
+SimulationServiceClient.prototype.send_finalizeMatch = function(matchId) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('finalizeMatch', Thrift.MessageType.CALL, this.seqid());
+  var args = new SimulationService_finalizeMatch_args();
+  args.matchId = matchId;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+SimulationServiceClient.prototype.recv_finalizeMatch = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new SimulationService_finalizeMatch_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.exc) {
+    return callback(result.exc);
+  }
+  callback(null)
 };
 SimulationServiceClient.prototype.isMatchFinished = function(matchId, callback) {
   this._seqid = this.new_seqid();
@@ -938,6 +1080,36 @@ SimulationServiceProcessor.prototype.process_startMatch = function(seqid, input,
     this._handler.startMatch(args.match,  function (err, result) {
       var result = new SimulationService_startMatch_result((err != null ? err : {success: result}));
       output.writeMessageBegin("startMatch", Thrift.MessageType.REPLY, seqid);
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+SimulationServiceProcessor.prototype.process_finalizeMatch = function(seqid, input, output) {
+  var args = new SimulationService_finalizeMatch_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.finalizeMatch.length === 1) {
+    Q.fcall(this._handler.finalizeMatch, args.matchId)
+      .then(function(result) {
+        var result = new SimulationService_finalizeMatch_result({success: result});
+        output.writeMessageBegin("finalizeMatch", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result = new SimulationService_finalizeMatch_result(err);
+        output.writeMessageBegin("finalizeMatch", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.finalizeMatch(args.matchId,  function (err, result) {
+      var result = new SimulationService_finalizeMatch_result((err != null ? err : {success: result}));
+      output.writeMessageBegin("finalizeMatch", Thrift.MessageType.REPLY, seqid);
       result.write(output);
       output.writeMessageEnd();
       output.flush();

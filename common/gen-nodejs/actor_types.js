@@ -191,8 +191,8 @@ Actor.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I64) {
-        this.id = input.readI64();
+      if (ftype == Thrift.Type.STRING) {
+        this.id = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -246,8 +246,8 @@ Actor.prototype.read = function(input) {
 Actor.prototype.write = function(output) {
   output.writeStructBegin('Actor');
   if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.I64, 1);
-    output.writeI64(this.id);
+    output.writeFieldBegin('id', Thrift.Type.STRING, 1);
+    output.writeString(this.id);
     output.writeFieldEnd();
   }
   if (this.position !== null && this.position !== undefined) {
