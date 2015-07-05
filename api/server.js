@@ -66,6 +66,8 @@ function onConnectedToSimulationServer() {
     var characterRoutes = require('./app/routes/character');
 
     router.route('/player/:player_id/character/list').get(characterRoutes.list);
+	router.route('/player/:player_id/random/:num_chars').get(characterRoutes.list_random);
+
     router.route('/player/:player_id/character/create').post(characterRoutes.create);
 
     router.route('/player/:player_id/character/:char_id/info').get(characterRoutes.read);

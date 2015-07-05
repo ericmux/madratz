@@ -111,6 +111,7 @@ var playerRoutes = {},
 		});
 	};
 
+
 	playerRoutes.update = function(req, res) {
 		var id = req.params.player_id;
 
