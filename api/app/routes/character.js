@@ -24,7 +24,7 @@ var characterRoutes = {},
 			if(!player)
 				return res.json({err: "user_does_not_exist"});
 
-			return Character.find({'_owner': id}, '_id name', function(err, character) {
+			return Character.find({'_owner': id}, function(err, character) {
 				if(err)
 					return res.send(err);
 

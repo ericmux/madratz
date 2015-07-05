@@ -14,17 +14,15 @@ public class LoginManager : MonoBehaviour {
 
 	public GameObject onLogin;
 	public GameObject onCancel;
+	public LoadingScript loading;
 
-	void Start(){
-		statusText = GameObject.Find ("StatusText").GetComponent<Text> ();
+	public void OnConnectClick()
+	{
+		loading.gameObject.SetActive(true);
+		loading.StartLoginCoroutine(username, password);
+		this.gameObject.SetActive(false);
 	}
-
-	public void startLoginCoroutine(){
-		url = "localhost:8080/api/login/";
-
-		StartCoroutine (logInAPI ());
-	}
-
+	
 	public void getUsernameFromInputField(string username){
 		this.username = username;
 	}
@@ -33,54 +31,13 @@ public class LoginManager : MonoBehaviour {
 		this.password = password;
 	}
 
-	private IEnumerator logInAPI(){
+	public void setStatusText (string str)
+	{
+		this.statusText.text = str;
+	}
 
-		if (username != null && password != null) {
-			WWWForm loginForm = new WWWForm ();
-			loginForm.AddField ("username", username);
-			loginForm.AddField ("password", password);
-
-			WWW loginRequest = new WWW (url, loginForm);
-
-			yield return loginRequest;
-
-			if (loginRequest.text != null) {
-				JsonData data = JsonMapper.ToObject (loginRequest.text);
-				try {
-					Debug.Log ("Logging as " + data["id"]);
-
-					statusText.color = Color.black;
-					statusText.text = "Logging as " + username;
-
-					//GameObject.Find("AvatarSelectionPanel").transform.Translate(-1000, 0, 0);
-					onLogin.SetActive(true);
-
-				} catch (KeyNotFoundException e1) {
-					try{
-						Debug.Log(e1.Message + " API Error: " + data["err"]);
-
-						statusText.color = Color.red;
-						statusText.text = "Erro: Login ou senha invalidos";
-					} catch (KeyNotFoundException e2){
-						Debug.Log(e2.Message + "Internet Connection?");
-
-						statusText.color = Color.red;
-						statusText.text = "Erro: problema na conexao";
-					}
-				}
-			} else {
-				Debug.Log ("Login Error: " + loginRequest.error);
-
-				statusText.color = Color.red;
-				statusText.text = loginRequest.error;
-			}
-		} else {
-			Debug.Log("Need both fields filled");
-
-			statusText.color = Color.red;
-			statusText.text = "Precisa preencher ambos os campos";
-		}
-
-		//statusText.color = Color.black;
+	public void setStatusColor (Color color)
+	{
+		this.statusText.color = color;
 	}
 }
