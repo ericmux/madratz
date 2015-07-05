@@ -6,6 +6,8 @@ var scriptRoutes = {},
 	Script = require('../models/script'),
 	validator = require('validator');
 
+var MAX_SCRIPTS = 4;
+
 (function(scriptRoutes) {
 
 	/////////////
@@ -14,7 +16,7 @@ var scriptRoutes = {},
 
 	scriptRoutes.list = function(req, res) {
 		var id = req.params.player_id;
-		var idErr = sanitizeId(id)
+		var idErr = sanitizeId(id);
 		if(idErr)
 			return res.json(idErr);
 
@@ -41,7 +43,7 @@ var scriptRoutes = {},
 	{
 		return function(req, res) {
 			var id = req.params.player_id;
-			var idErr = sanitizeId(id)
+			var idErr = sanitizeId(id);
 			if(idErr)
 				return res.json(idErr);
 
@@ -62,20 +64,53 @@ var scriptRoutes = {},
 				if(!player)
 					return res.json({err: "user_does_not_exist"});
 
-				var actualDate = new Date();
-				var newScript = new Script({_owner: id,
-					title: title,
-					code: code,
-					createdOn: actualDate,
-					lastUpdate: actualDate,
-					isDefault: false
+				return Script.find({'_owner': id}, function(err, scripts){
+					if(scripts.length === MAX_SCRIPTS)
+						return res.json({err: 'you_can_only_have_' + MAX_SCRIPTS + '_scripts'});
+
+					var actualDate = new Date();
+					var newScript = new Script({_owner: id,
+						title: title,
+						code: code,
+						isDefault: false,
+						createdOn: actualDate,
+						lastUpdate: actualDate,
+					});
+
+					return newScript.save(function(err) {
+						if(err)
+							return res.send(err);
+
+						return res.json({msg: 'script_created'});
+					});
 				});
+			});
+		};
+	};
 
-				return newScript.save(function(err) {
-					if(err)
-						return res.send(err);
+	scriptRoutes.verify = function(simulationService)
+	{
+		return function(req, res) {
+			var id = req.params.player_id;
+			var idErr = sanitizeId(id);
+			if(idErr)
+				return res.json(idErr);
 
-					return res.json({msg: 'script_created'});
+			var code = req.body.code;
+			var codeErr = sanitizeCode(code);
+			if(codeErr)
+				return res.json(codeErr);
+
+			return Player.findById(id, function(err, player) {
+				if(err)
+					return res.send(err);
+
+				if(!player)
+					return res.json({err: "user_does_not_exist"});
+
+				var temp = new Buffer(code, 'base64').toString('utf8')
+				return simulationService.verifyScript(temp, function(payload) {
+					return res.json(payload);
 				});
 			});
 		};
@@ -120,12 +155,12 @@ var scriptRoutes = {},
 
 	scriptRoutes.read = function(req, res) {
 		var playerId = req.params.player_id;
-		var idErr = sanitizeId(playerId, 'player')
+		var idErr = sanitizeId(playerId, 'player');
 		if(idErr)
 			return res.json(idErr);
 
 		var scriptId = req.params.script_id;
-		var idErr = sanitizeId(scriptId, 'script')
+		var idErr = sanitizeId(scriptId, 'script');
 		if(idErr)
 			return res.json(idErr);
 
@@ -151,12 +186,12 @@ var scriptRoutes = {},
 	scriptRoutes.update = function(simulationService) {
 		return function(req, res) {
 			var playerId = req.params.player_id;
-			var idErr = sanitizeId(playerId, 'player')
+			var idErr = sanitizeId(playerId, 'player');
 			if(idErr)
 				return res.json(idErr);
 
 			var scriptId = req.params.script_id;
-			var idErr = sanitizeId(scriptId, 'script')
+			var idErr = sanitizeId(scriptId, 'script');
 			if(idErr)
 				return res.json(idErr);
 
@@ -199,15 +234,72 @@ var scriptRoutes = {},
 		};
 	};
 
+	scriptRoutes.setDefault = function(simulationService) {
+		return function(req, res) {
+			var playerId = req.params.player_id;
+			var idErr = sanitizeId(playerId, 'player')
+			if(idErr)
+				return res.json(idErr);
+
+			var scriptId = req.params.script_id;
+			var idErr = sanitizeId(scriptId, 'script')
+			if(idErr)
+				return res.json(idErr);
+
+			return Player.findById(playerId, function(err, player) {
+				if(err)
+					return res.send(err);
+
+				if(!player)
+					return res.json({err: "user_does_not_exist"});
+
+				return Script.findById(scriptId, function(err, script) {
+					if(err)
+						return res.send(err);
+
+					if(!script || (script._owner != playerId))
+						return res.json({err: 'script_does_not_exist'});
+
+					return Script.findOne({'_owner': player._id, 'isDefault': true}, function(err, script_default) {
+						if(err)
+							return res.send(err);
+
+						if(!script_default)
+							return res.json({err: 'isDefault_does_not_exist'});
+
+						if(script_default._id.toString() === script._id.toString())
+							return res.json({err: 'script_already_is_default'});
+
+						script_default.isDefault = false;
+
+						return script_default.save(function(err) {
+							if(err)
+								return res.send(err);
+
+							script.isDefault = true;
+
+							return script.save(function(err) {
+								if(err)
+									return res.send(err);
+
+								return res.json({msg: 'default_updated'});
+							});
+						});
+					});
+				});
+			});
+		};
+	};
+
 
 	scriptRoutes.delete = function(req, res) {
 		var playerId = req.params.player_id;
-		var idErr = sanitizeId(playerId, 'player')
+		var idErr = sanitizeId(playerId, 'player');
 		if(idErr)
 			return res.json(idErr);
 
 		var scriptId = req.params.script_id;
-		var idErr = sanitizeId(scriptId, 'script')
+		var idErr = sanitizeId(scriptId, 'script');
 		if(idErr)
 			return res.json(idErr);
 
@@ -224,6 +316,9 @@ var scriptRoutes = {},
 
 				if(!script || (script._owner != playerId))
 					return res.json({err: 'script_does_not_exist'});
+
+				if(script.isDefault)
+					return res.json({err: 'cannot_delete_default_script'});
 
 				return Script.remove({ '_id': scriptId }, function(err) {
 					if(err)

@@ -15,6 +15,7 @@ public class LoadingScript : MonoBehaviour {
 	public CharacterScript characterScript;
 	public CharacterCreationScript characterCreationScript;
 	public ManageScriptsPanel manageScriptPanel;
+	public SelectScriptPanel selectScriptPanel;
 
 	// Use this for initialization
 	void OnEnable () {
@@ -69,6 +70,11 @@ public class LoadingScript : MonoBehaviour {
 		StartCoroutine(LoadScriptsCoroutine(this.id));
 	}
 
+	public void StartLoadScriptsSimpleCoroutine ()
+	{
+		StartCoroutine(LoadScriptsSimpleCoroutine(this.id));
+	}
+
 	public void StartDeleteScriptsCoroutine (string playerId, string scriptId)
 	{
 		StartCoroutine(DeleteScriptsCoroutine(playerId, scriptId));
@@ -76,8 +82,12 @@ public class LoadingScript : MonoBehaviour {
 
 	public void StartSetDefaultScriptsCoroutine (string playerId, string scriptId)
 	{
-		// TODO
-		/*StartCoroutine(SetDefaultScriptsCoroutine(playerId, scriptId));*/
+		StartCoroutine(SetDefaultScriptsCoroutine(playerId, scriptId));
+	}
+
+	public void StartSetActiveScriptCoroutine (string playerId, string characterId, string scriptId)
+	{
+		StartCoroutine(SetActiveScriptCoroutine (playerId, characterId, scriptId));
 	}
 
 	private IEnumerator LoginCoroutine(string username, string password){
@@ -250,6 +260,32 @@ public class LoadingScript : MonoBehaviour {
 		}
 	}
 
+	private IEnumerator LoadScriptsSimpleCoroutine(string id){
+		this.url = "localhost:8080/api/player/" + id + "/script/list/";
+		
+		WWW scriptListRequest = new WWW (url);
+		
+		yield return scriptListRequest;
+		
+		if (scriptListRequest.text != null) {
+			string rawJson = scriptListRequest.text;
+			JsonData data = JsonMapper.ToObject (rawJson);
+			
+			if(JSONUtils.JsonDataContainsKey(data, "err"))
+			{
+				Debug.Log("Erro " + data["err"]);
+			}
+			else
+			{
+				Debug.Log (data.ToJson());
+				ScriptList list = JsonMapper.ToObject<ScriptList>(rawJson);
+				selectScriptPanel.SetScriptList(list);
+				selectScriptPanel.gameObject.SetActive(true);
+				this.gameObject.SetActive(false);
+			}
+		}
+	}
+
 	private IEnumerator DeleteScriptsCoroutine (string playerId, string scriptId)
 	{
 		this.url = "localhost:8080/api/player/" + id + "/script/" + scriptId + "/delete";
@@ -270,6 +306,54 @@ public class LoadingScript : MonoBehaviour {
 			{
 				Debug.Log (data.ToJson());
 				StartCoroutine(LoadScriptsCoroutine(playerId));
+			}
+		}
+	}
+
+	private IEnumerator SetDefaultScriptsCoroutine (string playerId, string scriptId)
+	{
+		this.url = "localhost:8080/api/player/" + id + "/script/" + scriptId + "/setDefault";
+		
+		WWW scriptSetDefaultRequest = new WWW (url);
+		
+		yield return scriptSetDefaultRequest;
+		
+		if (scriptSetDefaultRequest.text != null) {
+			string rawJson = scriptSetDefaultRequest.text;
+			JsonData data = JsonMapper.ToObject (rawJson);
+			
+			if(JSONUtils.JsonDataContainsKey(data, "err"))
+			{
+				Debug.Log("Erro " + data["err"]);
+			}
+			else
+			{
+				Debug.Log (data.ToJson());
+				StartCoroutine(LoadScriptsCoroutine(playerId));
+			}
+		}
+	}
+
+	private IEnumerator SetActiveScriptCoroutine (string playerId, string characterId, string scriptId)
+	{
+		this.url = "localhost:8080/api/player/" + playerId +"/character/" + characterId + "/script/" + scriptId + "/changeScript";
+		
+		WWW scriptSetActiveRequest = new WWW (url);
+		
+		yield return scriptSetActiveRequest;
+		
+		if (scriptSetActiveRequest.text != null) {
+			string rawJson = scriptSetActiveRequest.text;
+			JsonData data = JsonMapper.ToObject (rawJson);
+			
+			if(JSONUtils.JsonDataContainsKey(data, "err"))
+			{
+				Debug.Log("Erro " + data["err"]);
+			}
+			else
+			{
+				Debug.Log (data.ToJson());
+				StartCoroutine(LoadScriptsSimpleCoroutine(playerId));
 			}
 		}
 	}

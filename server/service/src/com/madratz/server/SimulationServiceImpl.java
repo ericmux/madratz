@@ -10,39 +10,40 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 public class SimulationServiceImpl implements SimulationService.Iface {
 
     private static final Logger LOG = LoggerFactory.getLogger(SimulationServiceImpl.class);
 
-    private final AtomicLong mNextMatchId = new AtomicLong(1);
-    private final ConcurrentMap<Long, MadratzMatch> mMatches = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, MadratzMatch> mMatches = new ConcurrentHashMap<>();
 
     private ExecutorService mExecutor = new ThreadPoolExecutor(5, 60, 1, TimeUnit.MINUTES, new SynchronousQueue<>());
 
     @Override
-    public long startMatch(MatchParams params) throws TException {
+    public void startMatch(MatchParams params) throws TException {
         MadratzMatch match = newMatch(params);
-        long matchId = match.getId();
 
         mExecutor.submit(() -> {
-            LOG.debug("Starting match " + matchId + " simulation.");
+            LOG.debug("Starting match " + params.getMatchId() + " simulation.");
             match.runSimulation();
-            LOG.debug("Finished match " + matchId + " simulation.");
+            LOG.debug("Finished match " + params.getMatchId() + " simulation.");
         });
-
-        return matchId;
     }
 
     @Override
-    public boolean isMatchFinished(long matchId) throws TException {
+    public void finalizeMatch(String matchId) throws TException {
+        getFinishedMatch(matchId);
+        mMatches.remove(matchId);
+    }
+
+    @Override
+    public boolean isMatchFinished(String matchId) throws TException {
         return getMatch(matchId).isFinished();
     }
 
     @Override
-    public MatchResult result(long matchId) throws TException {
+    public MatchResult result(String matchId) throws TException {
         LOG.debug("Match " + matchId + " result queried.");
         MadratzMatch madratzMatch = getFinishedMatch(matchId);
 
@@ -53,7 +54,7 @@ public class SimulationServiceImpl implements SimulationService.Iface {
     }
 
     @Override
-    public List<Snapshot> snapshots(long matchId) throws TException {
+    public List<Snapshot> snapshots(String matchId) throws TException {
         return getFinishedMatch(matchId).getSnapshots();
     }
 
@@ -71,7 +72,7 @@ public class SimulationServiceImpl implements SimulationService.Iface {
         return result;
     }
 
-    private MadratzMatch getFinishedMatch(long matchId) throws TException {
+    private MadratzMatch getFinishedMatch(String matchId) throws TException {
         MadratzMatch match = getMatch(matchId);
         if (!match.isFinished()) {
             throw new InvalidArgumentException("Match " + matchId + " not finished yet!");
@@ -79,7 +80,7 @@ public class SimulationServiceImpl implements SimulationService.Iface {
         return match;
     }
 
-    private MadratzMatch getMatch(long matchId) throws TException {
+    private MadratzMatch getMatch(String matchId) throws TException {
         MadratzMatch match = mMatches.get(matchId);
         if (match == null) throw new InvalidArgumentException("Match with id " + matchId + " not found");
         return match;
@@ -90,17 +91,10 @@ public class SimulationServiceImpl implements SimulationService.Iface {
      * already adding it to the mMatches map.
      */
     private MadratzMatch newMatch(MatchParams params) throws TException {
-        Function<Long, MadratzMatch> matchCreator = (id) -> new MadratzMatch(id, params);
-        MadratzMatch match = null;
-        if (params.isSetMatchId()) {
-            match = mMatches.computeIfAbsent(params.getMatchId(), matchCreator);
-            if (match == null) {
-                throw new InvalidArgumentException("Match with id " + params.getMatchId() + " already existent.");
-            }
-        } else {
-            while (match == null) {
-                match = mMatches.computeIfAbsent(mNextMatchId.getAndIncrement(), matchCreator);
-            }
+        Function<String, MadratzMatch> matchCreator = (id) -> new MadratzMatch(params);
+        MadratzMatch match = mMatches.computeIfAbsent(params.getMatchId(), matchCreator);
+        if (match == null) {
+            throw new InvalidArgumentException("Match with id " + params.getMatchId() + " already exists.");
         }
         return match;
     }

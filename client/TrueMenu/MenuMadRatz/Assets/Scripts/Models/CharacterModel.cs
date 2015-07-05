@@ -12,6 +12,7 @@ public class CharacterModel
 {
 	public string   _id     { get; set; }
 	public string   _owner     { get; set; }
+	public string 	script 	{ get; set; }
 	public string   name     { get; set; }
 	public int   	level     { get; set; }
 	public int   	exp     { get; set; }

@@ -9,12 +9,12 @@ public class Player extends Actor {
     public static final float MAX_LINEAR_SPEED = 10.0f;
     public static final float MAX_ANGULAR_SPEED = 7.5f;
 
-    private final long mId;
+    private final String mId;
     private final Weapon mWeapon;
 
     private float mHP = 100.0f;
 
-    public Player(long id, Behavior behavior, Vec2 position, float angle, Weapon weapon) {
+    public Player(String id, Behavior behavior, Vec2 position, float angle, Weapon weapon) {
         super(behavior, position, angle);
         mId = id;
         mWeapon = weapon;
@@ -43,7 +43,7 @@ public class Player extends Actor {
         if (mHP > 100) mHP = 100.0f;
     }
 
-    public long getId() {
+    public String getId() {
         return mId;
     }
 

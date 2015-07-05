@@ -18,9 +18,16 @@ def execute(sensor, actor):
     op_angle = math.atan2(target.position.y - me.position.y, target.position.x - me.position.x)
     curr_angle = math.atan2(me.direction.y, me.direction.x)
 
-    actor.rotate(5 * (op_angle - curr_angle))
+    actor.rotate(5 * lower_angle(op_angle - curr_angle))
     actor.set_velocity(1.0)
 
     weapon = actor.weapon()
     if weapon.is_ready():
         weapon.fire()
+
+def lower_angle(angle):
+    while angle > math.pi:
+        angle -= 2 * math.pi
+    while angle < -math.pi:
+        angle += 2 * math.pi
+    return angle

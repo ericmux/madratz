@@ -4,13 +4,6 @@ using System.Collections;
 public class GameMenuPanel : MonoBehaviour {
 	public LoadingScript loadingPanel;
 
-	CharacterModel characterModel;
-	
-	public void SetCharacterModel(CharacterModel model)
-	{
-		this.characterModel = model;
-	}
-
 	public void OnSelectCharacterClick()
 	{
 		this.gameObject.SetActive(false);
@@ -23,5 +16,12 @@ public class GameMenuPanel : MonoBehaviour {
 		this.gameObject.SetActive(false);
 		loadingPanel.gameObject.SetActive(true);
 		loadingPanel.StartLoadScriptsCoroutine();
+	}
+
+	public void OnSelectScriptClick()
+	{
+		this.gameObject.SetActive(false);
+		loadingPanel.gameObject.SetActive(true);
+		loadingPanel.StartLoadScriptsSimpleCoroutine();
 	}
 }

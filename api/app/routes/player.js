@@ -81,6 +81,7 @@ var playerRoutes = {},
 	        		var newScript = new Script({_owner: player.id,
 						title: localData.getDefaultScriptName(),
 						code: new Buffer(script).toString('base64'),
+						isDefault: true,
 						createdOn: actualDate,
 						lastUpdate: actualDate,
 						isDefault: true

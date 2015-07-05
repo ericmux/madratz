@@ -35,9 +35,10 @@ function onConnectedToSimulationServer() {
 	var matchRoutes = require('./app/routes/match');
 	matchRoutes.init(simulation.getClient(), database.getGridFs());
 
-	router.route('/creategame')
-		.post(matchRoutes.create(simulation.getParams()));
-
+	router.route('/player/:player_id/match/create')
+		.post(matchRoutes.create);
+	router.route('/player/:player_id/match/createold')
+		.post(matchRoutes.createold(simulation.getParams()));
 	// Player routing
 	var playerRoutes = require('./app/routes/player');
 
@@ -60,6 +61,7 @@ function onConnectedToSimulationServer() {
 
 	router.route('/player/:player_id/script/:script_id/info').get(scriptRoutes.read);
 	router.route('/player/:player_id/script/:script_id/update').post(scriptRoutes.update(simulation));
+	router.route('/player/:player_id/script/:script_id/setDefault').get(scriptRoutes.setDefault(simulation));
 	router.route('/player/:player_id/script/:script_id/delete').get(scriptRoutes.delete);
 
     // Character routing
@@ -71,6 +73,8 @@ function onConnectedToSimulationServer() {
     router.route('/player/:player_id/character/create').post(characterRoutes.create);
 
     router.route('/player/:player_id/character/:char_id/info').get(characterRoutes.read);
+    router.route('/player/:player_id/character/:char_id/script/:script_id/changeScript').get(characterRoutes.changeScript);
+    router.route('/player/:player_id/character/:char_id/levelup').get(characterRoutes.levelup);
     router.route('/player/:player_id/character/:char_id/delete').get(characterRoutes.delete);
 
 

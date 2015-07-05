@@ -36,8 +36,8 @@ public class CharacterViewScript : MonoBehaviour {
 
 	public void OnSelect()
 	{
+		GlobalVariables.instance.characterModel = model;
 		gameMenuPanel.gameObject.SetActive(true);
-		gameMenuPanel.SetCharacterModel(model);
 		this.characterSelectionScript.gameObject.SetActive(false);
 	}
 

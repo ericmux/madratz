@@ -21,16 +21,16 @@ public class ActorInfo {
         return new Vec2((float) Math.cos(angle), (float) Math.sin(angle));
     }
 
-    public final long id;
+    public final String id;
     public final float hp;
     public final Vec2 position;
     public final Vec2 direction;
 
     public ActorInfo(Vec2 position, Vec2 direction) {
-        this(0, 0, position, direction);
+        this(null, 0, position, direction);
     }
 
-    public ActorInfo(long id, float hp, Vec2 position, Vec2 direction) {
+    public ActorInfo(String id, float hp, Vec2 position, Vec2 direction) {
         this.id = id;
         this.hp = hp;
         this.position = position;

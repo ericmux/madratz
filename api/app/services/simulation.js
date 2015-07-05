@@ -35,6 +35,7 @@ var ttypes             = require('../../thrift/simulation_service_types');
 		  	if (err) {
 		  		return callback(err);
 		  	}
+		  	
 		  	return callback(null, result);
 		});
 	};

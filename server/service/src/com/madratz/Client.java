@@ -16,6 +16,8 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,15 +33,17 @@ public class Client {
         try (TTransport transport = new TSocket(serverAddress, port)) {
             transport.open();
             SimulationService.Client server = new SimulationService.Client(new TCompactProtocol(transport));
-            System.out.println("Connected to server at " + serverAddress + ":" + port);
+            System.out.println("Connected to server at " + serverAddress + ":"  + port);
 
             MatchParams params = new MatchParams();
             for (int i = 0; i < scripts.length; i++) {
-                params.addToPlayers(new PlayerInfo(i + 1, ScriptLoader.readScript(scripts[i])));
+                params.addToPlayers(new PlayerInfo(Integer.toString(i + 1), ScriptLoader.readScript(scripts[i])));
             }
 
             System.out.println("Starting match with " + params.getPlayersSize() + " players");
-            long matchId = server.startMatch(params);
+            String matchId = params.matchId = generateId();
+            server.startMatch(params);
+
             System.out.println("Match id is " + matchId + ". Waiting for match to finish.");
             while (!server.isMatchFinished(matchId)) {
                 Thread.sleep(100);
@@ -56,9 +60,17 @@ public class Client {
                     for (Snapshot s : server.snapshots(matchId)) {
                         s.write(writer);
                     }
+                    server.finalizeMatch(matchId);
                 }
             }
         }
+    }
+
+    private static String generateId() {
+        byte[] stringBytes = new byte[16];
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(stringBytes);
+        return String.format("%032x", new BigInteger(1, stringBytes));
     }
 
     private static Map<String, String> parseFlags(String[] args) {
