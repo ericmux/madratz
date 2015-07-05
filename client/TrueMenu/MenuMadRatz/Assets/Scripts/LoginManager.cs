@@ -7,28 +7,28 @@ using UnityEngine.UI;
 public class LoginManager : MonoBehaviour {
 
 	private string url;
-	private string username;
-	private string password;
-	
+
 	public Text statusText;
+
+	public InputField username;
+	public InputField password;
 
 	public GameObject onLogin;
 	public GameObject onCancel;
+
 	public LoadingScript loading;
+
+	void OnEnable()
+	{
+		username.text = "";
+		password.text = "";
+	}
 
 	public void OnConnectClick()
 	{
 		loading.gameObject.SetActive(true);
-		loading.StartLoginCoroutine(username, password);
+		loading.StartLoginCoroutine(username.text, password.text);
 		this.gameObject.SetActive(false);
-	}
-	
-	public void getUsernameFromInputField(string username){
-		this.username = username;
-	}
-
-	public void getPasswordFromInputField(string password){
-		this.password = password;
 	}
 
 	public void setStatusText (string str)

@@ -28,9 +28,6 @@ var characterRoutes = {},
 				if(err)
 					return res.send(err);
 
-				if(!character || character.length === 0)
-					return res.json({err: 'user_has_no_characters'});
-
 				return res.json({msg: 'character_list', list: character});
 			});
 		});

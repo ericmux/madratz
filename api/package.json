@@ -1,6 +1,7 @@
 {
   "name": "madratz-api",
   "main": "server.js",
+  "version": "0.1",
   "contributors": [
     {
       "name": "Paulo Henrique Aguiar",

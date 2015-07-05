@@ -6,14 +6,44 @@ public class CharacterViewScript : MonoBehaviour {
 
 	public Text name;
 	public Text level;
-	
-	public void SetName (string name)
+
+	private ConfirmPanel confirmPanel;
+	private LoadingScript loadingScript;
+	private CharacterScript characterSelectionScript;
+
+	private CharacterModel model;
+
+	public void SetCharacterModel(CharacterModel model)
 	{
-		this.name.text = "Nome: " + name;
+		this.model = model;
+		this.name.text = "Nome: " + model.name;
+		this.level.text = "Level: " + model.level;
 	}
 
-	public void SetLevel (int level)
+	public void SetConfirmPanel (ConfirmPanel confirmPanel)
 	{
-		this.level.text = "Level: " + level;
+		this.confirmPanel = confirmPanel;
+	}
+
+	public void OnDelete()
+	{
+		confirmPanel.gameObject.SetActive(true);
+		confirmPanel.SetStatus("Desejar deletar o personagem \"" + model.name + "\"?");
+		confirmPanel.SetTitle("Confirmação");
+		confirmPanel.SetOnConfirm(OnConfirmCallback);
+	}
+
+	public void SetReferences(LoadingScript loadingScript, CharacterScript characterSelectionScript)
+	{
+		this.loadingScript = loadingScript;
+		this.characterSelectionScript = characterSelectionScript;
+	}
+
+	public void OnConfirmCallback()
+	{
+		loadingScript.gameObject.SetActive(true);
+		characterSelectionScript.gameObject.SetActive(false);
+		loadingScript.StartDeleteCharacterCoroutine(model._id);
+
 	}
 }

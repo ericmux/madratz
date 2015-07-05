@@ -2,14 +2,17 @@
 using System.Collections;
 
 public class EmptyViewScript : MonoBehaviour {
+	public CharacterCreationScript characterCreationScript;
+	public CharacterScript characterScript;
 
-	// Use this for initialization
-	void Start () {
-	
+	public void CreateNewCharacter() {
+		characterCreationScript.gameObject.SetActive(true);
+		characterScript.gameObject.SetActive(false);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	public void SetReferences(CharacterCreationScript characterCreationScript, CharacterScript characterScript)
+	{
+		this.characterCreationScript = characterCreationScript;
+		this.characterScript = characterScript;
 	}
 }
