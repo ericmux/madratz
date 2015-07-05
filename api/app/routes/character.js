@@ -33,6 +33,28 @@ var characterRoutes = {},
 		});
 	};
 
+	characterRoutes.list_random = function(req,res) {
+		var numChars = req.params.num_chars;
+
+		var randChars = [];
+		return Character.find({ _owner: { $ne: req.params.player_id }}, '_id name', function(err, chars) {
+	        if (err) return err;
+
+	        var allChars = chars;
+	        if(allChars.length === 0) return res.json({err: "no_foreign_avatars_to_fight"});
+
+	        var i = 0;
+	        while(randChars.length < numChars){
+				var roll = Math.floor(2*Math.random());
+				if(roll) randChars.push(allChars[i]);
+
+				if(++i === allChars.length) i=0;
+			}
+
+			return res.json(randChars);
+		});
+	}
+
 	characterRoutes.create = function(req, res) {
 		var id = req.params.player_id;
 		var idErr = sanitizeId(id)
