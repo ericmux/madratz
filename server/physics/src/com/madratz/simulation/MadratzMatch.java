@@ -21,7 +21,6 @@ public class MadratzMatch {
 
     private static float EXTRA_SIMULATED_TIME_SEC = 2;
 
-    private final long mId;
     private final float mTimeLimitSec;
     private final List<PlayerInfo> mPlayers;
 
@@ -31,8 +30,7 @@ public class MadratzMatch {
     private MadratzWorld mWorld;
     private List<Snapshot> mSnapshots = new LinkedList<>();
 
-    public MadratzMatch(long id, MatchParams params) {
-        mId = id;
+    public MadratzMatch(MatchParams params) {
         mTimeLimitSec = params.getTimeLimitSec();
         mPlayers = params.getPlayers();
         mFinished = false;
@@ -41,10 +39,6 @@ public class MadratzMatch {
 
         mWorld = WorldLoader.buildScriptedWorldFor(mPlayers);
         mWorld.setContactListener(new CollisionHandler());
-    }
-
-    public long getId() {
-        return mId;
     }
 
     public void runSimulation() {

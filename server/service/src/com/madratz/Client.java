@@ -16,6 +16,8 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +41,9 @@ public class Client {
             }
 
             System.out.println("Starting match with " + params.getPlayersSize() + " players");
-            long matchId = server.startMatch(params);
+            String matchId = params.matchId = generateId();
+            server.startMatch(params);
+
             System.out.println("Match id is " + matchId + ". Waiting for match to finish.");
             while (!server.isMatchFinished(matchId)) {
                 Thread.sleep(100);
@@ -59,6 +63,13 @@ public class Client {
                 }
             }
         }
+    }
+
+    private static String generateId() {
+        byte[] stringBytes = new byte[16];
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(stringBytes);
+        return String.format("%032x", new BigInteger(1, stringBytes));
     }
 
     private static Map<String, String> parseFlags(String[] args) {
