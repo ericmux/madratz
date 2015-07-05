@@ -10,8 +10,15 @@ import java.util.function.Consumer;
 public class MoveRequest implements ActionRequest {
 
     public static MoveRequest forVelocity(Actor actor, float intensity) {
-        Vec2 vel = actor.getBody().getWorldVector(new Vec2(intensity, 0));
-        return new MoveRequest(actor, b -> b.setLinearVelocity(vel));
+        return forLocalVelocity(actor, new Vec2(intensity, 0));
+    }
+
+    public static MoveRequest forLocalVelocity(Actor actor, Vec2 localVelocity) {
+        return forWorldVelocity(actor, actor.getBody().getWorldVector(localVelocity));
+    }
+
+    public static MoveRequest forWorldVelocity(Actor actor, Vec2 worldVelocity) {
+        return new MoveRequest(actor, b -> b.setLinearVelocity(worldVelocity));
     }
 
     public static MoveRequest forRotation(Actor actor, float intensity) {
@@ -21,7 +28,7 @@ public class MoveRequest implements ActionRequest {
     private final Actor mActor;
     private final Consumer<Body> mApplier;
 
-    public MoveRequest(Actor actor, Consumer<Body> applier) {
+    private MoveRequest(Actor actor, Consumer<Body> applier) {
         mActor = actor;
         mApplier = applier;
     }
