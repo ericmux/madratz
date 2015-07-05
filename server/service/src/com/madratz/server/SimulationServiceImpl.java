@@ -32,6 +32,12 @@ public class SimulationServiceImpl implements SimulationService.Iface {
     }
 
     @Override
+    public void finalizeMatch(String matchId) throws TException {
+        getFinishedMatch(matchId);
+        mMatches.remove(matchId);
+    }
+
+    @Override
     public boolean isMatchFinished(String matchId) throws TException {
         return getMatch(matchId).isFinished();
     }

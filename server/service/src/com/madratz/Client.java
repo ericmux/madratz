@@ -60,6 +60,7 @@ public class Client {
                     for (Snapshot s : server.snapshots(matchId)) {
                         s.write(writer);
                     }
+                    server.finalizeMatch(matchId);
                 }
             }
         }

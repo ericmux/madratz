@@ -33,6 +33,10 @@ service SimulationService {
   // for querying.
   void startMatch(1: MatchParams match) throws (1: InvalidArgumentException exc);
 
+  // Called to free the match from memory after it's been finished and nothing
+  // is needed from the simulation service anymore (e.g. the result or snapshots).
+  void finalizeMatch(1: string matchId) throws (1: InvalidArgumentException exc);
+
   bool isMatchFinished(1: string matchId) throws (1: InvalidArgumentException exc);
 
   MatchResult result(1: string matchId) throws (1: InvalidArgumentException exc);
