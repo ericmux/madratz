@@ -650,6 +650,10 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 116841235}
+--- !u!1 &146162091 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 111782, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+  m_PrefabInternal: {fileID: 1982023731}
 --- !u!1 &159100275
 GameObject:
   m_ObjectHideFlags: 0
@@ -2851,6 +2855,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 657466725}
+--- !u!114 &662933931 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11468080, guid: 9048d829f6b89404c8286df3d71cde5d,
+    type: 2}
+  m_PrefabInternal: {fileID: 741467260}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &678432766
 GameObject:
   m_ObjectHideFlags: 0
@@ -3246,6 +3256,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 862765019}
     m_Modifications:
+    - target: {fileID: 11466816, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+      propertyPath: textFields.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 22497080, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3317,6 +3331,22 @@ Prefab:
     - target: {fileID: 22497080, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
       propertyPath: m_Pivot.y
       value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466816, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+      propertyPath: textFields.Array.data[0]
+      value: 
+      objectReference: {fileID: 662933931}
+    - target: {fileID: 11466816, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+      propertyPath: textFields.Array.data[1]
+      value: 
+      objectReference: {fileID: 1640963467}
+    - target: {fileID: 11466816, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+      propertyPath: textFields.Array.data[2]
+      value: 
+      objectReference: {fileID: 1727594212}
+    - target: {fileID: 11466816, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+      propertyPath: _globals
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
@@ -6081,6 +6111,10 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1364446685}
+--- !u!1 &1366744790 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 103916, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+  m_PrefabInternal: {fileID: 741467260}
 --- !u!1 &1429037286
 GameObject:
   m_ObjectHideFlags: 0
@@ -7434,6 +7468,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1628257546}
+--- !u!114 &1640963467 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11462710, guid: 9048d829f6b89404c8286df3d71cde5d,
+    type: 2}
+  m_PrefabInternal: {fileID: 741467260}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1642853123
 GameObject:
   m_ObjectHideFlags: 0
@@ -7856,6 +7896,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1727594212 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11465870, guid: 9048d829f6b89404c8286df3d71cde5d,
+    type: 2}
+  m_PrefabInternal: {fileID: 741467260}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1729029521
 GameObject:
   m_ObjectHideFlags: 0
@@ -8064,7 +8110,28 @@ Prefab:
       propertyPath: m_Pivot.y
       value: .5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 166322, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11413852, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 146162091}
+    - target: {fileID: 11413852, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 11433266, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1366744790}
+    - target: {fileID: 11433266, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 11405398, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &1746870121 stripped
@@ -8905,6 +8972,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 862765019}
     m_Modifications:
+    - target: {fileID: 11466612, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: textFields.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 22478414, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8980,6 +9051,14 @@ Prefab:
     - target: {fileID: 111782, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466612, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: _globals
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466612, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: textFields.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}

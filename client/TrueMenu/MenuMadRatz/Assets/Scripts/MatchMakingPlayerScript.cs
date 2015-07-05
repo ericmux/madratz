@@ -8,12 +8,9 @@ public class MatchMakingPlayerScript : MonoBehaviour {
 	public Text textField;
 
 	// Use this for initialization
-	void Start () {
+	void OnEnable () {
 		textField = GetComponent<Text> ();
 		_globals = GlobalVariables.instance;
-	}
-	
-	void OnGUI(){
-		textField.text = _globals.username;
+		textField.text = _globals.characterModel.name;
 	}
 }
