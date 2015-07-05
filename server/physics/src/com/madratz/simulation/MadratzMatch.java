@@ -63,7 +63,7 @@ public class MadratzMatch {
         Player winner = findWinner(mWorld.getPlayers()).orElse(null);
         if (winner != null) {
             mWinner = mPlayers.stream()
-                    .filter(p -> p.id == winner.getId())
+                    .filter(p -> p.id.equals(winner.getId()))
                     .findFirst()
                     .get();
         }

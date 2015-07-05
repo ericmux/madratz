@@ -3,7 +3,7 @@ include "world.thrift"
 namespace java com.madratz.service
 
 struct PlayerInfo {
-  1: i64 id;
+  1: string id;
   2: string script;
 }
 
@@ -14,7 +14,7 @@ struct MatchParams {
 }
 
 struct MatchResult {
-  1: optional i64 winnerId;
+  1: optional string winnerId;
   2: double elapsedTimeSec;
 }
 

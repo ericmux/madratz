@@ -52,7 +52,7 @@ public class WorldLoader {
         return buildRegularWorld(behaviors, players.stream().map(PlayerInfo::getId).collect(toList()));
     }
 
-    private static MadratzWorld buildRegularWorld(List<Behavior> behaviors, List<Long> ids) {
+    private static MadratzWorld buildRegularWorld(List<Behavior> behaviors, List<String> ids) {
         int numPlayers = behaviors.size();
         float theta = (float) (2 * Math.PI / numPlayers);
         float L = 40.0f;
@@ -62,7 +62,7 @@ public class WorldLoader {
         for(int i = 0; i < behaviors.size(); i++) {
             Vec2 p = new Vec2((float)-Math.cos(theta * i), (float)Math.sin(theta * i)).mulLocal(L);
             float angle = - theta * i * i; // i^2 just so it's not completely symmetric
-            long id = (ids == null ? i : ids.get(i));
+            String id = (ids == null ? Integer.toString(i) : ids.get(i));
 
             Weapon weapon = new RangedWeapon(1.5f, 20, 3 * Player.MAX_LINEAR_SPEED);
             madratzBuilder.addActor(new Player(id, behaviors.get(i), p, angle, weapon));

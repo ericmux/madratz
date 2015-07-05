@@ -19,7 +19,7 @@ struct StateChange {
 }
 
 struct Actor {
-  1: optional i64 id;
+  1: optional string id;
   2: Vector2 position; //position of center of mass.
   3: double angle;
   4: double hp;

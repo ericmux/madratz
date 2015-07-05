@@ -37,7 +37,7 @@ public class Client {
 
             MatchParams params = new MatchParams();
             for (int i = 0; i < scripts.length; i++) {
-                params.addToPlayers(new PlayerInfo(i + 1, ScriptLoader.readScript(scripts[i])));
+                params.addToPlayers(new PlayerInfo(Integer.toString(i + 1), ScriptLoader.readScript(scripts[i])));
             }
 
             System.out.println("Starting match with " + params.getPlayersSize() + " players");
