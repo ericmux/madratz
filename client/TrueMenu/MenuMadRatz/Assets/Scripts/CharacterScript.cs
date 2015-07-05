@@ -9,6 +9,7 @@ public class CharacterScript : MonoBehaviour {
 	public CharacterCreationScript characterCreationScript;
 	public ConfirmPanel confirmPanel;
 	public LoadingScript loadingPanel;
+	public GameMenuPanel gameMenuPanel;
 
 	public Text status;
 
@@ -32,7 +33,7 @@ public class CharacterScript : MonoBehaviour {
 			CharacterViewScript view = Instantiate(characterViewPrefab, gameObject.transform.position, Quaternion.identity) as CharacterViewScript;
 			view.SetCharacterModel(cm);
 			view.SetConfirmPanel(confirmPanel);
-			view.SetReferences(loadingPanel, this);
+			view.SetReferences(loadingPanel, this, gameMenuPanel);
 			view.gameObject.transform.SetParent(gameObject.transform, false);
 			views.Add(view.gameObject);
 		}

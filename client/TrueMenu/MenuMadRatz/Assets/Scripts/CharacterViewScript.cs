@@ -10,6 +10,7 @@ public class CharacterViewScript : MonoBehaviour {
 	private ConfirmPanel confirmPanel;
 	private LoadingScript loadingScript;
 	private CharacterScript characterSelectionScript;
+	private GameMenuPanel gameMenuPanel;
 
 	private CharacterModel model;
 
@@ -33,10 +34,18 @@ public class CharacterViewScript : MonoBehaviour {
 		confirmPanel.SetOnConfirm(OnConfirmCallback);
 	}
 
-	public void SetReferences(LoadingScript loadingScript, CharacterScript characterSelectionScript)
+	public void OnSelect()
+	{
+		gameMenuPanel.gameObject.SetActive(true);
+		gameMenuPanel.SetCharacterModel(model);
+		this.characterSelectionScript.gameObject.SetActive(false);
+	}
+
+	public void SetReferences(LoadingScript loadingScript, CharacterScript characterSelectionScript, GameMenuPanel gameMenuPanel)
 	{
 		this.loadingScript = loadingScript;
 		this.characterSelectionScript = characterSelectionScript;
+		this.gameMenuPanel = gameMenuPanel;
 	}
 
 	public void OnConfirmCallback()

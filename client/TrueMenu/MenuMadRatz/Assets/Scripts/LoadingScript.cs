@@ -53,9 +53,14 @@ public class LoadingScript : MonoBehaviour {
 		StartCoroutine(CreateCharacterCoroutine(name));
 	}
 
-	public void StartDeleteCharacterCoroutine (string _id)
+	public void StartDeleteCharacterCoroutine (string characterId)
 	{
-		StartCoroutine(DeleteCharacterCoroutine(_id));
+		StartCoroutine(DeleteCharacterCoroutine(characterId));
+	}
+
+	public void StartLoadCharactersCoroutine ()
+	{
+		StartCoroutine(LoadCharactersCoroutine(this.id));
 	}
 
 	private IEnumerator LoginCoroutine(string username, string password){

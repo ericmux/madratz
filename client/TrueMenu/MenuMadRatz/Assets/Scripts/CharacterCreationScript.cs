@@ -3,21 +3,21 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class CharacterCreationScript : MonoBehaviour {
-
-	private string name;
 	public LoadingScript loading;
+	public InputField name;
 	public Text status;
+
+	void OnEnable()
+	{
+		status.text = "";
+		name.text = "";
+	}
 
 	public void OnCreateClick()
 	{
 		loading.gameObject.SetActive(true);
-		loading.StartCreateCharacterCoroutine(name);
+		loading.StartCreateCharacterCoroutine(name.text);
 		this.gameObject.SetActive(false);
-	}
-	
-	public void getNameFromInputField(string name){
-		this.name = name;
-		Debug.Log (name);
 	}
 
 	public void SetStatus (string err, Color color)
