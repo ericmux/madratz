@@ -18,8 +18,9 @@ public class GlobalVariables : MonoBehaviour {
 				_instance = GameObject.FindObjectsOfType<GlobalVariables>()[0];
 			}
 
-			_instance.username = "Muxagata";
-			_instance.password = "a1b2c3d4";
+			_instance.username 	= "Muxagata";
+			_instance.password 	= "a1b2c3d4";
+			_instance.id 		= "5598f6053eade5bdb81fe4cb";
 
 			return _instance;
 		}

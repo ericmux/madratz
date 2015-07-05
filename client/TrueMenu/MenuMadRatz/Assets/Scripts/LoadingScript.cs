@@ -80,6 +80,12 @@ public class LoadingScript : MonoBehaviour {
 				try {
 					Debug.Log ("Logging as " + data["id"]);
 					this.id = (string)data["id"];
+
+					//Add to globals.
+					GlobalVariables.instance.id = this.id;
+					GlobalVariables.instance.username = username;
+					GlobalVariables.instance.password = password;
+
 					StartCoroutine(LoadCharactersCoroutine(this.id));
 				} catch (KeyNotFoundException e1) {
 					try{
