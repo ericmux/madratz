@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using LitJson;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class LoginManager : MonoBehaviour {
+	EventSystem system;
 
 	private string url;
 
@@ -17,6 +19,12 @@ public class LoginManager : MonoBehaviour {
 	public GameObject onCancel;
 
 	public LoadingScript loading;
+
+	void Start ()
+	{
+		system = EventSystem.current;
+		
+	}
 
 	void OnEnable()
 	{
@@ -39,5 +47,22 @@ public class LoginManager : MonoBehaviour {
 	public void setStatusColor (Color color)
 	{
 		this.statusText.color = color;
+	}
+
+	public void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Tab))
+		{
+			Selectable next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+			
+			if (next!= null) {
+				
+				InputField inputfield = next.GetComponent<InputField>();
+				if (inputfield !=null) inputfield.OnPointerClick(new PointerEventData(system));  //if it's an input field, also set the text caret
+				
+				system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
+			}
+			
+		}
 	}
 }
