@@ -19,6 +19,87 @@ var matchRoutes = {},
 		_gridfs = gridfs;
 	};
 
+	matchRoutes.createOnevsOne = function(req, res) {
+		var playerId = req.params.player_id;
+		var idErr = sanitizeId(playerId, 'player');
+		if(idErr)
+			return res.json(idErr);
+
+		var charId = req.body.character;
+		var idErr = sanitizeId(charId, 'character');
+		if(idErr)
+			return res.json(idErr);
+
+		var enemyId = req.body.enemy;
+		var idErr = sanitizeId(enemyId, 'script');
+		if(idErr)
+			return res.json(idErr);
+
+		return Player.findById(playerId, function(err, player) {
+			if(err)
+				return res.send(err);
+
+			if(!player)
+				return res.json({err: "user_does_not_exist"});
+
+			return Character.findById(charId, function(err, character) {
+				if(err)
+					return res.send(err);
+
+				if(!character || (character._owner != playerId))
+					return res.json({err: "character_does_not_exist"});
+
+				if(!character.script)
+					return res.json({err: "character_no_active_script"});
+
+				return Character.findById(enemyId, function(err, enemy) {
+					if(err)
+						return res.send(err);
+
+					if(!enemy)
+						return res.json({err: "enemy_character_does_not_exist"});
+
+					if(!enemy.script)
+						return res.json({err: "enemy_no_active_script"});
+
+					return Script.findById(character.script, function(err, script) {
+						if(err)
+							return res.send(err);
+
+						if(!script)
+							return res.json({err: "character_script_does_not_exist"});
+
+						return Script.findById(enemy.script, function(err, enemyScript) {
+							if(err)
+								return res.send(err);
+
+							if(!enemyScript || (enemy._owner.toString() !== enemyScript._owner.toString()))
+								return res.json({err: "enemy_script_does_not_exist"});
+
+							var newMatch = new Match({
+								_creator: playerId,
+								_character: character,
+								characterScriptName: script.name,
+								_enemy: enemy,
+								enemyScriptName: enemyScript.name,
+								status: 'created',
+								date: new Date()
+							});
+
+							return newMatch.save(function(err, match) {
+								if(err)
+									return res.send(err);
+								console.log('Creating new game...');
+								createMatchOneToOne(match._id, character, script, enemy, enemyScript);
+								res.json({msg: 'match_created', obs: 'Created by ' + player.username + '. ' + character.name + '(' + script.title + ') vs ' + enemy.name +'(' + enemyScript.title + ')'});
+							});
+						});
+					});
+				});
+			});
+		});
+	};
+
 	matchRoutes.create = function(req, res) {
 		var playerId = req.params.player_id;
 		var idErr = sanitizeId(playerId, 'player');
@@ -162,17 +243,19 @@ var matchRoutes = {},
 	// HELPER METHOD //
 	///////////////////
 
-	function createMatch(character, characterScript, enemy, enemyScript)
+	function createMatchOneToOne(matchId, character, characterScript, enemy, enemyScript)
 	{
 		var characterScriptCode = new Buffer(characterScript.code, 'base64').toString('utf8');
 		console.log(characterScriptCode);
 		var enemyScriptCode = new Buffer(enemyScript.code, 'base64').toString('utf8');
 		console.log(enemyScriptCode);
-		var params = new ttypes.MatchParams({'players': [
-												new ttypes.PlayerInfo({'id': 1, 'script': characterScriptCode}),
-												new ttypes.PlayerInfo({'id': 2, 'script': enemyScriptCode})
+		var params = new ttypes.MatchParams({'matchId': matchId.toString(),
+											'players': [
+												new ttypes.PlayerInfo({'id': character._id.toString(), 'script': characterScriptCode}),
+												new ttypes.PlayerInfo({'id': enemy._id.toString(), 'script': enemyScriptCode})
 											]});
 
+		console.log(params);
 		return _client.startMatch(params, function(err, result) {
 		  	if (err) {
 		  		return console.log(err);
@@ -196,7 +279,7 @@ var matchRoutes = {},
 						          		}
 						          		console.log(result);
 					            		console.log('Match #' + matchId + ' winnerId #' + result.winnerId);
-					            		_client.snapshots(matchId, function(err, snapshotList) {
+					            		return _client.snapshots(matchId, function(err, snapshotList) {
 							          		if(err) {
 							            		return console.error(err);
 							          		}
