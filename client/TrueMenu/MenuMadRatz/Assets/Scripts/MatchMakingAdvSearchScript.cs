@@ -12,12 +12,29 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 	public GlobalVariables _globals;
 	public Text[] textFields;
 	public JsonData adversaries;
+	public Image playerPortrait;
+
+	public Sprite personagem0;
+	public Sprite personagem1;
+	public Sprite personagem2;
+	public Sprite personagemET;
+	private int etNumber = 30;
 	
 	
 	void OnEnable () {
 		textFields = GetComponentsInChildren<Text> ();
 		_globals = GlobalVariables.instance;
 		adversaries = null;
+		switch (_globals.characterModel.image) {
+		case 0: playerPortrait.sprite = personagem0;
+			break;
+		case 1: playerPortrait.sprite = personagem1;
+			break;
+		case 2: playerPortrait.sprite = personagem2;
+			break;
+		}
+		if (_globals.characterModel.image == etNumber)
+			playerPortrait.sprite = personagemET;
 		
 		if (!gameObject.activeSelf) return;
 		

@@ -50,9 +50,9 @@ public class LoadingScript : MonoBehaviour {
 		StartCoroutine (LoginCoroutine(username, password));
 	}
 
-	public void StartCreateCharacterCoroutine (string name)
+	public void StartCreateCharacterCoroutine (string name, int image)
 	{
-		StartCoroutine(CreateCharacterCoroutine(name));
+		StartCoroutine(CreateCharacterCoroutine(name, image));
 	}
 
 	public void StartDeleteCharacterCoroutine (string characterId)
@@ -204,11 +204,12 @@ public class LoadingScript : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator CreateCharacterCoroutine(string name){
+	private IEnumerator CreateCharacterCoroutine(string name, int image){
 		this.url = "localhost:8080/api/player/" + this.id + "/character/create";
 		
 		WWWForm characterForm = new WWWForm ();
 		characterForm.AddField ("name", name);
+		characterForm.AddField ("image", image);
 		
 		WWW createCharacterRequest = new WWW (url, characterForm);
 		

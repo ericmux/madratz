@@ -45,7 +45,7 @@ var MAX_CHARACTERS = 3;
 		var numChars = req.params.num_chars;
 
 		var randChars = [];
-		return Character.find({ _owner: { $ne: req.params.player_id }}, '_id name', function(err, chars) {
+		return Character.find({ _owner: { $ne: req.params.player_id }}, '_id name image', function(err, chars) {
 	        if (err) return err;
 
 	        var allChars = chars;
@@ -74,6 +74,11 @@ var MAX_CHARACTERS = 3;
 		if(nameErr)
 			return res.json(nameErr);
 
+		var image = req.body.image;
+		/*var imageErr = sanitizeImage(image);
+		if(imageErr)
+			return res.json(imageErr);*/
+
 		return Player.findById(id, function(err, player) {
 			if(err)
 				return res.send(err);
@@ -97,6 +102,7 @@ var MAX_CHARACTERS = 3;
 													  'level': 1,
 													  'exp': 0,
 													  'hp': 100,
+													  'image': image,
 													  'createdOn': new Date()});
 
 					return Script.findOne({'_owner': player._id, 'isDefault': true}, function(err, script) {
@@ -149,6 +155,7 @@ var MAX_CHARACTERS = 3;
 																	  'level': character.level,
 																	  'exp': character.exp,
 																	  'hp': character.hp,
+																	  'image': character.image,
 																	  'script': character.script}});
 			});
 		});
@@ -310,6 +317,14 @@ var MAX_CHARACTERS = 3;
 
 	    if(!validator.isAlphanumeric(name))
 	        return { err: "name_not_alphanumeric" };
+	};
+
+	function sanitizeImage(image) {
+		if(typeof image === "undefined")
+			return { err: "image_undefined" };
+
+		if(typeof image !== "number")
+	        return { err: "image_not_a_number" };
 	};
 }(characterRoutes));
 

@@ -7,6 +7,7 @@ var CharacterSchema = new Schema({
 	level: Number,
 	exp: Number,
 	hp: Number,
+	image: Number,
 	isDefault: Boolean,
 	script: {type: Schema.Types.ObjectId, ref: 'Script'},
 	createdOn: Date

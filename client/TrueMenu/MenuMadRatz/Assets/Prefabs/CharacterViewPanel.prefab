@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 0}
+  m_Color: {r: .760784388, g: .760784388, b: .760784388, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -310,6 +310,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: {fileID: 11461714}
   level: {fileID: 11492660}
+  portrait: {fileID: 11421136}
+  personagem0: {fileID: 21300000, guid: e0f4e8abeb0914b46817e3dc64cca924, type: 3}
+  personagem1: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd, type: 3}
+  personagem2: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485, type: 3}
+  personagemET: {fileID: 21300000, guid: 532696297f5d7c643bbf19b2f27c29d3, type: 3}
 --- !u!114 &11461714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -708,6 +713,47 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: personagem0
+      value: 
+      objectReference: {fileID: 21300000, guid: e0f4e8abeb0914b46817e3dc64cca924,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: personagem1
+      value: 
+      objectReference: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: personagem2
+      value: 
+      objectReference: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_Color.r
+      value: .760784388
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.g
+      value: .760784388
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.b
+      value: .760784388
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: personagemET
+      value: 
+      objectReference: {fileID: 21300000, guid: 532696297f5d7c643bbf19b2f27c29d3,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 193328}

@@ -15,6 +15,7 @@ public class ScriptView : MonoBehaviour {
 	public Button setDefault;
 	public Text defaultText;
 	public EditScriptPanel editScriptPanel;
+	public ManageScriptsPanel manageScriptPanel;
 	private ScriptModel scriptModel;
 	private OnReloadDelegate reloadFunction;
 	private OnDeleteDelegate deleteFunction;
@@ -35,9 +36,10 @@ public class ScriptView : MonoBehaviour {
 		setDefault.gameObject.SetActive(!sm.isDefault);
 	}
 
-	public void SetReferences(EditScriptPanel editScriptPanel)
+	public void SetReferences(EditScriptPanel editScriptPanel, ManageScriptsPanel manageScriptPanel)
 	{
 		this.editScriptPanel = editScriptPanel;
+		this.manageScriptPanel = manageScriptPanel;
 	}
 
 	public void SetOnReloadDelegate(OnReloadDelegate onReload)
@@ -58,6 +60,7 @@ public class ScriptView : MonoBehaviour {
 	public void OnExit()
 	{
 		reloadFunction();
+		this.manageScriptPanel.ToggleButtons (true);
 	}
 	public void OnEdit()
 	{
@@ -65,6 +68,7 @@ public class ScriptView : MonoBehaviour {
 		editScriptPanel.SetOnExit(OnExit);
 		editScriptPanel.SetScriptModel(scriptModel);
 		editScriptPanel.SetSaveText("Salvar");
+		this.manageScriptPanel.ToggleButtons (false);
 	}
 
 	public void OnDelete()

@@ -7,6 +7,14 @@ public class CharacterViewScript : MonoBehaviour {
 	public Text name;
 	public Text level;
 
+	public Image portrait;
+
+	public Sprite personagem0;
+	public Sprite personagem1;
+	public Sprite personagem2;
+	public Sprite personagemET;
+	private int etNumber = 30;
+
 	private ConfirmPanel confirmPanel;
 	private LoadingScript loadingScript;
 	private CharacterScript characterSelectionScript;
@@ -19,6 +27,16 @@ public class CharacterViewScript : MonoBehaviour {
 		this.model = model;
 		this.name.text = "Nome: " + model.name;
 		this.level.text = "Level: " + model.level;
+		switch (model.image) {
+		case 0: portrait.sprite = personagem0;
+			break;
+		case 1: portrait.sprite = personagem1;
+			break;
+		case 2: portrait.sprite = personagem2;
+			break;
+		}
+		if (model.image == etNumber)
+			portrait.sprite = personagemET;
 	}
 
 	public void SetConfirmPanel (ConfirmPanel confirmPanel)
