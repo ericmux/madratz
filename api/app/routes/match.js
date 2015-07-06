@@ -8,7 +8,12 @@ var matchRoutes = {},
 	Match = require('../models/match'),
 	validator = require('validator'),
 	ttypes = require('../../thrift/simulation_service_types'),
-	fs = require('fs');
+	fs = require('fs'),
+	util = require('util');
+
+var thrift = require('thrift');
+
+require('nodedump');
 
 (function (matchRoutes) {
 	var _client;
@@ -306,7 +311,7 @@ var matchRoutes = {},
 					            			if(err) {
 									            return console.error(err);
 									        }
-				            				return _client.snapshots(id, function(err, snapshotList) {
+				            				return _client.snapshots(id, function(err, snapshots) {
 								          		if(err) {
 								            		return console.error(err);
 								          		}
@@ -317,6 +322,21 @@ var matchRoutes = {},
 							          			if(result.winnerId)
 						            				match._winner = result.winnerId
 						            			match.status = 'finished';
+
+						            			var transport = new thrift.TBufferedTransport(null, function(msg) {
+						            				console.log('transport flushed.');
+						            				fs.writeFile('serialized.txt', msg, function (err) {
+														if (err)
+															return console.log(err);
+														console.log('finished');
+													});
+						            			});
+
+						            			var protocol = new thrift.TCompactProtocol(transport);
+
+						            			snapshots.write(protocol);
+
+						            			protocol.flush();
 
 						            			return match.save(function(err) {
 						            				console.log('Match #' + id + ' updated.');
