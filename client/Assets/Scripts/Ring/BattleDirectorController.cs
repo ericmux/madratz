@@ -23,14 +23,16 @@ public class BattleDirectorController : MonoBehaviour {
 	private List<Snapshot> snapshots;
 	private List<GameObject> spellObjects = new List<GameObject>();
 
-	private float loadingTime = 0;
+	/*private float loadingTime = 0;
 	public Slider loadingSlider;
-	public Text loadingPercentText;
+	public Text loadingPercentText;*/
+
+	public Slider playBackSlider;
 
 	// Use this for initialization
 	void Start () {
-		GameObject loadingCanvas = GameObject.FindGameObjectWithTag ("LoadingCanvas");
-		loadingCanvas.SetActive (false);
+		// GameObject loadingCanvas = GameObject.FindGameObjectWithTag ("LoadingCanvas");
+		// loadingCanvas.SetActive (false);
 
 		snapshots = ThriftClient.getSnapshotsFromFile ("Assets/Files/match.out");
 
@@ -62,8 +64,13 @@ public class BattleDirectorController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		int tick = TimerController.tick;
-		if (tick >= snapshots.Count) return;
+		int totalTicks = snapshots.Count;
 
+		if (tick >= totalTicks) return;
+
+		float playBackProgress = ((float) tick) / totalTicks;
+		// playBackSlider.value = playBackProgress;
+	
 		Snapshot snapshot = snapshots[tick];
 
 		int i = 0;
@@ -150,11 +157,11 @@ public class BattleDirectorController : MonoBehaviour {
 
 					lineCounter ++;
 	
-					loadingTime = ((float) lineCounter) / nLines;
+					/*loadingTime = ((float) lineCounter) / nLines;
 					loadingSlider.value = loadingTime;
 					string loadingPercentString = ((int) (loadingTime * 100)) + " %";
 					Debug.Log (loadingPercentString);
-					loadingPercentText.text = loadingPercentString;
+					loadingPercentText.text = loadingPercentString;*/
 			
 				} while (line != null);
 				
