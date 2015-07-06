@@ -14,6 +14,8 @@ public class ManageScriptsPanel : MonoBehaviour {
 
 	public Button nextButton;
 	public Button previousButton;
+	public Button createButton;
+	public Button voltarButton;
 
 	public EditScriptPanel editScriptPanel;
 	public LoadingScript loadingPanel;
@@ -23,7 +25,7 @@ public class ManageScriptsPanel : MonoBehaviour {
 		this.scriptList = scriptList;
 		this.listIndex = 0;
 		view = Instantiate(scriptViewPrefab) as ScriptView;
-		view.SetReferences(editScriptPanel);
+		view.SetReferences(editScriptPanel, this);
 		view.SetOnReloadDelegate(OnReload);
 		view.SetOnDeleteDelegate(OnDelete);
 		view.SetOnSetDefaultDelegate(OnSetDefault);
@@ -97,5 +99,11 @@ public class ManageScriptsPanel : MonoBehaviour {
 		this.gameObject.SetActive(false);
 		loadingPanel.gameObject.SetActive(true);
 		loadingPanel.StartSetDefaultScriptsCoroutine(playerId, scriptId);
+	}
+
+	public void ToggleButtons(bool value)
+	{
+		createButton.interactable = value;
+		voltarButton.interactable = value;
 	}
 }

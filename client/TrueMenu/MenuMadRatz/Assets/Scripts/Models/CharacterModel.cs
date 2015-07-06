@@ -17,5 +17,6 @@ public class CharacterModel
 	public int   	level     { get; set; }
 	public int   	exp     { get; set; }
 	public int   	hp     { get; set; }
+	public int 		image { get; set; }
 }
 

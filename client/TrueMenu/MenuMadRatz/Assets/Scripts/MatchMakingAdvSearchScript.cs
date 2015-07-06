@@ -9,6 +9,7 @@ public class RandomPlayer
 {
 	public string _id { get; set; }
 	public string name { get; set; }
+	public int image { get; set; }
 }
 
 public class MatchMakingAdvSearchScript : MonoBehaviour {
@@ -23,9 +24,33 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 
 	public Text[] textFields;
 
+<<<<<<< HEAD
 	public LoadingScript loadingScript;
+=======
+	public Image playerPortrait;
+	public Image enemyPortrait;
+
+	public Sprite personagem0;
+	public Sprite personagem1;
+	public Sprite personagem2;
+	public Sprite personagemET;
+	private int etNumber = 30;
+	
+>>>>>>> origin/menu
 	void OnEnable () {
 		_globals = GlobalVariables.instance;
+
+		switch (_globals.characterModel.image) {
+		case 0: playerPortrait.sprite = personagem0;
+			break;
+		case 1: playerPortrait.sprite = personagem1;
+			break;
+		case 2: playerPortrait.sprite = personagem2;
+			break;
+		}
+		if (_globals.characterModel.image == etNumber)
+			playerPortrait.sprite = personagemET;
+
 		listOfRandomPlayers = null;
 		startMatch.gameObject.SetActive(false);
 
@@ -52,6 +77,17 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 		for(i = 0; i < listOfRandomPlayers.Count; i++){
 			textFields[i].text = (string) listOfRandomPlayers[i].name;
 		}
+
+		switch (listOfRandomPlayers[i].image) {
+		case 0: enemyPortrait.sprite = personagem0;
+			break;
+		case 1: enemyPortrait.sprite = personagem1;
+			break;
+		case 2: enemyPortrait.sprite = personagem2;
+			break;
+		}
+		if (listOfRandomPlayers[i].image == etNumber)
+			enemyPortrait.sprite = personagemET;
 
 		startMatch.gameObject.SetActive(true);
 	}
