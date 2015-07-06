@@ -6,6 +6,7 @@ import com.madratz.leveldesigner.WorldLoader;
 import com.madratz.serialization.Snapshot;
 import com.madratz.service.MatchParams;
 import com.madratz.service.PlayerInfo;
+import com.madratz.service.SnapshotsResult;
 import com.madratz.ui.SimulationTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,9 +81,9 @@ public class MadratzMatch {
 
     public float getElapsedTime(){ return mWorld.getElapsedTime(); }
 
-    public List<Snapshot> getSnapshots() {
+    public SnapshotsResult getSnapshotsResult() {
         assert mFinished;
-        return mSnapshots;
+        return new SnapshotsResult(mSnapshots);
     }
 
     private static Optional<Player> findWinner(List<Player> standingPlayers) {

@@ -57,7 +57,7 @@ public class Client {
                      TTransport tout = new TIOStreamTransport(os)) {
                     tout.open();
                     TProtocol writer = new TCompactProtocol(tout);
-                    for (Snapshot s : server.snapshots(matchId)) {
+                    for (Snapshot s : server.snapshots(matchId).snapshotList) {
                         s.write(writer);
                     }
                     server.finalizeMatch(matchId);

@@ -1,14 +1,12 @@
 package com.madratz.server;
 
 import com.madratz.behavior.ScriptedBehavior;
-import com.madratz.serialization.Snapshot;
 import com.madratz.service.*;
 import com.madratz.simulation.MadratzMatch;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.concurrent.*;
 import java.util.function.Function;
 
@@ -54,8 +52,8 @@ public class SimulationServiceImpl implements SimulationService.Iface {
     }
 
     @Override
-    public List<Snapshot> snapshots(String matchId) throws TException {
-        return getFinishedMatch(matchId).getSnapshots();
+    public SnapshotsResult snapshots(String matchId) throws TException {
+        return getFinishedMatch(matchId).getSnapshotsResult();
     }
 
     @Override
