@@ -24,4 +24,11 @@ public class GameMenuPanel : MonoBehaviour {
 		loadingPanel.gameObject.SetActive(true);
 		loadingPanel.StartLoadScriptsSimpleCoroutine();
 	}
+
+	public void OnViewMatchHistoryClick()
+	{
+		this.gameObject.SetActive(false);
+		loadingPanel.gameObject.SetActive(true);
+		loadingPanel.StartViewHistoryCoroutine();
+	}
 }

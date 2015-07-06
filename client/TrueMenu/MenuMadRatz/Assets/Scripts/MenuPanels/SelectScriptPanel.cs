@@ -14,6 +14,7 @@ public class SelectScriptPanel : MonoBehaviour {
 	public Button previousButton;
 
 	public LoadingScript loadingPanel;
+	List<GameObject> views;
 
 	public void SetScriptList (ScriptList scriptList)
 	{

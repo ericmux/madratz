@@ -5,12 +5,13 @@ var MatchSchema = new Schema({
 	_creator: {type: Schema.Types.ObjectId, ref: 'Player'},
 	_character: {type: Schema.Types.ObjectId, ref: 'Character'},
 	characterScriptName: String,
-	_enemy: {type: Schema.Types.ObjectId, ref: 'Character'},
+	_enemies: [{type: Schema.Types.ObjectId, ref: 'Character'}],
 	enemyScriptName: String,
 	_file: {type: Schema.Types.ObjectId, ref: 'File'},
 	status: String,
 	_winner: {type: Schema.Types.ObjectId, ref: 'Character'},
-	date: Date
+	date: Date,
+	type: String
 });
 
 module.exports = mongoose.model('Match', MatchSchema);

@@ -39,6 +39,8 @@ function onConnectedToSimulationServer() {
 		.post(matchRoutes.createOnevsOne);
 	router.route('/player/:player_id/match/createold')
 		.post(matchRoutes.createold(simulation.getParams()));
+	router.route('/player/:player_id/match/list')
+		.get(matchRoutes.list);
 	// Player routing
 	var playerRoutes = require('./app/routes/player');
 

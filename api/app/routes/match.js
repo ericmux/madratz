@@ -19,6 +19,27 @@ var matchRoutes = {},
 		_gridfs = gridfs;
 	};
 
+	matchRoutes.list = function(req, res) {
+		var playerId = req.params.player_id;
+		var idErr = sanitizeId(playerId, 'player');
+		if(idErr)
+			return res.json(idErr);
+		return Player.findById(playerId, function(err, player) {
+			if(err)
+				return res.send(err);
+
+			if(!player)
+				return res.json({err: "user_does_not_exist"});
+
+			return Match.find({_creator: playerId}, function(err, matches) {
+				if(err)
+					return res.send(err);
+
+				return res.json({msg: 'match_list', list: matches});
+			})
+		});
+	};
+
 	matchRoutes.createOnevsOne = function(req, res) {
 		var playerId = req.params.player_id;
 		var idErr = sanitizeId(playerId, 'player');
@@ -80,10 +101,11 @@ var matchRoutes = {},
 								_creator: playerId,
 								_character: character,
 								characterScriptName: script.name,
-								_enemy: enemy,
+								_enemies: [enemy],
 								enemyScriptName: enemyScript.name,
 								status: 'created',
-								date: new Date()
+								date: new Date(),
+								type: '1v1'
 							});
 
 							return newMatch.save(function(err, match) {
@@ -256,13 +278,13 @@ var matchRoutes = {},
 											]});
 
 		console.log(params);
-		return _client.startMatch(params, function(err, result) {
+		return _client.startMatch(params, function(err) {
 		  	if (err) {
 		  		return console.log(err);
 		  	}
-		  	console.log("Match created #" + result);
+		  	console.log("Match created #" + matchId.toString());
 		  	var checkFunction = setInterval(function() {
-				  	_client.isMatchFinished(result, function(matchId) {
+				  	_client.isMatchFinished(matchId.toString(), function(id) {
 				  		return function(err, finished) {
 					  		console.log("Verifying match status...");
 						    if (err) {
@@ -273,60 +295,63 @@ var matchRoutes = {},
 					      	{
 					        	clearInterval(checkFunction);
 					        	setTimeout(function() {
-					        		_client.result(matchId, function(err, result) {
+					        		return _client.result(id, function(err, result) {
 						          		if(err) {
 						            		return console.error(err);
 						          		}
 						          		console.log(result);
-					            		console.log('Match #' + matchId + ' winnerId #' + result.winnerId);
-					            		return _client.snapshots(matchId, function(err, snapshotList) {
-							          		if(err) {
-							            		return console.error(err);
-							          		}
+					            		console.log('Match #' + id + ' winnerId #' + result.winnerId);
 
-						          			if(!_gridfs)
-						          				return console.log("Grid not available.");
-											var writestream = _gridfs.createWriteStream({
-											    filename: 'match' + matchId + '.txt'
-											});
-											var data = JSON.stringify(snapshotList);
-											writestream.on('open', function(file) {
-												console.log("Stream opened");
-											});
+					            		return Match.findOne({'_id': id}, function(err, match) {
+					            			if(err) {
+									            return console.error(err);
+									        }
+				            				return _client.snapshots(id, function(err, snapshotList) {
+								          		if(err) {
+								            		return console.error(err);
+								          		}
 
-											writestream.write(data);
-											writestream.end();
+							          			if(!_gridfs)
+							          				return console.log("Grid not available.");
 
-											writestream.on('close', function(file) {
-												console.log("Finished writing " + file.filename + " to database.");
-												console.log(JSON.stringify(file));
+							          			if(result.winnerId)
+						            				match._winner = result.winnerId
+						            			match.status = 'finished';
 
-												var match = new Match({	_creator: character._id,
-													creatorScriptName: characterScript.title,
-													_enemy: enemy._id,
-													enemyScriptName: enemyScript.title,
-													_file: file._id,
-													date: new Date()});
+						            			return match.save(function(err) {
+						            				console.log('Match #' + id + ' updated.');
+						            			});
 
-												return match.save(function(err) {
-													if(err)
+							          			/*
+												var writestream = _gridfs.createWriteStream({
+												    filename: 'match' + id + '.txt'
+												});
+
+												var data = JSON.stringify(snapshotList);
+												writestream.on('open', function(file) {
+													console.log("Stream opened");
+												});
+
+												writestream.write(data);
+												writestream.end();
+
+												writestream.on('close', function(file) {
+													console.log("Finished writing " + file.filename + " to database.");
+												});
+
+												fs.writeFile('match'+id+'.txt', snapshotList, function (err) {
+													if (err)
 														return console.log(err);
-
-													return console.log('Match entry created!');
-												})
-											});
-
-											fs.writeFile('match'+matchId+'.txt', snapshotList, function (err) {
-												if (err)
-													return console.log(err);
-												console.log('finished');
-											});
-						        		});
+													console.log('finished');
+												});
+											*/
+							        		});
+					            		});
 					        		});
 					        	}, 1000);
 					      	}
 						};
-				  	}(result));
+				  	}(matchId.toString()));
 				}, 1000);
 		});
 	};

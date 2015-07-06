@@ -23,6 +23,7 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 
 	public Text[] textFields;
 
+	public LoadingScript loadingScript;
 	void OnEnable () {
 		_globals = GlobalVariables.instance;
 		listOfRandomPlayers = null;
@@ -69,5 +70,13 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 		if (loginRequest.text != null) {
 			listOfRandomPlayers = JsonMapper.ToObject<List<RandomPlayer>> (loginRequest.text);
 		}
+	}
+
+	public void OnCreate()
+	{
+		loadingScript.gameObject.SetActive(true);
+		loadingScript.StartStartMatchCoroutine(_globals.characterModel._id, listOfRandomPlayers[0]._id);
+		this.gameObject.SetActive(false);
+
 	}
 }

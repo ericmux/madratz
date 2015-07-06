@@ -16,6 +16,7 @@ public class LoadingScript : MonoBehaviour {
 	public CharacterCreationScript characterCreationScript;
 	public ManageScriptsPanel manageScriptPanel;
 	public SelectScriptPanel selectScriptPanel;
+	public ListMatchPanel listMatchPanel;
 
 	// Use this for initialization
 	void OnEnable () {
@@ -88,6 +89,16 @@ public class LoadingScript : MonoBehaviour {
 	public void StartSetActiveScriptCoroutine (string playerId, string characterId, string scriptId)
 	{
 		StartCoroutine(SetActiveScriptCoroutine (playerId, characterId, scriptId));
+	}
+
+	public void StartViewHistoryCoroutine ()
+	{
+		StartCoroutine(ViewHistoryCoroutine(this.id));
+	}
+
+	public void StartStartMatchCoroutine (string character, string enemy)
+	{
+		StartCoroutine(StartMatchCoroutine(this.id, character, enemy));
 	}
 
 	private IEnumerator LoginCoroutine(string username, string password){
@@ -354,6 +365,58 @@ public class LoadingScript : MonoBehaviour {
 			{
 				Debug.Log (data.ToJson());
 				StartCoroutine(LoadScriptsSimpleCoroutine(playerId));
+			}
+		}
+	}
+
+	private IEnumerator ViewHistoryCoroutine(string id){
+		this.url = "localhost:8080/api/player/" + id + "/match/list/";
+		
+		WWW viewHistoryRequest = new WWW (url);
+		
+		yield return viewHistoryRequest;
+		
+		if (viewHistoryRequest.text != null) {
+			string rawJson = viewHistoryRequest.text;
+			JsonData data = JsonMapper.ToObject (rawJson);
+			
+			if(JSONUtils.JsonDataContainsKey(data, "err"))
+			{
+				Debug.Log("Erro " + data["err"]);
+			}
+			else
+			{
+				Debug.Log (data.ToJson());
+				MatchList list = JsonMapper.ToObject<MatchList>(rawJson);
+				listMatchPanel.gameObject.SetActive(true);
+				listMatchPanel.SetMatchList(list);
+				this.gameObject.SetActive(false);
+			}
+		}
+	}
+
+	private IEnumerator StartMatchCoroutine(string id, string character, string enemy){
+		this.url = "localhost:8080/api/player/" + id + "/match/create/onevsone";
+		WWWForm startMatchForm = new WWWForm();
+		startMatchForm.AddField("character", character);
+		startMatchForm.AddField("enemy", enemy);
+
+		WWW startMatchRequest = new WWW (url, startMatchForm);
+		
+		yield return startMatchRequest;
+		
+		if (startMatchRequest.text != null) {
+			string rawJson = startMatchRequest.text;
+			JsonData data = JsonMapper.ToObject (rawJson);
+			
+			if(JSONUtils.JsonDataContainsKey(data, "err"))
+			{
+				Debug.Log("Erro " + data["err"]);
+			}
+			else
+			{
+				Debug.Log (data.ToJson());
+				StartCoroutine(ViewHistoryCoroutine(id));
 			}
 		}
 	}
