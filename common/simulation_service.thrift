@@ -24,6 +24,10 @@ struct CompilationResult {
   3: optional string errorMsg;
 }
 
+struct SnapshotsResult {
+  1: list<world.Snapshot> snapshotList;
+}
+
 exception InvalidArgumentException {
   1: string msg;
 }
@@ -41,7 +45,7 @@ service SimulationService {
 
   MatchResult result(1: string matchId) throws (1: InvalidArgumentException exc);
 
-  list<world.Snapshot> snapshots(1: string matchId) throws (1: InvalidArgumentException exc);
+  SnapshotsResult snapshots(1: string matchId) throws (1: InvalidArgumentException exc);
 
   CompilationResult compileScript(1: string script);
 }

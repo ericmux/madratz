@@ -569,22 +569,9 @@ SimulationService_snapshots_result.prototype.read = function(input) {
     switch (fid)
     {
       case 0:
-      if (ftype == Thrift.Type.LIST) {
-        var _size8 = 0;
-        var _rtmp312;
-        this.success = [];
-        var _etype11 = 0;
-        _rtmp312 = input.readListBegin();
-        _etype11 = _rtmp312.etype;
-        _size8 = _rtmp312.size;
-        for (var _i13 = 0; _i13 < _size8; ++_i13)
-        {
-          var elem14 = null;
-          elem14 = new world_ttypes.Snapshot();
-          elem14.read(input);
-          this.success.push(elem14);
-        }
-        input.readListEnd();
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new ttypes.SnapshotList();
+        this.success.read(input);
       } else {
         input.skip(ftype);
       }
@@ -609,17 +596,8 @@ SimulationService_snapshots_result.prototype.read = function(input) {
 SimulationService_snapshots_result.prototype.write = function(output) {
   output.writeStructBegin('SimulationService_snapshots_result');
   if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
-    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
-    for (var iter15 in this.success)
-    {
-      if (this.success.hasOwnProperty(iter15))
-      {
-        iter15 = this.success[iter15];
-        iter15.write(output);
-      }
-    }
-    output.writeListEnd();
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
     output.writeFieldEnd();
   }
   if (this.exc !== null && this.exc !== undefined) {

@@ -330,6 +330,82 @@ CompilationResult.prototype.write = function(output) {
   return;
 };
 
+SnapshotList = module.exports.SnapshotList = function(args) {
+  this.snapshotList = null;
+  if (args) {
+    if (args.snapshotList !== undefined) {
+      this.snapshotList = args.snapshotList;
+    }
+  }
+};
+SnapshotList.prototype = {};
+SnapshotList.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.LIST) {
+        var _size8 = 0;
+        var _rtmp312;
+        this.snapshotList = [];
+        var _etype11 = 0;
+        _rtmp312 = input.readListBegin();
+        _etype11 = _rtmp312.etype;
+        _size8 = _rtmp312.size;
+        for (var _i13 = 0; _i13 < _size8; ++_i13)
+        {
+          var elem14 = null;
+          elem14 = new world_ttypes.Snapshot();
+          elem14.read(input);
+          this.snapshotList.push(elem14);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+SnapshotList.prototype.write = function(output) {
+  output.writeStructBegin('SnapshotList');
+  if (this.snapshotList !== null && this.snapshotList !== undefined) {
+    output.writeFieldBegin('snapshotList', Thrift.Type.LIST, 1);
+    output.writeListBegin(Thrift.Type.STRUCT, this.snapshotList.length);
+    for (var iter15 in this.snapshotList)
+    {
+      if (this.snapshotList.hasOwnProperty(iter15))
+      {
+        iter15 = this.snapshotList[iter15];
+        iter15.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 InvalidArgumentException = module.exports.InvalidArgumentException = function(args) {
   Thrift.TException.call(this, "InvalidArgumentException")
   this.name = "InvalidArgumentException"
