@@ -74,18 +74,21 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 		
 		for(i = 0; i < listOfRandomPlayers.Count; i++){
 			textFields[i].text = (string) listOfRandomPlayers[i].name;
+
+			switch (listOfRandomPlayers[i].image) {
+			case 0: enemyPortrait.sprite = personagem0;
+				break;
+			case 1: enemyPortrait.sprite = personagem1;
+				break;
+			case 2: enemyPortrait.sprite = personagem2;
+				break;
+			}
+
+			if (listOfRandomPlayers[i].image == etNumber)
+				enemyPortrait.sprite = personagemET;
 		}
 
-		switch (listOfRandomPlayers[i].image) {
-		case 0: enemyPortrait.sprite = personagem0;
-			break;
-		case 1: enemyPortrait.sprite = personagem1;
-			break;
-		case 2: enemyPortrait.sprite = personagem2;
-			break;
-		}
-		if (listOfRandomPlayers[i].image == etNumber)
-			enemyPortrait.sprite = personagemET;
+
 
 		startMatch.gameObject.SetActive(true);
 	}

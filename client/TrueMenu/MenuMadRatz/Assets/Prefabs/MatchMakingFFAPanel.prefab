@@ -610,8 +610,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf81edd01d85494295fac2c499edbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startMatch: {fileID: 0}
   _globals: {fileID: 0}
   textFields: []
+  loadingScript: {fileID: 0}
+  playerPortrait: {fileID: 0}
+  enemyPortrait: {fileID: 0}
+  personagem0: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd, type: 3}
+  personagem1: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485, type: 3}
+  personagem2: {fileID: 21300000, guid: e0f4e8abeb0914b46817e3dc64cca924, type: 3}
+  personagemET: {fileID: 21300000, guid: 532696297f5d7c643bbf19b2f27c29d3, type: 3}
 --- !u!114 &11468080
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1101,7 +1109,27 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: personagemET
+      value: 
+      objectReference: {fileID: 21300000, guid: 532696297f5d7c643bbf19b2f27c29d3,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: personagem1
+      value: 
+      objectReference: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: personagem0
+      value: 
+      objectReference: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: personagem2
+      value: 
+      objectReference: {fileID: 21300000, guid: e0f4e8abeb0914b46817e3dc64cca924,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 103916}

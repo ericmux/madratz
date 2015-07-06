@@ -311,9 +311,9 @@ MonoBehaviour:
   name: {fileID: 11461714}
   level: {fileID: 11492660}
   portrait: {fileID: 11421136}
-  personagem0: {fileID: 21300000, guid: e0f4e8abeb0914b46817e3dc64cca924, type: 3}
-  personagem1: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd, type: 3}
-  personagem2: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485, type: 3}
+  personagem0: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd, type: 3}
+  personagem1: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485, type: 3}
+  personagem2: {fileID: 21300000, guid: e0f4e8abeb0914b46817e3dc64cca924, type: 3}
   personagemET: {fileID: 21300000, guid: 532696297f5d7c643bbf19b2f27c29d3, type: 3}
 --- !u!114 &11461714
 MonoBehaviour:
@@ -720,17 +720,17 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: personagem0
       value: 
-      objectReference: {fileID: 21300000, guid: e0f4e8abeb0914b46817e3dc64cca924,
+      objectReference: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd,
         type: 3}
     - target: {fileID: 0}
       propertyPath: personagem1
       value: 
-      objectReference: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd,
+      objectReference: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485,
         type: 3}
     - target: {fileID: 0}
       propertyPath: personagem2
       value: 
-      objectReference: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485,
+      objectReference: {fileID: 21300000, guid: e0f4e8abeb0914b46817e3dc64cca924,
         type: 3}
     - target: {fileID: 0}
       propertyPath: m_Color.r
