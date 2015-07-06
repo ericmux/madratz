@@ -1,7 +1,6 @@
 package com.madratz;
 
 import com.madratz.jython.ScriptLoader;
-import com.madratz.serialization.Snapshot;
 import com.madratz.service.MatchParams;
 import com.madratz.service.PlayerInfo;
 import com.madratz.service.SimulationService;
@@ -57,9 +56,7 @@ public class Client {
                      TTransport tout = new TIOStreamTransport(os)) {
                     tout.open();
                     TProtocol writer = new TCompactProtocol(tout);
-                    for (Snapshot s : server.snapshots(matchId).snapshotList) {
-                        s.write(writer);
-                    }
+                    server.snapshots(matchId).write(writer);
                     server.finalizeMatch(matchId);
                 }
             }
