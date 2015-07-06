@@ -24,9 +24,8 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 
 	public Text[] textFields;
 
-<<<<<<< HEAD
 	public LoadingScript loadingScript;
-=======
+
 	public Image playerPortrait;
 	public Image enemyPortrait;
 
@@ -35,8 +34,7 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 	public Sprite personagem2;
 	public Sprite personagemET;
 	private int etNumber = 30;
-	
->>>>>>> origin/menu
+
 	void OnEnable () {
 		_globals = GlobalVariables.instance;
 
