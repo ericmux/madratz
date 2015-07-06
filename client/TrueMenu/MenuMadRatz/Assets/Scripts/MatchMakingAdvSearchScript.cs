@@ -9,6 +9,7 @@ public class RandomPlayer
 {
 	public string _id { get; set; }
 	public string name { get; set; }
+	public int image { get; set; }
 }
 
 public class MatchMakingAdvSearchScript : MonoBehaviour {
@@ -24,6 +25,7 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 	public Text[] textFields;
 
 	public Image playerPortrait;
+	public Image enemyPortrait;
 
 	public Sprite personagem0;
 	public Sprite personagem1;
@@ -71,6 +73,17 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 		for(i = 0; i < listOfRandomPlayers.Count; i++){
 			textFields[i].text = (string) listOfRandomPlayers[i].name;
 		}
+
+		switch (listOfRandomPlayers[i].image) {
+		case 0: enemyPortrait.sprite = personagem0;
+			break;
+		case 1: enemyPortrait.sprite = personagem1;
+			break;
+		case 2: enemyPortrait.sprite = personagem2;
+			break;
+		}
+		if (listOfRandomPlayers[i].image == etNumber)
+			enemyPortrait.sprite = personagemET;
 
 		startMatch.gameObject.SetActive(true);
 	}
