@@ -82,11 +82,12 @@ require('nodedump');
 					  	if(!found)
 					  		return res.json({err: 'match_file_not_found'});
 
-					  	return _gridfs.createReadStream({_id: match._file})
+					  	return res.sendfile(matchId + '.out');
+					  	/*return _gridfs.createReadStream({_id: match._file})
 									  	.on('error', function() {
 								            res.send(500, {err: 'failed_to_retrieve_file'});
 								        })
-								        .pipe(res);
+								        .pipe(res);*/
 					});
 				}
 				else
