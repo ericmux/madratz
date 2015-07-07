@@ -25,6 +25,7 @@ public class ManageScriptsPanel : MonoBehaviour {
 		this.scriptList = scriptList;
 		this.listIndex = 0;
 		view = Instantiate(scriptViewPrefab) as ScriptView;
+		view.transform.position = new Vector3(view.transform.position.x, 55, view.transform.position.z);
 		view.SetReferences(editScriptPanel, this);
 		view.SetOnReloadDelegate(OnReload);
 		view.SetOnDeleteDelegate(OnDelete);
