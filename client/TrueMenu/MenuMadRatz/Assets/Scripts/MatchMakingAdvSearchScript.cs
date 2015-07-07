@@ -15,8 +15,8 @@ public class RandomPlayer
 public class MatchMakingAdvSearchScript : MonoBehaviour {
 	public Button startMatch;
 
-	List<RandomPlayer> listOfRandomPlayers;
-
+	List<RandomPlayer> enemyPlayers;
+	
 	private string url_main = GlobalVariables.api_url + "/player/";
 	private string url_rand = "/random/";
 	
@@ -27,8 +27,8 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 	public LoadingScript loadingScript;
 
 	public Image playerPortrait;
-	public Image enemyPortrait;
-
+	public Image[] enemyPortraits;
+	
 	public Sprite personagem0;
 	public Sprite personagem1;
 	public Sprite personagem2;
@@ -36,8 +36,13 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 	private int etNumber = 30;
 
 	void OnEnable () {
-		enemyPortrait.enabled = false;
 		_globals = GlobalVariables.instance;
+		if (_globals.characterModel == null)
+			return;
+
+
+		foreach (Image img in enemyPortraits)
+			img.enabled = false;
 
 		switch (_globals.characterModel.image) {
 		case 0: playerPortrait.sprite = personagem0;
@@ -50,10 +55,8 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 		if (_globals.characterModel.image == etNumber)
 			playerPortrait.sprite = personagemET;
 
-		listOfRandomPlayers = null;
+		enemyPlayers = null;
 		startMatch.gameObject.SetActive(false);
-
-		if (!gameObject.activeSelf) return;
 		
 		StartCoroutine (searchAdversaries ());
 	}
@@ -63,7 +66,7 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 		StartCoroutine (requestRandomAdversaries ());
 		
 		int i = 0;
-		while (listOfRandomPlayers == null) {
+		while (enemyPlayers == null) {
 			for(int j = 0; j < textFields.Length; j++){
 				textFields[j].text = string.Concat("Carregando", string.Join ("", Enumerable.Repeat(".",i).ToArray()));
 			}
@@ -72,24 +75,22 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 			
 			yield return new WaitForSeconds(.5f);
 		}
-		
-		for(i = 0; i < listOfRandomPlayers.Count; i++){
-			textFields[i].text = (string) listOfRandomPlayers[i].name;
-			enemyPortrait.enabled = true;
-			switch (listOfRandomPlayers[i].image) {
-			case 0: enemyPortrait.sprite = personagem0;
-				break;
-			case 1: enemyPortrait.sprite = personagem1;
-				break;
-			case 2: enemyPortrait.sprite = personagem2;
-				break;
+
+		for(i = 0; i < enemyPlayers.Count; i++){
+			textFields[i].text = (string) enemyPlayers[i].name;
+			enemyPortraits[i].enabled = true;
+			switch (enemyPlayers[i].image) {
+				case 0: enemyPortraits[i].sprite = personagem0;
+					break;
+				case 1: enemyPortraits[i].sprite = personagem1;
+					break;
+				case 2: enemyPortraits[i].sprite = personagem2;
+					break;
 			}
 
-			if (listOfRandomPlayers[i].image == etNumber)
-				enemyPortrait.sprite = personagemET;
+			if (enemyPlayers[i].image == etNumber)
+				enemyPortraits[i].sprite = personagemET;
 		}
-
-
 
 		startMatch.gameObject.SetActive(true);
 	}
@@ -106,14 +107,14 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 		yield return loginRequest;
 	
 		if (loginRequest.text != null) {
-			listOfRandomPlayers = JsonMapper.ToObject<List<RandomPlayer>> (loginRequest.text);
+			enemyPlayers = JsonMapper.ToObject<List<RandomPlayer>> (loginRequest.text);
 		}
 	}
 
 	public void OnCreate()
 	{
 		loadingScript.gameObject.SetActive(true);
-		loadingScript.StartStartMatchCoroutine(_globals.characterModel._id, listOfRandomPlayers[0]._id);
+		loadingScript.StartStartMatchCoroutine(_globals.characterModel._id, enemyPlayers[0]._id);
 		this.gameObject.SetActive(false);
 
 	}

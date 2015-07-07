@@ -20,6 +20,7 @@ public class EditScriptPanel : MonoBehaviour {
 	public InputField code;
 	public Text status;
 	public Text saveButton;
+	public Button pasteButton;
 
 	public ScriptModel scriptModel;
 
@@ -52,6 +53,14 @@ public class EditScriptPanel : MonoBehaviour {
 	{
 		this.exitFunction = onExit;
 	}
+
+	public void Start()
+	{
+		if (Application.isMobilePlatform) {
+			pasteButton.enabled = false;
+			pasteButton.GetComponentInChildren<CanvasRenderer>().SetAlpha(0);
+		}
+	}
 	
 	public void OnVerify()
 	{
@@ -70,6 +79,11 @@ public class EditScriptPanel : MonoBehaviour {
 	{
 		exitFunction();
 		this.gameObject.SetActive(false);
+	}
+
+	public void OnPasteClicked ()
+	{
+		code.text = ClipboardHelper.clipboard;
 	}
 
 	private IEnumerator VerifyScriptCoroutine(){
