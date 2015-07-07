@@ -486,7 +486,7 @@ GameObject:
   - 222: {fileID: 64140064}
   - 114: {fileID: 64140063}
   m_Layer: 5
-  m_Name: AdvInfoText4
+  m_Name: AdvInfoText2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -504,7 +504,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 741467261}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 9, y: -60}
@@ -3678,7 +3678,7 @@ GameObject:
   - 222: {fileID: 665349308}
   - 114: {fileID: 665349307}
   m_Layer: 5
-  m_Name: AdvInfoText2
+  m_Name: AdvInfoText4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3696,7 +3696,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 741467261}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 9, y: -120}
@@ -4390,11 +4390,11 @@ RectTransform:
   - {fileID: 1331894562}
   - {fileID: 739165871}
   - {fileID: 1908607474}
-  - {fileID: 2137401250}
-  - {fileID: 665349306}
-  - {fileID: 404625340}
-  - {fileID: 64140062}
   - {fileID: 1411388180}
+  - {fileID: 64140062}
+  - {fileID: 404625340}
+  - {fileID: 665349306}
+  - {fileID: 2137401250}
   - {fileID: 688119022}
   - {fileID: 2060172692}
   - {fileID: 1966815901}
@@ -7688,11 +7688,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMatch: {fileID: 739165872}
   textFields:
-  - {fileID: 2137401251}
-  - {fileID: 665349307}
-  - {fileID: 404625341}
-  - {fileID: 64140063}
   - {fileID: 1411388181}
+  - {fileID: 64140063}
+  - {fileID: 404625341}
   loadingScript: {fileID: 1102777429}
   playerPortrait: {fileID: 688119023}
   enemyPortraits:
@@ -7832,7 +7830,7 @@ GameObject:
   - 222: {fileID: 1411388182}
   - 114: {fileID: 1411388181}
   m_Layer: 5
-  m_Name: AdvInfoText5
+  m_Name: AdvInfoText1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7850,7 +7848,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 741467261}
-  m_RootOrder: 9
+  m_RootOrder: 5
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 9, y: -30}
@@ -8889,6 +8887,10 @@ Prefab:
       propertyPath: enemyPortraits.Array.data[0]
       value: 
       objectReference: {fileID: 7961003}
+    - target: {fileID: 167348, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: m_Name
+      value: AdvInfoText
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
   m_IsPrefabParent: 0
@@ -13279,7 +13281,7 @@ GameObject:
   - 222: {fileID: 2137401252}
   - 114: {fileID: 2137401251}
   m_Layer: 5
-  m_Name: AdvInfoText1
+  m_Name: AdvInfoText5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13297,7 +13299,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 741467261}
-  m_RootOrder: 5
+  m_RootOrder: 9
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 9, y: -150}
