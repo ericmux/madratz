@@ -43,7 +43,7 @@ public class Projectile extends Actor {
         if (actor instanceof Player) {
             Player player = ((Player) actor);
             player.inflictDamage(mHitDamage);
+            getWorld().destroyActor(this);
         }
-        getWorld().destroyActor(this);
     }
 }
