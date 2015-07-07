@@ -80,12 +80,12 @@ var thrift = require('thrift');
 					  	if(!found)
 					  		return res.json({err: 'match_file_not_found'});
 
-					  	return res.sendfile(matchId + '.out');
-					  	/*return _gridfs.createReadStream({_id: match._file})
+					  	//return res.sendfile(matchId + '.out');
+					  	return _gridfs.createReadStream({_id: match._file})
 									  	.on('error', function() {
 								            res.send(500, {err: 'failed_to_retrieve_file'});
 								        })
-								        .pipe(res);*/
+								        .pipe(res);
 					});
 				}
 				else
@@ -238,12 +238,12 @@ var thrift = require('thrift');
 						            				writestream.write(msg);
 													writestream.end();
 
-													fs.writeFile(id + '.out', msg, function(err) {
+													/*fs.writeFile(id + '.out', msg, function(err) {
 													    if(err) {
 													        return console.log(err);
 													    }
 													    console.log("The file was saved!");
-													});
+													});*/
 
 													return writestream.on('close', function(file) {
 														console.log("Finished writing " + file.filename + " to database.");
