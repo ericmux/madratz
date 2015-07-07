@@ -36,7 +36,7 @@ public class MatchView : MonoBehaviour {
 		{
 			this.status.text = "Terminado";
 			this.winner.text = "Vencedor: " + mm._winner;
-			if (File.Exists(matchModel._id + ".out"))
+			if (File.Exists("Assets/Files/" + matchModel._id + ".out"))
 			{
 				download.interactable = false;
 				buttonText.text = "Baixado";
@@ -64,16 +64,13 @@ public class MatchView : MonoBehaviour {
 		WWW www = new WWW(url);
 
 		yield return www;
-		if(www.text != null) {
-			if (File.Exists(matchModel._id + ".out"))
+		if(www.bytes != null) {
+			if (File.Exists("Assets/Files/" + matchModel._id + ".out"))
 			{
 				Debug.Log(matchModel._id + " file data already exists.");
 				yield break;
 			}
-			
-			var sr = File.CreateText(matchModel._id + ".out");
-			sr.WriteLine (www.text);
-			sr.Close();
+			File.WriteAllBytes("Assets/Files/" + matchModel._id + ".out", www.bytes);
 			view.interactable = true;
 			buttonText.text = "Baixado";
 		}
@@ -82,5 +79,11 @@ public class MatchView : MonoBehaviour {
 			buttonText.text = "Baixar";
 			download.interactable = true;
 		}
+	}
+
+	public void OnView()
+	{
+		BattleDirectorController.matchId = matchModel._id;
+		Application.LoadLevel (1);
 	}
 }

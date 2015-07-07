@@ -2569,8 +2569,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 516470814}
   m_TextComponent: {fileID: 1906802089}
   m_Placeholder: {fileID: 1732214589}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -4397,6 +4397,7 @@ GameObject:
   - 223: {fileID: 862765022}
   - 114: {fileID: 862765021}
   - 114: {fileID: 862765020}
+  - 114: {fileID: 862765024}
   m_Layer: 5
   m_Name: MainCanvas
   m_TagString: Untagged
@@ -4489,6 +4490,27 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!114 &862765024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 862765018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf81edd01d85494295fac2c499edbf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMatch: {fileID: 0}
+  _globals: {fileID: 0}
+  textFields: []
+  loadingScript: {fileID: 0}
+  playerPortrait: {fileID: 0}
+  enemyPortrait: {fileID: 0}
+  personagem0: {fileID: 0}
+  personagem1: {fileID: 0}
+  personagem2: {fileID: 0}
+  personagemET: {fileID: 0}
 --- !u!1 &907249193
 GameObject:
   m_ObjectHideFlags: 0
@@ -5698,7 +5720,7 @@ MonoBehaviour:
   characterCreationScript: {fileID: 1362481940}
   manageScriptPanel: {fileID: 99953277}
   selectScriptPanel: {fileID: 782056114}
-  listMatchPanel: {fileID: 0}
+  listMatchPanel: {fileID: 1664622442}
 --- !u!222 &1102777431
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7899,6 +7921,22 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 242eac922a7e68b479deb2d715a82278,
         type: 3}
+    - target: {fileID: 11407252, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: m_Color.r
+      value: .443137288
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407252, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: m_Color.g
+      value: .447058856
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407252, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: m_Color.b
+      value: .419607878
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407252, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
   m_IsPrefabParent: 0
@@ -9089,7 +9127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageText: {fileID: 646119931}
-  onSuccess: {fileID: 1193573913}
+  onSuccess: {fileID: 1502909888}
 --- !u!1 &1723846026
 GameObject:
   m_ObjectHideFlags: 0
