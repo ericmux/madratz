@@ -1518,6 +1518,21 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: -225
       objectReference: {fileID: 0}
+    - target: {fileID: 11466816, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+      propertyPath: personagem0
+      value: 
+      objectReference: {fileID: 21300000, guid: aef372844eb051f4a9947cd7f6f50d95,
+        type: 3}
+    - target: {fileID: 11466816, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+      propertyPath: personagem1
+      value: 
+      objectReference: {fileID: 21300000, guid: 9764afa2d514cd84cb19fc8f0aa8bd43,
+        type: 3}
+    - target: {fileID: 11466816, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
+      propertyPath: personagem2
+      value: 
+      objectReference: {fileID: 21300000, guid: 242eac922a7e68b479deb2d715a82278,
+        type: 3}
     m_RemovedComponents:
     - {fileID: 11495354, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 9048d829f6b89404c8286df3d71cde5d, type: 2}
@@ -2465,7 +2480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: .39199999}
-  m_Sprite: {fileID: 21300000, guid: 84a8458c17045f440841fdc3e0c077ae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7e9867834d91bd843a7c32492d5f9b6d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6691,9 +6706,9 @@ MonoBehaviour:
   name: {fileID: 749033160}
   status: {fileID: 58525257}
   portrait: {fileID: 1189586556}
-  personagem0: {fileID: 21300000, guid: 257e9f5a79e7afc47a0c8ccdf271f4cd, type: 3}
-  personagem1: {fileID: 21300000, guid: ee6ce6bde079d45488ab7e6e5f990485, type: 3}
-  personagem2: {fileID: 21300000, guid: 6f9a6ebf7362eae4ebb803e7fbc11e91, type: 3}
+  personagem0: {fileID: 21300000, guid: aef372844eb051f4a9947cd7f6f50d95, type: 3}
+  personagem1: {fileID: 21300000, guid: 9764afa2d514cd84cb19fc8f0aa8bd43, type: 3}
+  personagem2: {fileID: 21300000, guid: 242eac922a7e68b479deb2d715a82278, type: 3}
   personagemET: {fileID: 21300000, guid: 08e6825a05f8cb04588c295199cea53c, type: 3}
   count: 0
 --- !u!222 &1362481943
@@ -7869,6 +7884,21 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11466612, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: personagem0
+      value: 
+      objectReference: {fileID: 21300000, guid: aef372844eb051f4a9947cd7f6f50d95,
+        type: 3}
+    - target: {fileID: 11466612, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: personagem1
+      value: 
+      objectReference: {fileID: 21300000, guid: 9764afa2d514cd84cb19fc8f0aa8bd43,
+        type: 3}
+    - target: {fileID: 11466612, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: personagem2
+      value: 
+      objectReference: {fileID: 21300000, guid: 242eac922a7e68b479deb2d715a82278,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
   m_IsPrefabParent: 0
