@@ -6,7 +6,7 @@ var MatchSchema = new Schema({
 	_character: {type: Schema.Types.ObjectId, ref: 'Character'},
 	characterScriptName: String,
 	_enemies: [{type: Schema.Types.ObjectId, ref: 'Character'}],
-	enemyScriptName: String,
+	enemyScriptNames: [String],
 	_file: {type: Schema.Types.ObjectId, ref: 'File'},
 	status: String,
 	_winner: {type: Schema.Types.ObjectId, ref: 'Character'},
