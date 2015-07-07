@@ -9,7 +9,8 @@ var matchRoutes = {},
 	validator = require('validator'),
 	ttypes = require('../../thrift/simulation_service_types'),
 	fs = require('fs'),
-	util = require('util');
+	util = require('util'),
+	async = require('async');
 
 var thrift = require('thrift');
 
@@ -94,21 +95,25 @@ var thrift = require('thrift');
 		});
 	};
 
-	matchRoutes.createOnevsOne = function(req, res) {
+	matchRoutes.create = function(req, res) {
 		var playerId = req.params.player_id;
 		var idErr = sanitizeId(playerId, 'player');
 		if(idErr)
 			return res.json(idErr);
+
+		console.log(req.body);
 
 		var charId = req.body.character;
 		var idErr = sanitizeId(charId, 'character');
 		if(idErr)
 			return res.json(idErr);
 
-		var enemyId = req.body.enemy;
-		var idErr = sanitizeId(enemyId, 'script');
-		if(idErr)
-			return res.json(idErr);
+		var enemyIds = req.body.enemies;
+		for(var i=0; i < enemyIds.length; i++){
+			var idErr = sanitizeId(enemyIds[i], 'script');
+			if(idErr)
+				return res.json(idErr);
+		}
 
 		return Player.findById(playerId, function(err, player) {
 			if(err)
@@ -127,51 +132,63 @@ var thrift = require('thrift');
 				if(!character.script)
 					return res.json({err: "character_no_active_script"});
 
-				return Character.findById(enemyId, function(err, enemy) {
-					if(err)
-						return res.send(err);
 
-					if(!enemy)
-						return res.json({err: "enemy_character_does_not_exist"});
+				var enemies = [];
+				var enemyScripts = [];
 
-					if(!enemy.script)
-						return res.json({err: "enemy_no_active_script"});
+				var enemy_tasks = [];
+				for(var i = 0; i < enemyIds.length; i++){
+					var enemyId = enemyIds[i];
+					enemy_tasks.push(enemyAsyncTaskFor(enemyId,enemies,enemyScripts));
+				}
 
-					return Script.findById(character.script, function(err, script) {
+
+				//async enemy queries for characters and scripts.
+				return async.series(
+					enemy_tasks,
+					function(err,results){
+
 						if(err)
 							return res.send(err);
 
-						if(!script)
-							return res.json({err: "character_script_does_not_exist"});
-
-						return Script.findById(enemy.script, function(err, enemyScript) {
+						return Script.findById(character.script, function(err, script) {
 							if(err)
 								return res.send(err);
 
-							if(!enemyScript || (enemy._owner.toString() !== enemyScript._owner.toString()))
-								return res.json({err: "enemy_script_does_not_exist"});
+							if(!script)
+								return res.json({err: "character_script_does_not_exist"});
+
+							var enemyScriptNames = [];
+							for(var i = 0; i < enemyScripts.length; i++) enemyScriptNames.push(enemyScripts[i].name);
+
+							var match_type;
+							if(enemyScripts.length > 1){
+								match_type = 'FFA';
+							} else {
+								match_type = '1v1';
+							}
 
 							var newMatch = new Match({
 								_creator: playerId,
 								_character: character,
 								characterScriptName: script.name,
-								_enemies: [enemy],
-								enemyScriptName: enemyScript.name,
+								_enemies: enemies,
+								enemyScriptNames: enemyScriptNames,
 								status: 'created',
 								date: new Date(),
-								type: '1v1'
+								type: match_type
 							});
 
 							return newMatch.save(function(err, match) {
 								if(err)
 									return res.send(err);
 								console.log('Creating new game...');
-								createMatchOneToOne(match._id, character, script, enemy, enemyScript);
-								res.json({msg: 'match_created', obs: 'Created by ' + player.username + '. ' + character.name + '(' + script.title + ') vs ' + enemy.name +'(' + enemyScript.title + ')'});
+								createMatch(match._id, character, script, enemies, enemyScripts);
+								res.json({msg: 'match_created', obs: 'Created by ' + player.username + '. ' + character.name + '(' + script.title + ')'});
 							});
 						});
-					});
-				});
+					}
+				);
 			});
 		});
 	};
@@ -180,15 +197,22 @@ var thrift = require('thrift');
 	// HELPER METHOD //
 	///////////////////
 
-	function createMatchOneToOne(matchId, character, characterScript, enemy, enemyScript)
+	function createMatch(matchId, character, characterScript, enemies, enemyScripts)
 	{
 		var characterScriptCode = new Buffer(characterScript.code, 'base64').toString('utf8');
-		var enemyScriptCode = new Buffer(enemyScript.code, 'base64').toString('utf8');
+		var players = [new ttypes.PlayerInfo({'id': character._id.toString(), 'script': characterScriptCode})];
+
+		for(var i = 0; i < enemies.length; i++){
+			var enemyScriptCode = new Buffer(enemyScripts[i].code, 'base64').toString('utf8');
+			var enemyId = enemies[i]._id.toString();
+
+			players.push(new ttypes.PlayerInfo({'id': enemyId, 'script': enemyScriptCode}));			
+		}
+
 		var params = new ttypes.MatchParams({'matchId': matchId.toString(),
-											'players': [
-												new ttypes.PlayerInfo({'id': character._id.toString(), 'script': characterScriptCode}),
-												new ttypes.PlayerInfo({'id': enemy._id.toString(), 'script': enemyScriptCode})
-											]});
+											'players': players});
+
+		console.log(params);
 
 		return _client.startMatch(params, function(err) {
 		  	if (err) {
@@ -272,6 +296,39 @@ var thrift = require('thrift');
 				  	}(matchId.toString()));
 				}, 1000);
 		});
+	};
+
+
+	function enemyAsyncTaskFor(id,enemies,enemyScripts){
+		return	function(callback){
+					Character.findById(id, function(err, enemy) {
+						if(err)
+							return callback(res.send(err),null);
+
+						if(!enemy)
+							return callback(res.json({err: "enemy_character_does_not_exist"},null));
+
+						if(!enemy.script)
+							return callback(res.json({err: "enemy_no_active_script"}),null);
+
+						enemies.push(enemy);
+						console.log(id);
+
+						return Script.findById(enemy.script, function(err, enemyScript) {
+							if(err)
+								return callback(res.send(err),null);
+
+							if(!enemyScript || (enemy._owner.toString() !== enemyScript._owner.toString()))
+								return callback(res.json({err: "enemy_script_does_not_exist"}),null);
+
+							enemyScripts.push(enemyScript);
+
+							return callback(null);
+
+						});
+
+					});
+		} 
 	};
 
 	/////////////////////

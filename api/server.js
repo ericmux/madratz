@@ -35,8 +35,8 @@ function onConnectedToSimulationServer() {
 	var matchRoutes = require('./app/routes/match');
 	matchRoutes.init(simulation.getClient(), database.getGridFs());
 
-	router.route('/player/:player_id/match/create/onevsone')
-		.post(matchRoutes.createOnevsOne);
+	router.route('/player/:player_id/match/create')
+		.post(matchRoutes.create);
 
 	router.route('/player/:player_id/match/:match_id/getsnapshots')
 		.get(matchRoutes.getSnapshots);

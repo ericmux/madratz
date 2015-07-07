@@ -3,6 +3,14 @@ using System.Collections;
 using UnityEngine.UI;
 using LitJson;
 using System.Collections.Generic;
+
+
+public class StartMatchPayload{
+	public string   character   { get; set; }
+	public List<string> enemies     { get; set; }
+};
+
+
 public class LoadingScript : MonoBehaviour {
 
 	private float REPEAT_TIME = 0.5f;
@@ -96,9 +104,9 @@ public class LoadingScript : MonoBehaviour {
 		StartCoroutine(ViewHistoryCoroutine(this.id));
 	}
 
-	public void StartStartMatchCoroutine (string character, string enemy)
+	public void StartStartMatchCoroutine (string character, string[] enemies)
 	{
-		StartCoroutine(StartMatchCoroutine(this.id, character, enemy));
+		StartCoroutine(StartMatchCoroutine(this.id, character, enemies));
 	}
 
 	private IEnumerator LoginCoroutine(string username, string password){
@@ -396,13 +404,26 @@ public class LoadingScript : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator StartMatchCoroutine(string id, string character, string enemy){
-		this.url = GlobalVariables.api_url + "/player/" + id + "/match/create/onevsone";
-		WWWForm startMatchForm = new WWWForm();
-		startMatchForm.AddField("character", character);
-		startMatchForm.AddField("enemy", enemy);
+	private IEnumerator StartMatchCoroutine(string id, string character, string[] enemies){
+		this.url = GlobalVariables.api_url + "/player/" + id + "/match/create";
 
-		WWW startMatchRequest = new WWW (url, startMatchForm);
+		StartMatchPayload payload = new StartMatchPayload ();
+		payload.character = character;
+		payload.enemies = new List<string> ();
+		payload.enemies.AddRange(enemies);
+
+		string jsonPayload = JsonMapper.ToJson (payload);
+		
+		var encoding = new System.Text.UTF8Encoding();
+		var postHeader = new Dictionary<string,string>();
+
+		
+		postHeader.Add("Content-Type", "application/json");
+		postHeader.Add("Content-Length", jsonPayload.Length.ToString());
+		
+		print("jsonString: " + jsonPayload);
+	
+		WWW startMatchRequest = new WWW (url, encoding.GetBytes(jsonPayload), postHeader);
 		
 		yield return startMatchRequest;
 		
