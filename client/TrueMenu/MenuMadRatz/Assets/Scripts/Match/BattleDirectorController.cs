@@ -51,8 +51,12 @@ public class BattleDirectorController : MonoBehaviour {
 			ratScript.loadData (rat.Value);
 		}
 
-		player1SimList = ratSimData.Values.ToArray()[0];
-		player1Object = ratObjects.Values.ToArray()[0];
+		string player1Id = GlobalVariables.instance.characterModel._id;
+		if (player1Id == null || !ratSimData.ContainsKey(player1Id)) {
+			player1Id = ratSimData.Keys.First();
+		}
+		player1SimList = ratSimData[player1Id];
+		player1Object = ratObjects[player1Id];
 
 		CameraController.player = player1Object;
 
