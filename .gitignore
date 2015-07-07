@@ -32,6 +32,7 @@ api/node_modules
 ##########
 server/thrift/gen/
 *.out
+*.out.meta
 
 ###########
 # Sublime #
