@@ -7,10 +7,12 @@ public class CharacterCreationScript : MonoBehaviour {
 	public LoadingScript loading;
 	public InputField name;
 	public Text status;
-	public GameObject personagem0;
-	public GameObject personagem1;
-	public GameObject personagem2;
-	public GameObject personagemET;
+	public Image portrait;
+	
+	public Sprite personagem0;
+	public Sprite personagem1;
+	public Sprite personagem2;
+	public Sprite personagemET;
 	public int count = 0;
 	private int etNumber = 30;
 
@@ -18,18 +20,13 @@ public class CharacterCreationScript : MonoBehaviour {
 	{
 		status.text = "";
 		name.text = "";
-		personagem0.SetActive (true);
-		personagem1.SetActive (false);
-		personagem2.SetActive (false);
+		portrait.sprite = personagem0;
 	}
 
 	public void OnCreateClick()
 	{
 		loading.gameObject.SetActive(true);
-		personagem0.SetActive (false);
-		personagem1.SetActive (false);
-		personagem2.SetActive (false);
-		personagemET.SetActive (false);
+
 		if(count == etNumber)
 			loading.StartCreateCharacterCoroutine(name.text, count);
 		else
@@ -42,26 +39,17 @@ public class CharacterCreationScript : MonoBehaviour {
 		count++;
 		switch (count%3) {
 		case 0:
-			personagem2.SetActive (false);
-			personagem0.SetActive (true);
-			personagemET.SetActive (false);
+			portrait.sprite = personagem0;
 			break;
 		case 1:
-			personagem0.SetActive (false);
-			personagem1.SetActive (true);
-			personagemET.SetActive (false);
+			portrait.sprite = personagem1;
 			break;
 		case 2:
-			personagem1.SetActive (false);
-			personagem2.SetActive (true);
-			personagemET.SetActive (false);
+			portrait.sprite = personagem2;
 			break;
 		}
 		if (count == etNumber) {
-			personagem0.SetActive (false);
-			personagem1.SetActive (false);
-			personagem2.SetActive (false);
-			personagemET.SetActive (true);
+			portrait.sprite = personagemET;
 		}
 	}
 
@@ -72,19 +60,13 @@ public class CharacterCreationScript : MonoBehaviour {
 			count += 3;
 		switch (count%3) {
 		case 0:
-			personagem1.SetActive (false);
-			personagem0.SetActive (true);
-			personagemET.SetActive (false);
+			portrait.sprite = personagem0;
 			break;
 		case 1:
-			personagem2.SetActive (false);
-			personagem1.SetActive (true);
-			personagemET.SetActive (false);
+			portrait.sprite = personagem1;
 			break;
 		case 2:
-			personagem0.SetActive (false);
-			personagem2.SetActive (true);
-			personagemET.SetActive (false);
+			portrait.sprite = personagem2;
 			break;
 		}
 	}
