@@ -4,6 +4,9 @@ import com.madratz.behavior.ScriptedBehavior;
 import com.madratz.service.*;
 import com.madratz.simulation.MadratzMatch;
 import org.apache.thrift.TException;
+import org.python.core.PyObject;
+import org.python.core.PySyntaxError;
+import org.python.core.PyTuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,15 +67,31 @@ public class SimulationServiceImpl implements SimulationService.Iface {
     @Override
     public CompilationResult compileScript(String script) throws TException {
         CompilationResult result = new CompilationResult(true);
-        ScriptedBehavior behavior = new ScriptedBehavior(script);
         try {
+            ScriptedBehavior behavior = new ScriptedBehavior(script);
             behavior.init();
         } catch (Exception e) {
             result.success = false;
             result.errorType = e.getClass().getSimpleName();
-            result.errorMsg = e.getMessage();
+            result.errorMsg = compileErrorMessage(e);
         }
         return result;
+    }
+
+    private static String compileErrorMessage(Exception e) {
+        try {
+            PySyntaxError se = (PySyntaxError) e;
+            PyObject[] value = ((PyTuple) se.value).getArray();
+
+            String errorMsg = value[0].asString();
+            PyObject[] details = ((PyTuple) value[1]).getArray();
+
+            String line = details[3].asString().trim();
+            return String.format("%d:%d '%s' Error: %s", details[1].asInt(), details[2].asInt(), line, errorMsg);
+        } catch (Exception inner) {
+            // if we get any error trying to create the compile error message, just return the original Exception toString
+            return e.toString();
+        }
     }
 
     private MadratzMatch getFinishedMatch(String matchId) throws TException {
