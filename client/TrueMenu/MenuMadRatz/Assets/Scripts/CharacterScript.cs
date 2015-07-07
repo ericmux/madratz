@@ -71,7 +71,8 @@ public class CharacterScript : MonoBehaviour {
 		int initial = -(counter / 2) + hW;
 		for(int i = 0; i < views.Count; i++)
 		{
-			views[i].transform.localPosition = new Vector2(initial+i*W, -34);
+			views[i].transform.localPosition = new UnityEngine.Vector2(initial+i*W, -34);
+			//views[i].transform.localPosition = new Vector
 		}
 	}
 }

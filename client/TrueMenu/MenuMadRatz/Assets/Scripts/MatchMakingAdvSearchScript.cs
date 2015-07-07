@@ -36,6 +36,7 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 	private int etNumber = 30;
 
 	void OnEnable () {
+		enemyPortrait.enabled = false;
 		_globals = GlobalVariables.instance;
 
 		switch (_globals.characterModel.image) {
@@ -74,7 +75,7 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 		
 		for(i = 0; i < listOfRandomPlayers.Count; i++){
 			textFields[i].text = (string) listOfRandomPlayers[i].name;
-
+			enemyPortrait.enabled = true;
 			switch (listOfRandomPlayers[i].image) {
 			case 0: enemyPortrait.sprite = personagem0;
 				break;
