@@ -4,6 +4,8 @@ using System.Collections;
 public class GlobalVariables : MonoBehaviour {
 
 
+	public static string api_url = "54.207.86.108:8080/api/";
+
 	public string id;
 
 	public string username;

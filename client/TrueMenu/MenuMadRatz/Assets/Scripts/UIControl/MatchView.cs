@@ -60,7 +60,7 @@ public class MatchView : MonoBehaviour {
 
 	private IEnumerator DownloadSnapshotsCoroutine ()
 	{
-		string url = "http://localhost:8080/api/player/" + matchModel._creator + "/match/" + matchModel._id + "/getsnapshots";
+		string url = GlobalVariables.api_url + "/player/" + matchModel._creator + "/match/" + matchModel._id + "/getsnapshots";
 		WWW www = new WWW(url);
 
 		yield return www;

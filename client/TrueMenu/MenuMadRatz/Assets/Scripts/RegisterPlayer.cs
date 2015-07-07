@@ -13,7 +13,7 @@ public class RegisterPlayer : MonoBehaviour {
 
 	// Retrieves player info from textboxes and starts register routine
 	public void startRegisterCoroutine(){
-		url = "localhost:8080/api/register";
+		url = GlobalVariables.api_url + "/register";
 
 		StartCoroutine (register ());
 	}

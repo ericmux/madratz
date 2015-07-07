@@ -17,7 +17,7 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 
 	List<RandomPlayer> listOfRandomPlayers;
 
-	private string url_main = "localhost:8080/api/player/";
+	private string url_main = GlobalVariables.api_url + "/player/";
 	private string url_rand = "/random/";
 	
 	public GlobalVariables _globals;

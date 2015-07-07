@@ -73,7 +73,7 @@ public class EditScriptPanel : MonoBehaviour {
 	}
 
 	private IEnumerator VerifyScriptCoroutine(){
-		string url = "localhost:8080/api/player/" + scriptModel._owner + "/script/verify";
+		string url = GlobalVariables.api_url + "/player/" + scriptModel._owner + "/script/verify";
 		
 		WWWForm scriptVerifyForm = new WWWForm();
 		scriptVerifyForm.AddField("title", title.text);
@@ -112,7 +112,7 @@ public class EditScriptPanel : MonoBehaviour {
 	}
 
 	private IEnumerator SaveScriptCoroutine(){
-		string url = "localhost:8080/api/player/" + scriptModel._owner + "/script/" + scriptModel._id + "/update";
+		string url = GlobalVariables.api_url + "/player/" + scriptModel._owner + "/script/" + scriptModel._id + "/update";
 
 		WWWForm scriptUpdateForm = new WWWForm();
 		scriptUpdateForm.AddField("title", title.text);
@@ -143,7 +143,7 @@ public class EditScriptPanel : MonoBehaviour {
 	}
 
 	private IEnumerator CreateScriptCoroutine(){
-		string url = "localhost:8080/api/player/" + scriptModel._owner + "/script/create";
+		string url = GlobalVariables.api_url + "/player/" + scriptModel._owner + "/script/create";
 		
 		WWWForm scriptCreateForm = new WWWForm();
 		scriptCreateForm.AddField("title", title.text);
