@@ -38,7 +38,7 @@ public class BattleDirectorController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		snapshots = ThriftClient.getSnapshotsFromFile ("Assets/Files/" + matchId + ".out");
+		snapshots = ThriftClient.getSnapshotsFromFile (GlobalVariables.replay_dir + matchId + ".out");
 
 		var ratSimData = GetAllRatSimDataFromSnapshots (snapshots);
 

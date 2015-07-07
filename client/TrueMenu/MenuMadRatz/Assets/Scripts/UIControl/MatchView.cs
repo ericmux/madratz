@@ -17,6 +17,13 @@ public class MatchView : MonoBehaviour {
 	public Button view;
 
 	private MatchModel matchModel;
+	void Awake()
+	{
+		if(!Directory.Exists(GlobalVariables.replay_dir))
+		{
+			Directory.CreateDirectory(GlobalVariables.replay_dir);
+		}
+	}
 
 	public void SetMatchModel(int counter, MatchModel mm)
 	{
@@ -36,7 +43,7 @@ public class MatchView : MonoBehaviour {
 		{
 			this.status.text = "Terminado";
 			this.winner.text = "Vencedor: " + mm._winner;
-			if (File.Exists("Assets/Files/" + matchModel._id + ".out"))
+			if (File.Exists(GlobalVariables.replay_dir + matchModel._id + ".out"))
 			{
 				download.interactable = false;
 				buttonText.text = "Baixado";
@@ -65,12 +72,12 @@ public class MatchView : MonoBehaviour {
 
 		yield return www;
 		if(www.bytes != null) {
-			if (File.Exists("Assets/Files/" + matchModel._id + ".out"))
+			if (File.Exists(GlobalVariables.replay_dir + matchModel._id + ".out"))
 			{
 				Debug.Log(matchModel._id + " file data already exists.");
 				yield break;
 			}
-			File.WriteAllBytes("Assets/Files/" + matchModel._id + ".out", www.bytes);
+			File.WriteAllBytes(GlobalVariables.replay_dir + matchModel._id + ".out", www.bytes);
 			view.interactable = true;
 			buttonText.text = "Baixado";
 		}

@@ -4,8 +4,9 @@ using System.Collections;
 public class GlobalVariables : MonoBehaviour {
 
 
-	public static string api_url = "54.207.86.108:8080/api/";
+	public static string api_url = "http://54.207.86.108:8080/api/";
 
+	public static string replay_dir = Application.persistentDataPath + "/replay/";
 	public string id;
 
 	public string username;
