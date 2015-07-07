@@ -54,7 +54,7 @@ var MAX_CHARACTERS = 3;
 	        var i = 0;
 	        while(randChars.length < numChars){
 				var roll = Math.floor((allChars.length + 1)*Math.random());
-				if(roll === 0) randChars.push(allChars[i]);
+				if(roll === 0 && randChars.indexOf(allChars[i]) === -1) randChars.push(allChars[i]);
 
 				if(++i === allChars.length) i=0;
 			}
