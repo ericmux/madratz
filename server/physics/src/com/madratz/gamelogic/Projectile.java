@@ -24,11 +24,15 @@ public class Projectile extends Actor {
         bodyDef.angle = angle;
         bodyDef.fixedRotation = true;
 
+
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 5.0f;
         CircleShape shape = new CircleShape();
         shape.setRadius(radius);
         fixtureDef.shape = shape;
+
+        fixtureDef.filter.categoryBits = 0x0002;
+        fixtureDef.filter.maskBits = 0xFFFD;
 
         mWidth = 2*fixtureDef.shape.getRadius();
 
