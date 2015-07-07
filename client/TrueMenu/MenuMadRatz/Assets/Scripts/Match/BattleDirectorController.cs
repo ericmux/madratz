@@ -137,10 +137,6 @@ public class BattleDirectorController : MonoBehaviour {
 			}
 		}
 
-		foreach (var entry in ratSimData) {
-			print (entry.Key);
-		}
-
 		return ratSimData;
 	}
 

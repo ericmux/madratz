@@ -4362,7 +4362,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startMatch: {fileID: 0}
-  _globals: {fileID: 0}
   textFields: []
   loadingScript: {fileID: 0}
   playerPortrait: {fileID: 0}
@@ -5031,12 +5030,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1873050301}
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -9929,7 +9929,7 @@ Prefab:
       objectReference: {fileID: 1952826998}
     - target: {fileID: 11424004, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: 
+      value: SetActive
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1b8fd7d5faa4d478ba4f72e850721c99, type: 2}
@@ -10358,7 +10358,7 @@ Prefab:
       objectReference: {fileID: 1873050301}
     - target: {fileID: 11416314, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: 
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 11468316, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
       propertyPath: loadingScript
@@ -10368,6 +10368,10 @@ Prefab:
       propertyPath: _globals
       value: 
       objectReference: {fileID: 566466781}
+    - target: {fileID: 11416314, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f653ea9d82976452b97cffee2fff24f8, type: 2}
   m_IsPrefabParent: 0
