@@ -5,12 +5,8 @@ using System.Linq;
 public class RatSimulationScript : MonoBehaviour {
 	private List<RatSimulationDataUnit> mDataList = null;
 
-	private static Color GREEN = new Color(0, 1, 0);
-	private static Color RED = new Color(1, 0, 0);
-
 	// Use this for initialization
-	void Start () {
-		
+	void Start () {	
 	}
 	
 	// Update is called once per frame
@@ -25,7 +21,13 @@ public class RatSimulationScript : MonoBehaviour {
 				transform.position = d.Position;
 				transform.eulerAngles = new Vector3(0, - (float) d.Angle / Mathf.PI * 180, 0);
 				Material material = GetComponent<Renderer>().material;
-				material.color = Color.Lerp (GREEN, RED, ((float)(100 - d.HP))/100);
+
+				if(d.HP >= 50){
+					material.color = Color.Lerp (Color.green, Color.yellow, (100.0f - (float)d.HP)/50);
+				} else {
+					material.color = Color.Lerp (Color.yellow, Color.red, (50.0f - (float)d.HP)/50);
+				}
+
 			} else {
 				transform.localScale = new Vector3(0, 0, 0);
 			}
