@@ -39,6 +39,8 @@ public class ManageScriptsPanel : MonoBehaviour {
 			{
 				nextButton.gameObject.SetActive(true);
 				previousButton.gameObject.SetActive(true);
+				listIndex = scriptList.list.FindIndex(s => s.isDefault);
+				if (listIndex < 0) listIndex = 0;
 			}
 			else
 			{
@@ -53,7 +55,8 @@ public class ManageScriptsPanel : MonoBehaviour {
 	{
 		Debug.Log (scriptList.list[listIndex].code);
 
-		view.SetScriptModel(scriptList.list[listIndex]);
+		string scriptIndex = string.Format("({0}/{1}) ", listIndex + 1, scriptList.list.Count);
+		view.SetScriptModel(scriptList.list[listIndex], scriptIndex);
 	}
 
 	public void OnNextClick()

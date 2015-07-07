@@ -17,10 +17,10 @@ public class ScriptSimpleView : MonoBehaviour {
 
 	private OnActivateDelegate activateFunction;
 
-	public void SetScriptModel(ScriptModel sm)
+	public void SetScriptModel(ScriptModel sm, string titlePrefix = "")
 	{
 		this.scriptModel = sm;
-		this.title.text = sm.title;
+		this.title.text = titlePrefix + sm.title;
 		byte[] data = Convert.FromBase64String(sm.code);
 		string decodedString = Encoding.UTF8.GetString(data);
 		this.textArea.text = decodedString;

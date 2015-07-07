@@ -58,10 +58,8 @@ public class EditScriptPanel : MonoBehaviour {
 
 	public void Start()
 	{
-		if (Application.isMobilePlatform) {
-			pasteButton.enabled = false;
-			pasteButton.GetComponentInChildren<CanvasRenderer>().SetAlpha(0);
-		}
+		pasteButton.gameObject.SetActive(!Application.isMobilePlatform);
+
 		confirmPanel.SetTitle("Voltar");
 		confirmPanel.SetStatus("Você tem mudanças pendentes! Deseja realmente voltar sem salvar essas mudanças?");
 		confirmPanel.SetOnConfirm(OnExitConfirm);
