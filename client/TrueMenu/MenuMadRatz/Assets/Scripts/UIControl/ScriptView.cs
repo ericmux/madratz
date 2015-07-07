@@ -29,7 +29,7 @@ public class ScriptView : MonoBehaviour {
 		string decodedString = Encoding.UTF8.GetString(data);
 		this.textArea.text = decodedString;
 		if(sm.isDefault)
-			this.defaultText.text = "(Principal)";
+			this.defaultText.text = "(Padrão)";
 		else
 			this.defaultText.text = "";
 		deleteButton.gameObject.SetActive(!sm.isDefault);

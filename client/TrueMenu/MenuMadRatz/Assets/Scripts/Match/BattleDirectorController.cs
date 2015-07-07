@@ -36,8 +36,6 @@ public class BattleDirectorController : MonoBehaviour {
 	public Text speedText;
 	public Slider playerLifeBar;
 
-	private bool endOfSimulation = false;
-
 	// Use this for initialization
 	void Start () {
 		snapshots = ThriftClient.getSnapshotsFromFile (GlobalVariables.replay_dir + matchId + ".out");
@@ -59,7 +57,7 @@ public class BattleDirectorController : MonoBehaviour {
 		CameraController.player = player1Object;
 
 		// Playing starts when ticks are counting
-		TimerController.startTick (snapshots.Select(s => s.ElapsedTime).ToList());
+		TimerController.StartTicking (snapshots.Select(s => s.ElapsedTime).ToList());
 
 		/*
 		switch (playerNumber) {
@@ -76,24 +74,16 @@ public class BattleDirectorController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		int tick = TimerController.tick;
-		int totalTicks = snapshots.Count;
-	
+		playBackSlider.value = TimerController.Progress;
 
-		if (tick >= totalTicks) {
-			endOfSimulation = true;
-			TimerController.pause();
+		if (TimerController.HasFinished ()) {
 			playBackButtonText.text = "Replay";
 			return;
 		}
 
-		float playBackProgress = ((float) tick) / totalTicks;
-		playBackSlider.value = playBackProgress;
-
-		if (tick < player1SimList.Count) {
-			double player1HP = player1SimList.ElementAt(tick).HP / 100;
-			playerLifeBar.value = (float) player1HP;
-		}
+		int tick = TimerController.tick;
+		double player1HP = tick < player1SimList.Count ? player1SimList[tick].HP : 0;
+		playerLifeBar.value = (float) (player1HP / 100);
 	
 		Snapshot snapshot = snapshots[tick];
 
@@ -187,32 +177,32 @@ public class BattleDirectorController : MonoBehaviour {
 	}
 
 	public void onPlayPauseButtonClick() {
-		if (endOfSimulation) {
-			endOfSimulation = false;
-			playBackButtonText.text = "Play";
+		if (TimerController.HasFinished()) {
 			TimerController.restart();
-			return;
-		}
-
-		TimerController.togglePlaying ();
-
-		if (TimerController.Playing) {
-			playBackButtonText.text = "Pause";
 		} else {
-			playBackButtonText.text = "Play";
+			TimerController.togglePlaying ();
 		}
+		UpdateSpeedLabel();
+		playBackButtonText.text = TimerController.Playing ? "Pause" : "Play";
 	}
 
 	public void onRewindButtonClick() {
 		TimerController.decreaseSpeed(1);
-
-		speedText.text = TimerController.speed + ".0 X";
+		UpdateSpeedLabel();
 	}
 
 	public void onForwardButtonClick() {
 		TimerController.increaseSpeed(1);
+		UpdateSpeedLabel();
+	}
 
-		speedText.text = TimerController.speed + ".0 X";
+	private void UpdateSpeedLabel ()
+	{
+		speedText.text = TimerController.Speed.ToString("0.0") + " X";
+	}
+
+	public void onProgressBarValueChanged() {
+		TimerController.Progress = playBackSlider.value;
 	}
 
 	public void onExitButtonClicked()
