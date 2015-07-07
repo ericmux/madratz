@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine.UI;
 
 public class BattleDirectorController : MonoBehaviour {
-	public static string matchId = "559b3a1911dc11c5e1d301ab";
+	public static string matchId = "559b5ac7098207ca7afd6bd0";
 	public GameObject ratPrefab;
 	public GameObject shotPrefab;
 
@@ -22,8 +22,10 @@ public class BattleDirectorController : MonoBehaviour {
 	private PlayerNumber playerNumber = PlayerNumber.PLAYER_NUMBER_1;
 
 	private List<Snapshot> snapshots;
+	Dictionary<string, GameObject> ratObjects;
 	private List<GameObject> spellObjects = new List<GameObject>();
 	private List<RatSimulationDataUnit> player1SimList;
+	GameObject player1Object;
 
 	/*private float loadingTime = 0;
 	public Slider loadingSlider;
@@ -40,15 +42,21 @@ public class BattleDirectorController : MonoBehaviour {
 	void Start () {
 		snapshots = ThriftClient.getSnapshotsFromFile ("Assets/Files/" + matchId + ".out");
 
+		ratObjects = new Dictionary<string, GameObject> ();
+
 		var ratSimData = GetAllRatSimDataFromSnapshots (snapshots);
 
-		player1SimList = ratSimData.Values.ToArray()[0];
-
 		foreach (var rat in ratSimData) {
-			GameObject rat1 = (GameObject) Instantiate (ratPrefab);
-			RatSimulationScript rat1Script = rat1.GetComponent<RatSimulationScript> ();
-			rat1Script.loadData (rat.Value);
+			GameObject ratObject = (GameObject) Instantiate (ratPrefab);
+			ratObjects.Add(rat.Key, ratObject);
+			RatSimulationScript ratScript = ratObject.GetComponent<RatSimulationScript> ();
+			ratScript.loadData (rat.Value);
 		}
+
+		player1SimList = ratSimData.Values.ToArray()[0];
+		player1Object = ratObjects.Values.ToArray()[0];
+
+		CameraController.player = player1Object;
 
 		// Playing starts when ticks are counting
 		TimerController.startTick (snapshots.Select(s => s.ElapsedTime).ToList());
@@ -108,7 +116,7 @@ public class BattleDirectorController : MonoBehaviour {
 
 	private void UpdateSpellObject(GameObject spellObject, Actor spell) {
 		spellObject.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
-		spellObject.transform.position = new Vector3((float) spell.Position.X / 6, 1, (float) spell.Position.Y / 6);
+		spellObject.transform.position = new Vector3((float) spell.Position.X / 6, 2.0f, (float) spell.Position.Y / 6);
 	}
 	
 	public Dictionary<string, List<RatSimulationDataUnit>> GetAllRatSimDataFromSnapshots(List<Snapshot> snapshots) {
@@ -120,7 +128,7 @@ public class BattleDirectorController : MonoBehaviour {
 				if (!ratSimData.ContainsKey(a.Id)) ratSimData[a.Id] = new List<RatSimulationDataUnit>();
 				
 				RatSimulationDataUnit dataUnit = new RatSimulationDataUnit();
-				dataUnit.Position = new Vector3((float) a.Position.X / 6, 1, (float) a.Position.Y / 6);
+				dataUnit.Position = new Vector3((float) a.Position.X / 6, 2, (float) a.Position.Y / 6);
 				dataUnit.Angle = a.Angle;
 				dataUnit.HP = a.Hp;
 				dataUnit.width = (float) a.Width / 6;
@@ -207,7 +215,7 @@ public class BattleDirectorController : MonoBehaviour {
 		speedText.text = TimerController.speed + ".0 X";
 	}
 
-	public void onsair()
+	public void onExitButtonClicked()
 	{
 		Application.LoadLevel(0);
 	}
