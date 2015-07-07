@@ -13,8 +13,6 @@ var matchRoutes = {},
 
 var thrift = require('thrift');
 
-require('nodedump');
-
 (function (matchRoutes) {
 	var _client;
 	var _gridfs;

@@ -52,6 +52,7 @@ public class RegisterPlayer : MonoBehaviour {
 
 		if (regRequest.text != null) {  // there is response from server
 			JsonData data = JsonMapper.ToObject(regRequest.text);
+			Debug.Log (data);
 			try {
 				Debug.Log(data["msg"] + ", " + data["id"]);
 				Debug.Log("criou");
