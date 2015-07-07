@@ -102,7 +102,7 @@ public class LoadingScript : MonoBehaviour {
 	}
 
 	private IEnumerator LoginCoroutine(string username, string password){
-		this.url = "localhost:8080/api/login/";
+		this.url = GlobalVariables.api_url + "/login/";
 
 		if (username != null && password != null) {
 			WWWForm loginForm = new WWWForm ();
@@ -163,7 +163,7 @@ public class LoadingScript : MonoBehaviour {
 	}
 
 	private IEnumerator LoadCharactersCoroutine(string id){
-		this.url = "localhost:8080/api/player/" + id + "/character/list/";
+		this.url = GlobalVariables.api_url + "/player/" + id + "/character/list/";
 
 		WWW characterListRequest = new WWW (url);
 		
@@ -189,7 +189,7 @@ public class LoadingScript : MonoBehaviour {
 	}
 
 	private IEnumerator DeleteCharacterCoroutine(string characterId){
-		this.url = "localhost:8080/api/player/" + this.id + "/character/" + characterId + "/delete";
+		this.url = GlobalVariables.api_url + "/player/" + this.id + "/character/" + characterId + "/delete";
 		
 		WWW deleteCharacterRequest = new WWW (url);
 		
@@ -216,7 +216,7 @@ public class LoadingScript : MonoBehaviour {
 	}
 
 	private IEnumerator CreateCharacterCoroutine(string name, int image){
-		this.url = "localhost:8080/api/player/" + this.id + "/character/create";
+		this.url = GlobalVariables.api_url + "/player/" + this.id + "/character/create";
 		
 		WWWForm characterForm = new WWWForm ();
 		characterForm.AddField ("name", name);
@@ -247,7 +247,7 @@ public class LoadingScript : MonoBehaviour {
 	}
 
 	private IEnumerator LoadScriptsCoroutine(string id){
-		this.url = "localhost:8080/api/player/" + id + "/script/list/";
+		this.url = GlobalVariables.api_url + "/player/" + id + "/script/list/";
 		
 		WWW scriptListRequest = new WWW (url);
 		
@@ -273,7 +273,7 @@ public class LoadingScript : MonoBehaviour {
 	}
 
 	private IEnumerator LoadScriptsSimpleCoroutine(string id){
-		this.url = "localhost:8080/api/player/" + id + "/script/list/";
+		this.url = GlobalVariables.api_url + "/player/" + id + "/script/list/";
 		
 		WWW scriptListRequest = new WWW (url);
 		
@@ -300,7 +300,7 @@ public class LoadingScript : MonoBehaviour {
 
 	private IEnumerator DeleteScriptsCoroutine (string playerId, string scriptId)
 	{
-		this.url = "localhost:8080/api/player/" + id + "/script/" + scriptId + "/delete";
+		this.url = GlobalVariables.api_url + "/player/" + id + "/script/" + scriptId + "/delete";
 
 		WWW scriptDeleteRequest = new WWW (url);
 		
@@ -324,7 +324,7 @@ public class LoadingScript : MonoBehaviour {
 
 	private IEnumerator SetDefaultScriptsCoroutine (string playerId, string scriptId)
 	{
-		this.url = "localhost:8080/api/player/" + id + "/script/" + scriptId + "/setDefault";
+		this.url = GlobalVariables.api_url + "/player/" + id + "/script/" + scriptId + "/setDefault";
 		
 		WWW scriptSetDefaultRequest = new WWW (url);
 		
@@ -348,7 +348,7 @@ public class LoadingScript : MonoBehaviour {
 
 	private IEnumerator SetActiveScriptCoroutine (string playerId, string characterId, string scriptId)
 	{
-		this.url = "localhost:8080/api/player/" + playerId +"/character/" + characterId + "/script/" + scriptId + "/changeScript";
+		this.url = GlobalVariables.api_url + "/player/" + playerId +"/character/" + characterId + "/script/" + scriptId + "/changeScript";
 		
 		WWW scriptSetActiveRequest = new WWW (url);
 		
@@ -371,7 +371,7 @@ public class LoadingScript : MonoBehaviour {
 	}
 
 	private IEnumerator ViewHistoryCoroutine(string id){
-		this.url = "localhost:8080/api/player/" + id + "/match/list/";
+		this.url = GlobalVariables.api_url + "/player/" + id + "/match/list/";
 		
 		WWW viewHistoryRequest = new WWW (url);
 		
@@ -397,7 +397,7 @@ public class LoadingScript : MonoBehaviour {
 	}
 
 	private IEnumerator StartMatchCoroutine(string id, string character, string enemy){
-		this.url = "localhost:8080/api/player/" + id + "/match/create/onevsone";
+		this.url = GlobalVariables.api_url + "/player/" + id + "/match/create/onevsone";
 		WWWForm startMatchForm = new WWWForm();
 		startMatchForm.AddField("character", character);
 		startMatchForm.AddField("enemy", enemy);

@@ -13,7 +13,7 @@ public class RegisterPlayer : MonoBehaviour {
 
 	// Retrieves player info from textboxes and starts register routine
 	public void startRegisterCoroutine(){
-		url = "localhost:8080/api/register";
+		url = GlobalVariables.api_url + "/register";
 
 		StartCoroutine (register ());
 	}
@@ -52,6 +52,7 @@ public class RegisterPlayer : MonoBehaviour {
 
 		if (regRequest.text != null) {  // there is response from server
 			JsonData data = JsonMapper.ToObject(regRequest.text);
+			Debug.Log (data);
 			try {
 				Debug.Log(data["msg"] + ", " + data["id"]);
 				Debug.Log("criou");
