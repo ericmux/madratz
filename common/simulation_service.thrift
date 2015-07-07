@@ -43,6 +43,8 @@ service SimulationService {
 
   bool isMatchFinished(1: string matchId) throws (1: InvalidArgumentException exc);
 
+  double matchProgress(1: string matchId) throws (1: InvalidArgumentException exc);
+
   MatchResult result(1: string matchId) throws (1: InvalidArgumentException exc);
 
   SnapshotsResult snapshots(1: string matchId) throws (1: InvalidArgumentException exc);

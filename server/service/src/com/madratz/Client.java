@@ -45,7 +45,8 @@ public class Client {
 
             System.out.println("Match id is " + matchId + ". Waiting for match to finish.");
             while (!server.isMatchFinished(matchId)) {
-                Thread.sleep(100);
+                System.out.printf("Simulating... Progress: %.1f%%\n", server.matchProgress(matchId) * 100);
+                Thread.sleep(50);
             }
             System.out.println("Match finished! Result: " + server.result(matchId));
 

@@ -51,7 +51,9 @@ public class MadratzMatch {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Stepping simulation... " + mWorld.getElapsedTime() + "s elapsed. Players alive: " + mWorld.getPlayers().size());
             }
-            mWorld.step(SimulationTest.TIMESTEP, SimulationTest.VEL_ITERATIONS, SimulationTest.POS_ITERATIONS);
+            synchronized (this) {
+                mWorld.step(SimulationTest.TIMESTEP, SimulationTest.VEL_ITERATIONS, SimulationTest.POS_ITERATIONS);
+            }
             mSnapshots.add(mWorld.toThrift());
 
             int playerCount = mWorld.getPlayers().size();
@@ -69,6 +71,17 @@ public class MadratzMatch {
                     .get();
         }
         mFinished = true;
+    }
+
+    public double progress() {
+        if (isFinished()) return 1;
+        synchronized (this) {
+            double timePercentage = mWorld.getElapsedTime() / mTimeLimitSec;
+            // Sum the hp percentage from the players alive and divide by the number of initial players
+            double hpPercentage = mWorld.getPlayers().stream().mapToDouble(p -> p.getHP() / p.maxHP()).sum() / mPlayers.size();
+            // Return the "percentage" closest to completing
+            return Math.min(1, Math.max(timePercentage, 1 - hpPercentage));
+        }
     }
 
     public boolean isFinished() {

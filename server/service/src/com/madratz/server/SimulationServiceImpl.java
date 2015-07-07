@@ -36,6 +36,11 @@ public class SimulationServiceImpl implements SimulationService.Iface {
     }
 
     @Override
+    public double matchProgress(String matchId) throws TException {
+        return getMatch(matchId).progress();
+    }
+
+    @Override
     public boolean isMatchFinished(String matchId) throws TException {
         return getMatch(matchId).isFinished();
     }

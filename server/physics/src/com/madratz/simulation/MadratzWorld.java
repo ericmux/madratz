@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class MadratzWorld extends World implements Thriftalizable {
 
     private Set<Actor> mActiveActors = new HashSet<>();
+    private List<Player> mPlayers = new ArrayList<>();
     private Stack<Actor> mDestroyedActors = new Stack<>();
 
     private int mFrameNumber = 0;
@@ -34,6 +35,9 @@ public class MadratzWorld extends World implements Thriftalizable {
         actor.setBody(body);
 
         mActiveActors.add(actor);
+        if (actor instanceof Player) {
+            mPlayers.add((Player) actor);
+        }
     }
 
 
@@ -60,17 +64,18 @@ public class MadratzWorld extends World implements Thriftalizable {
             Actor actor = mDestroyedActors.pop();
 
             destroyBody(actor.getBody());
+
             mActiveActors.remove(actor);
+            if (actor instanceof Player) {
+                mPlayers.remove(actor);
+            }
         }
 
         mFrameNumber++;
     }
 
     public List<Player> getPlayers() {
-        return mActiveActors.stream()
-                .filter(p -> p instanceof Player)
-                .map(p -> (Player) p)
-                .collect(Collectors.toList());
+        return Collections.unmodifiableList(mPlayers);
     }
 
     public Set<Actor> getActiveActors() {

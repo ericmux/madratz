@@ -12,7 +12,7 @@ public class Player extends Actor {
     private final String mId;
     private final Weapon mWeapon;
 
-    private float mHP = 100.0f;
+    private float mHP = maxHP();
 
     public Player(String id, Behavior behavior, Vec2 position, float angle, Weapon weapon) {
         super(behavior, position, angle);
@@ -27,6 +27,10 @@ public class Player extends Actor {
 
     public float getHP() {
         return mHP;
+    }
+
+    public float maxHP() {
+        return 100.0f;
     }
 
     public void inflictDamage(float damage) {
