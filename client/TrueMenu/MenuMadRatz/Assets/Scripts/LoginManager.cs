@@ -64,5 +64,7 @@ public class LoginManager : MonoBehaviour {
 			}
 			
 		}
+		else if (Input.GetKeyDown (KeyCode.Return) || Input.GetKeyDown (KeyCode.KeypadEnter))
+			OnConnectClick ();
 	}
 }
