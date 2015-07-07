@@ -139,36 +139,7 @@ var thrift = require('thrift');
 				var enemy_tasks = [];
 				for(var i = 0; i < enemyIds.length; i++){
 					var enemyId = enemyIds[i];
-					enemy_tasks.push(
-						function(callback){
-								Character.findById(enemyId, function(err, enemy) {
-									if(err)
-										return callback(res.send(err),null);
-
-									if(!enemy)
-										return callback(res.json({err: "enemy_character_does_not_exist"},null));
-
-									if(!enemy.script)
-										return callback(res.json({err: "enemy_no_active_script"}),null);
-
-									enemies.push(enemy);
-
-									return Script.findById(enemy.script, function(err, enemyScript) {
-										if(err)
-											return callback(res.send(err),null);
-
-										if(!enemyScript || (enemy._owner.toString() !== enemyScript._owner.toString()))
-											return callback(res.json({err: "enemy_script_does_not_exist"}),null);
-
-										enemyScripts.push(enemyScript);
-
-										return callback(null);
-
-									});
-
-								});
-						} 
-					);
+					enemy_tasks.push(enemyAsyncTaskFor(enemyId,enemies,enemyScripts));
 				}
 
 
@@ -325,6 +296,39 @@ var thrift = require('thrift');
 				  	}(matchId.toString()));
 				}, 1000);
 		});
+	};
+
+
+	function enemyAsyncTaskFor(id,enemies,enemyScripts){
+		return	function(callback){
+					Character.findById(id, function(err, enemy) {
+						if(err)
+							return callback(res.send(err),null);
+
+						if(!enemy)
+							return callback(res.json({err: "enemy_character_does_not_exist"},null));
+
+						if(!enemy.script)
+							return callback(res.json({err: "enemy_no_active_script"}),null);
+
+						enemies.push(enemy);
+						console.log(id);
+
+						return Script.findById(enemy.script, function(err, enemyScript) {
+							if(err)
+								return callback(res.send(err),null);
+
+							if(!enemyScript || (enemy._owner.toString() !== enemyScript._owner.toString()))
+								return callback(res.json({err: "enemy_script_does_not_exist"}),null);
+
+							enemyScripts.push(enemyScript);
+
+							return callback(null);
+
+						});
+
+					});
+		} 
 	};
 
 	/////////////////////
