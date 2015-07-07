@@ -23,7 +23,7 @@ public class LoginManager : MonoBehaviour {
 	void Start ()
 	{
 		system = EventSystem.current;
-		username.Select();
+		
 	}
 
 	void OnEnable()

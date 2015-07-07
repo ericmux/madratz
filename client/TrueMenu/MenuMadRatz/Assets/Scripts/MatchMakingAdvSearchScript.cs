@@ -15,12 +15,12 @@ public class RandomPlayer
 public class MatchMakingAdvSearchScript : MonoBehaviour {
 	public Button startMatch;
 
-	List<RandomPlayer> enemyPlayers;
+	private static List<RandomPlayer> enemyPlayers;
 	
 	private string url_main = GlobalVariables.api_url + "/player/";
 	private string url_rand = "/random/";
 	
-	public GlobalVariables _globals;
+	private static GlobalVariables _globals;
 
 	public Text[] textFields;
 
@@ -114,7 +114,10 @@ public class MatchMakingAdvSearchScript : MonoBehaviour {
 	public void OnCreate()
 	{
 		loadingScript.gameObject.SetActive(true);
-		loadingScript.StartStartMatchCoroutine(_globals.characterModel._id, enemyPlayers[0]._id);
+
+		string[] enemies = enemyPlayers.Select (i => i._id).ToArray();
+
+		loadingScript.StartStartMatchCoroutine(_globals.characterModel._id, enemies);
 		this.gameObject.SetActive(false);
 
 	}
