@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - StatusText
+  - HUD
   layers:
   - Default
   - TransparentFX
@@ -16,7 +16,7 @@ TagManager:
   - 
   - Background Image
   - BI
-  - 
+  - HUD
   - 
   - 
   - 

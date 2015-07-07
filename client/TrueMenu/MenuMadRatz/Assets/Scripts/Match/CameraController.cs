@@ -14,10 +14,14 @@ public class CameraController : MonoBehaviour {
 	private static Quaternion FLAT_ROTATION = Quaternion.Euler(90, 0, 0);
 
 	private static int ZOOM_MAX = 10;
-	private static int ZOOM_MIN = 1;
+	private static int ZOOM_MIN = -10;
+	private int zoom = 0;
+
 
 	public static GameObject player = null;
-	
+	private static GameObject playerEye;
+
+
 	private CameraMode currentMode;
 
 	// Use this for initialization
@@ -25,46 +29,37 @@ public class CameraController : MonoBehaviour {
 		currentMode = CameraMode.CAMERA_MODE_FLAT;
 		transform.position = FLAT_POSITION;
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-		/*if (Input.GetButtonDown ("Camera Eye") && player != null) {
-			setCameraMode(CameraMode.CAMERA_MODE_EYE);
-		} else if (Input.GetButtonDown ("Camera Flat")) {
-			setCameraMode(CameraMode.CAMERA_MODE_FLAT);
-		}
+	void LateUpdate() {
+		/*Ray ray;
+		RaycastHit hit;
 
-		// Work with zooming
-
-		if (Input.GetButtonDown("Zoom Out") && transform.position.y < ZOOM_MAX) {
-			Debug.Log ("Zoom Out");
-			Vector3 newPosition = transform.position + new Vector3(0, 1, 0);
-			transform.position = Vector3.Lerp(transform.position, newPosition, 1);
-		} 
-
-		if (Input.GetKeyDown(KeyCode.Equals)  && transform.position.y > ZOOM_MIN) {
-			Debug.Log ("Zoom In");
-			Vector3 newPosition = transform.position - new Vector3(0, 1, 0);
-			transform.position = Vector3.Lerp(transform.position, newPosition, 1);
+		ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if(Physics.Raycast(ray, out hit))
+		{
+			print (hit.collider.name);
 		}*/
-
+		
 		switch (currentMode) {
 		case CameraMode.CAMERA_MODE_EYE:
 			if (player != null) {
-				GameObject playerEye = player.transform.Find("PlayerEye").gameObject;
+				playerEye = player.transform.Find("RatEye").gameObject;
 				
-				transform.position = playerEye.transform.position;
-				transform.rotation = playerEye.transform.rotation;
+				transform.position = playerEye.transform.position + new Vector3(-2, 2 + zoom, -2);
+				transform.LookAt(playerEye.transform.position);
 			}
 			
 			break;
 		case CameraMode.CAMERA_MODE_FLAT:
-			// transform.position = FLAT_POSITION;
+			transform.position = FLAT_POSITION + new Vector3(0, zoom, 0);
 			transform.rotation = FLAT_ROTATION;
 			
 			break;
 		case CameraMode.CAMERA_MODE_PLAYER:
+			transform.position = player.transform.position + new Vector3(-2, 2 + zoom, -2);
+			transform.LookAt(player.transform.position);
+
+			// rotation
 			break;
 		}
 	}
@@ -80,5 +75,27 @@ public class CameraController : MonoBehaviour {
 		set {
 			player = value;
 		}
+	}
+
+	public void onCameraButtonClicked() {
+		if (currentMode == CameraMode.CAMERA_MODE_FLAT) {
+			setCameraMode (CameraMode.CAMERA_MODE_PLAYER);
+		} /*else if (currentMode == CameraMode.CAMERA_MODE_PLAYER) {
+			setCameraMode (CameraMode.CAMERA_MODE_EYE);
+		} */else {
+			setCameraMode (CameraMode.CAMERA_MODE_FLAT);
+		}
+	}
+
+	public void onZoomInButtonClicked() {
+		zoom -= 1;
+		if (zoom < ZOOM_MIN)
+			zoom = ZOOM_MIN;
+	}
+
+	public void onZoomOutButtonClicked() {
+		zoom += 1;
+		if (zoom > ZOOM_MAX)
+			zoom = ZOOM_MAX;
 	}
 }
