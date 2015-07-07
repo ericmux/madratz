@@ -21,18 +21,20 @@ public class EditScriptPanel : MonoBehaviour {
 	public Text status;
 	public Text saveButton;
 	public Button pasteButton;
+	public ConfirmPanel confirmPanel;
 
 	public ScriptModel scriptModel;
 
-	OnExitDelegate exitFunction;
+	private string savedScript;
+	private OnExitDelegate exitFunction;
 
 	public void SetScriptModel (ScriptModel scriptModel)
 	{
 		this.scriptModel = scriptModel;
 		this.title.text = scriptModel.title;
 		byte[] data = Convert.FromBase64String(scriptModel.code);
-		string decodedString = Encoding.UTF8.GetString(data);
-		this.code.text = decodedString;
+		savedScript = Encoding.UTF8.GetString(data);
+		this.code.text = savedScript;
 		if(scriptModel._id != null)
 			SetStatus("Script carregado.", Color.black);
 		else
@@ -60,6 +62,9 @@ public class EditScriptPanel : MonoBehaviour {
 			pasteButton.enabled = false;
 			pasteButton.GetComponentInChildren<CanvasRenderer>().SetAlpha(0);
 		}
+		confirmPanel.SetTitle("Voltar");
+		confirmPanel.SetStatus("Você tem mudanças pendentes! Deseja realmente voltar sem salvar essas mudanças?");
+		confirmPanel.SetOnConfirm(OnExitConfirm);
 	}
 	
 	public void OnVerify()
@@ -77,6 +82,15 @@ public class EditScriptPanel : MonoBehaviour {
 
 	public void OnExit()
 	{
+		if (code.text != savedScript) {
+			confirmPanel.gameObject.SetActive(true);
+		} else {
+			OnExitConfirm();
+		}
+	}
+
+	public void OnExitConfirm()
+	{
 		exitFunction();
 		this.gameObject.SetActive(false);
 	}
@@ -84,6 +98,20 @@ public class EditScriptPanel : MonoBehaviour {
 	public void OnPasteClicked ()
 	{
 		code.text = ClipboardHelper.clipboard;
+	}
+
+	public void OnScriptChanged()
+	{
+		UpdateSaveText();
+	}
+
+	private void UpdateSaveText()
+	{
+		if (code.text == savedScript) {
+			saveButton.text = "Salvar";
+		} else {
+			saveButton.text = "Salvar*";
+		}
 	}
 
 	private IEnumerator VerifyScriptCoroutine(){
@@ -130,7 +158,8 @@ public class EditScriptPanel : MonoBehaviour {
 
 		WWWForm scriptUpdateForm = new WWWForm();
 		scriptUpdateForm.AddField("title", title.text);
-		var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(code.text);
+		string script = code.text;
+		var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(script);
 		var encodedString = System.Convert.ToBase64String(plainTextBytes);
 		scriptUpdateForm.AddField("code", encodedString);
 
@@ -152,6 +181,8 @@ public class EditScriptPanel : MonoBehaviour {
 			{
 				Debug.Log (data.ToJson());
 				SetStatus("Salvo!", Color.green);
+				savedScript = script;
+				UpdateSaveText();
 			}
 		}
 	}

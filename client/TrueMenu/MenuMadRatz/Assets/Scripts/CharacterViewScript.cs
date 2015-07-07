@@ -47,8 +47,8 @@ public class CharacterViewScript : MonoBehaviour {
 	public void OnDelete()
 	{
 		confirmPanel.gameObject.SetActive(true);
-		confirmPanel.SetStatus("Desejar deletar o personagem \"" + model.name + "\"?");
-		confirmPanel.SetTitle("Confirmação");
+		confirmPanel.SetTitle("Deletar");
+		confirmPanel.SetStatus("Deseja realmente deletar o personagem \"" + model.name + "\"?");
 		confirmPanel.SetOnConfirm(OnConfirmCallback);
 	}
 
