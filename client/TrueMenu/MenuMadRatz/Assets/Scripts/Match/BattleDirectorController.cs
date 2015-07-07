@@ -7,6 +7,7 @@ using System.IO;
 using UnityEngine.UI;
 
 public class BattleDirectorController : MonoBehaviour {
+	public static string matchId = "559b3a1911dc11c5e1d301ab";
 	public GameObject ratPrefab;
 	public GameObject shotPrefab;
 
@@ -37,7 +38,7 @@ public class BattleDirectorController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		snapshots = ThriftClient.getSnapshotsFromFile ("Assets/Files/559b3a1911dc11c5e1d301ab.out");
+		snapshots = ThriftClient.getSnapshotsFromFile ("Assets/Files/" + matchId + ".out");
 
 		var ratSimData = GetAllRatSimDataFromSnapshots (snapshots);
 
@@ -204,5 +205,10 @@ public class BattleDirectorController : MonoBehaviour {
 		TimerController.increaseSpeed(1);
 
 		speedText.text = TimerController.speed + ".0 X";
+	}
+
+	public void onsair()
+	{
+		Application.LoadLevel(0);
 	}
 }

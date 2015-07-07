@@ -31,8 +31,7 @@ public class RegisterPlayer : MonoBehaviour {
 	}
 
 	private void WaitBizu(){
-		onSuccess.SetActive(true);
-		gameObject.SetActive(false);
+
 	}
 
 	// Makes request from API for registry
@@ -60,10 +59,10 @@ public class RegisterPlayer : MonoBehaviour {
 				messageText.color = Color.black;
 				messageText.text = "Jogador criado";
 
-				Invoke("WaitBizu", 2);
+				//Invoke("WaitBizu", 2);
 
-//				onSuccess.SetActive(true);
-//				gameObject.SetActive(false);
+				onSuccess.SetActive(true);
+				gameObject.SetActive(false);
 
 			} catch (KeyNotFoundException e1){ // if there is non-expected response
 				try{

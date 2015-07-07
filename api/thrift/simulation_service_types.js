@@ -330,7 +330,7 @@ CompilationResult.prototype.write = function(output) {
   return;
 };
 
-SnapshotList = module.exports.SnapshotList = function(args) {
+SnapshotsResult = module.exports.SnapshotsResult = function(args) {
   this.snapshotList = null;
   if (args) {
     if (args.snapshotList !== undefined) {
@@ -338,31 +338,9 @@ SnapshotList = module.exports.SnapshotList = function(args) {
     }
   }
 };
-
-function printPrototype(obj, i) {
-    var n = Number(i || 0);
-    var indent = Array(2 + n).join("-");
-
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key)) {
-            console.log(indent, key, ": ", obj[key]);
-        }
-    }
-
-    if(obj) {
-        if(Object.getPrototypeOf) {
-            printPrototype(Object.getPrototypeOf(obj), n + 1);
-        } else if(obj.__proto__) {
-            printPrototype(obj.__proto__, n + 1);
-        }
-    }
-}
-
-SnapshotList.prototype = {};
-SnapshotList.prototype.read = function(input) {
-  printPrototype(input);
+SnapshotsResult.prototype = {};
+SnapshotsResult.prototype.read = function(input) {
   input.readStructBegin();
-
   while (true)
   {
     var ret = input.readFieldBegin();
@@ -407,8 +385,8 @@ SnapshotList.prototype.read = function(input) {
   return;
 };
 
-SnapshotList.prototype.write = function(output) {
-  output.writeStructBegin('SnapshotList');
+SnapshotsResult.prototype.write = function(output) {
+  output.writeStructBegin('SnapshotsResult');
   if (this.snapshotList !== null && this.snapshotList !== undefined) {
     output.writeFieldBegin('snapshotList', Thrift.Type.LIST, 1);
     output.writeListBegin(Thrift.Type.STRUCT, this.snapshotList.length);

@@ -330,7 +330,7 @@ CompilationResult.prototype.write = function(output) {
   return;
 };
 
-SnapshotList = module.exports.SnapshotList = function(args) {
+SnapshotsResult = module.exports.SnapshotsResult = function(args) {
   this.snapshotList = null;
   if (args) {
     if (args.snapshotList !== undefined) {
@@ -338,8 +338,8 @@ SnapshotList = module.exports.SnapshotList = function(args) {
     }
   }
 };
-SnapshotList.prototype = {};
-SnapshotList.prototype.read = function(input) {
+SnapshotsResult.prototype = {};
+SnapshotsResult.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -385,8 +385,8 @@ SnapshotList.prototype.read = function(input) {
   return;
 };
 
-SnapshotList.prototype.write = function(output) {
-  output.writeStructBegin('SnapshotList');
+SnapshotsResult.prototype.write = function(output) {
+  output.writeStructBegin('SnapshotsResult');
   if (this.snapshotList !== null && this.snapshotList !== undefined) {
     output.writeFieldBegin('snapshotList', Thrift.Type.LIST, 1);
     output.writeListBegin(Thrift.Type.STRUCT, this.snapshotList.length);

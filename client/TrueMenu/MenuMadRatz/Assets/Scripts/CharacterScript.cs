@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ public class CharacterScript : MonoBehaviour {
 	public ConfirmPanel confirmPanel;
 	public LoadingScript loadingPanel;
 	public GameMenuPanel gameMenuPanel;
+	public GameObject mainMenuPanel;
+	public Text lostConnection;
 
 	public Text status;
 
@@ -27,15 +30,20 @@ public class CharacterScript : MonoBehaviour {
 			Destroy(views[i].gameObject);
 		}
 		views.Clear();
-
-		foreach(CharacterModel cm in model.list)
-		{
-			CharacterViewScript view = Instantiate(characterViewPrefab, gameObject.transform.position, Quaternion.identity) as CharacterViewScript;
-			view.SetCharacterModel(cm);
-			view.SetConfirmPanel(confirmPanel);
-			view.SetReferences(loadingPanel, this, gameMenuPanel);
-			view.gameObject.transform.SetParent(gameObject.transform, false);
-			views.Add(view.gameObject);
+		try{
+			foreach(CharacterModel cm in model.list)
+			{
+				CharacterViewScript view = Instantiate(characterViewPrefab, gameObject.transform.position, Quaternion.identity) as CharacterViewScript;
+				view.SetCharacterModel(cm);
+				view.SetConfirmPanel(confirmPanel);
+				view.SetReferences(loadingPanel, this, gameMenuPanel);
+				view.gameObject.transform.SetParent(gameObject.transform, false);
+				views.Add(view.gameObject);
+			}
+		}catch(NullReferenceException){
+			this.gameObject.SetActive(false);
+			mainMenuPanel.SetActive(true);
+			mainMenuPanel.GetComponent<Text>().enabled = true;
 		}
 
 		if(views.Count < 3)

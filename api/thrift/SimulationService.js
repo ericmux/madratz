@@ -570,7 +570,7 @@ SimulationService_snapshots_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.STRUCT) {
-        this.success = new ttypes.SnapshotList();
+        this.success = new ttypes.SnapshotsResult();
         this.success.read(input);
       } else {
         input.skip(ftype);
