@@ -224,6 +224,7 @@ public class BattleDirectorController : MonoBehaviour {
 
 	public void onProgressBarClickUp() {
 		TimerController.Playing = wasPlaying;
+		UpdatePlaybackViews();
 	}
 
 	public void onExitButtonClicked()
