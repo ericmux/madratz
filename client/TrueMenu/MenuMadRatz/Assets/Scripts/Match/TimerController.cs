@@ -81,6 +81,9 @@ public class TimerController : MonoBehaviour {
 		get {
 			return stopwatch.Running;
 		}
+		set {
+			stopwatch.Running = value;
+		}
 	}
 
 	public static float Speed {

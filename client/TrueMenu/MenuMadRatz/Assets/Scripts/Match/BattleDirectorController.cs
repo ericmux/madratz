@@ -81,7 +81,7 @@ public class BattleDirectorController : MonoBehaviour {
 		playBackSlider.value = TimerController.Progress;
 
 		if (TimerController.HasFinished ()) {
-			playBackButtonText.text = "Replay";
+			UpdatePlaybackViews();
 			return;
 		}
 
@@ -186,27 +186,44 @@ public class BattleDirectorController : MonoBehaviour {
 		} else {
 			TimerController.togglePlaying ();
 		}
-		UpdateSpeedLabel();
-		playBackButtonText.text = TimerController.Playing ? "Pause" : "Play";
+		UpdatePlaybackViews();
 	}
 
 	public void onRewindButtonClick() {
 		TimerController.decreaseSpeed(1);
-		UpdateSpeedLabel();
+		UpdatePlaybackViews();
 	}
 
 	public void onForwardButtonClick() {
 		TimerController.increaseSpeed(1);
-		UpdateSpeedLabel();
+		UpdatePlaybackViews();
 	}
 
-	private void UpdateSpeedLabel ()
+	private void UpdatePlaybackViews ()
 	{
+		if (TimerController.HasFinished()) {
+			playBackButtonText.text = "Replay";
+		} else {
+			playBackButtonText.text = TimerController.Playing ? "Pause" : "Play";
+		}
 		speedText.text = TimerController.Speed.ToString("0.0") + " X";
 	}
 
-	public void onProgressBarValueChanged() {
+	private bool wasPlaying = false;
+
+	public void onProgressBarClickDown() {
+		wasPlaying = TimerController.Playing;
+		TimerController.Playing = false;
+		onProgressBarDragged();
+	}
+
+	public void onProgressBarDragged() {
 		TimerController.Progress = playBackSlider.value;
+		UpdatePlaybackViews();
+	}
+
+	public void onProgressBarClickUp() {
+		TimerController.Playing = wasPlaying;
 	}
 
 	public void onExitButtonClicked()
