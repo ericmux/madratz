@@ -277,7 +277,13 @@ var thrift = require('thrift');
 							            				match.status = 'finished';
 							            				match._file = file._id;
 							            				return match.save(function(err) {
-						            						console.log('Match #' + id + ' updated.');
+							            					if(err)
+							            						return console.error(err);
+							            					return _client.finalizeMatch(matchId, function(err) {
+							            						if(err)
+							            							return console.error(err);
+							            						return console.log('Match #' + id + ' updated.');
+							            					});
 						            					});
 													});
 						            			});
