@@ -11,7 +11,7 @@ var thrift = require('thrift');
 	};
 
 	config.getSimulationServerInfo = function() {
-		var ip = "54.207.86.108";
+		var ip = "54.207.26.28";
 		var port = 1199;
 		var thriftConfig = {protocol: thrift.TCompactProtocol};
 

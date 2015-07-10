@@ -279,7 +279,7 @@ var thrift = require('thrift');
 							            				return match.save(function(err) {
 							            					if(err)
 							            						return console.error(err);
-							            					return _client.finalizeMatch(matchId, function(err) {
+							            					return _client.finalizeMatch(matchId.toString(), function(err) {
 							            						if(err)
 							            							return console.error(err);
 							            						return console.log('Match #' + id + ' updated.');
