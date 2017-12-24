@@ -1,5 +1,7 @@
 # madratz
-A 3D real-time combat game between player-programmed and trained artifical intelligences. Made for a Software Engineering class from ITA.
+A 3D real-time combat game between player-programmed and trained artifical intelligences.
+
+Made for a Software Engineering class from ITA.
 
 ## API
 How to run:
