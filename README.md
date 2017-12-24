@@ -1,15 +1,12 @@
 # madratz
-Projeto de CES29. Um jogo 3D de combate entre inteligências artificiais em tempo real.
+A 3D real-time combat game between player-programmed and trained artifical intelligences. Made for a Software Engineering class from ITA.
 
 ## API
-Como rodar:
+How to run:
 
-1. Instalar NodeJS(v0.12.1): https://nodejs.org/
-2. Para instalar os packages, ir no diretorio da api pelo prompt e executar:
-> node install
-
-3. Na pasta da api(madratz/api/) executar:
->node server.js
+1. Install NodeJS (v0.12.1): https://nodejs.org/
+2. `node install`
+3. `cd madratz/api && node server.js`
 
 ## MVP
 
